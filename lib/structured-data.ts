@@ -11,7 +11,7 @@ export function getGlobalStructuredData() {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Organization",
+        "@type": "ResearchOrganization",
         "@id": organizationId,
         name: lab.name,
         url: absoluteUrl("/"),
@@ -22,6 +22,8 @@ export function getGlobalStructuredData() {
         },
         founder: {
           "@id": personId,
+          "@type": "Person",
+          name: lab.author,
         },
         sameAs: [lab.github, lab.linkedin, `https://orcid.org/${lab.orcid}`],
       },

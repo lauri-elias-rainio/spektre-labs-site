@@ -1,0 +1,184 @@
+[
+  {
+    "introduction": [
+      "Spektre Labs investigates structural invariants across complex systems.",
+      "Research is organized into several layers representing domains in which coherence, stability, and collapse can be studied.",
+      "These layers do not represent isolated disciplines. Instead, they describe interconnected regions of a broader structural landscape in which similar patterns may appear across very different systems."
+    ]
+  },
+  {
+    "layer": "Core Theoretical Layer",
+    "description": "This layer develops the foundational structures used to describe coherence and collapse in dynamic systems.",
+    "items": [
+      {
+        "title": "Coherence Theory",
+        "description": "The preservation of structure in dynamic systems."
+      },
+      {
+        "title": "Collapse Dynamics",
+        "description": "Mechanisms through which systems lose coherence and transition into unstable states."
+      },
+      {
+        "title": "Feedback Dynamics",
+        "description": "Corrective feedback channels that maintain system stability."
+      },
+      {
+        "title": "Information Topology",
+        "description": "The structural geometry of information."
+      },
+      {
+        "title": "Evaluation Invariance",
+        "description": "Conditions under which evaluation processes remain coherent."
+      }
+    ]
+  },
+  {
+    "layer": "Complex Systems Layer",
+    "description": "This layer studies how structural dynamics appear in large-scale human and institutional systems.",
+    "items": [
+      {
+        "title": "Institutional Systems",
+        "description": "Structures governing organizations and governance."
+      },
+      {
+        "title": "Economic Systems",
+        "description": "Coherence and instability within economic systems."
+      },
+      {
+        "title": "Political Systems",
+        "description": "The dynamics of power and decision-making."
+      },
+      {
+        "title": "Network Dynamics",
+        "description": "Structural properties of interconnected systems."
+      },
+      {
+        "title": "Collective Intelligence",
+        "description": "Formation and propagation of shared knowledge."
+      }
+    ]
+  },
+  {
+    "layer": "Artificial Intelligence Layer",
+    "description": "Research in this layer examines structural questions related to artificial intelligence and machine reasoning.",
+    "items": [
+      {
+        "title": "AI Alignment",
+        "description": "Coherence between AI objectives and real-world outcomes."
+      },
+      {
+        "title": "AGI Architecture",
+        "description": "Structural foundations of general intelligence."
+      },
+      {
+        "title": "Multi-Agent Systems",
+        "description": "Dynamics emerging from interacting computational agents."
+      },
+      {
+        "title": "Machine Reasoning",
+        "description": "Decision structures within computational models."
+      },
+      {
+        "title": "Human-AI Symbiosis",
+        "description": "Collaborative cognition between humans and AI systems."
+      }
+    ]
+  },
+  {
+    "layer": "Cognition Layer",
+    "description": "This layer investigates structural properties of cognitive systems.",
+    "items": [
+      {
+        "title": "Human Cognition",
+        "description": "Structural models of human decision-making."
+      },
+      {
+        "title": "Dynamic State Machines",
+        "description": "State transitions within cognitive systems."
+      },
+      {
+        "title": "Learning Dynamics",
+        "description": "Processes governing learning and adaptation."
+      },
+      {
+        "title": "Perception Systems",
+        "description": "Information structures underlying perception."
+      },
+      {
+        "title": "Meta-Cognition",
+        "description": "Observation and regulation of thought processes."
+      }
+    ]
+  },
+  {
+    "layer": "Information & Computation Layer",
+    "description": "This layer explores the structural role of information and computation in complex systems.",
+    "items": [
+      {
+        "title": "Query Architecture",
+        "description": "How questions and queries define computational exploration."
+      },
+      {
+        "title": "Information Architecture",
+        "description": "Structural organization of knowledge systems."
+      },
+      {
+        "title": "Computational Epistemology",
+        "description": "Formation of knowledge through computational processes."
+      },
+      {
+        "title": "Search Dynamics",
+        "description": "Exploration of latent conceptual spaces."
+      },
+      {
+        "title": "Knowledge Compression",
+        "description": "Representation and compression of information."
+      }
+    ]
+  },
+  {
+    "layer": "Physics Layer",
+    "description": "Research in this layer examines physical systems where coherence and structural limits emerge.",
+    "items": [
+      {
+        "title": "Thermodynamics of Information",
+        "description": "Relationships between information and entropy."
+      },
+      {
+        "title": "Quantum Coherence",
+        "description": "Coherence phenomena at quantum scales."
+      },
+      {
+        "title": "Complex Physical Systems",
+        "description": "Nonlinear dynamics in physical systems."
+      },
+      {
+        "title": "Holographic Principles",
+        "description": "Connections between geometry and information."
+      }
+    ]
+  },
+  {
+    "layer": "Cross-Domain Layer",
+    "description": "This layer focuses on structures that appear across multiple domains simultaneously.",
+    "items": [
+      {
+        "title": "Systems Theory",
+        "description": "General principles governing complex systems."
+      },
+      {
+        "title": "Emergence",
+        "description": "Formation of higher-level structures from interacting components."
+      },
+      {
+        "title": "Critical Transitions",
+        "description": "Phase transitions in complex systems."
+      },
+      {
+        "title": "Universal Invariants",
+        "description": "Structural relationships that persist across domains."
+      }
+    ]
+  }
+]
+

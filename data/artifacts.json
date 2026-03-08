@@ -1,0 +1,43 @@
+{
+  "introduction": [
+    "Spektre Labs produces formal research artifacts exploring structural invariants across complex systems.",
+    "These artifacts include research programs and formal frameworks developed through computational exploration and theoretical synthesis."
+  ],
+  "items": [
+    {
+      "slug": "spektre-corpus",
+      "title": "Spektre Corpus",
+      "summary": "A unified theory of coherence: the conditions under which any system - quantum, biological, institutional, or cosmological - maintains structure or collapses.",
+      "homeDescription": [
+        "The Spektre Corpus is the primary research program developed at Spektre Labs.",
+        "It investigates structural patterns governing coherence and collapse across complex systems and traces how similar thresholds emerge across multiple theoretical frameworks."
+      ],
+      "description": [
+        "The Spektre Corpus is the primary research program developed at Spektre Labs.",
+        "It investigates structural conditions governing coherence and collapse across complex systems. The research traces how similar structural patterns appear across domains including physics, information theory, artificial intelligence, cognition, and institutional dynamics.",
+        "At the center of the corpus is the observation that systems fail when the alignment between declared objectives and realized outcomes breaks and corrective feedback is suppressed.",
+        "Across multiple theoretical frameworks, this transition converges to a common critical threshold:",
+        "K(crit) ~= 0.127",
+        "The corpus consists of formal papers exploring these relationships through theoretical modeling and empirical validation."
+      ],
+      "github": "https://github.com/spektre-labs/spektre-corpus",
+      "prominence": "primary"
+    },
+    {
+      "slug": "spektre-protocol",
+      "title": "Spektre Protocol",
+      "summary": "A formal framework for reasoning about expressive capacity and hierarchies of state spaces.",
+      "homeDescription": [
+        "The protocol defines recursive structures of operator spaces used to analyze representational limits in complex systems."
+      ],
+      "description": [
+        "The Spektre Protocol defines a formal framework for reasoning about expressive capacity and hierarchies of state spaces.",
+        "It introduces a recursive structure of operator spaces used to analyze representational limits in complex systems.",
+        "While the corpus develops theoretical research, the protocol provides the structural abstraction used to reason about dynamic state spaces."
+      ],
+      "github": "https://github.com/spektre-labs/spektre-protocol",
+      "prominence": "secondary"
+    }
+  ]
+}
+

@@ -1,0 +1,133 @@
+{
+  "name": "Spektre Labs",
+  "tagline": "Mining structure from latent space.",
+  "subtext": "Spektre Labs is an independent research laboratory exploring structural invariants across complex systems.",
+  "location": "Helsinki",
+  "author": "Lauri Elias Rainio",
+  "email": "spektre.labs@proton.me",
+  "orcid": "0009-0006-0903-8541",
+  "github": "https://github.com/spektre-labs",
+  "linkedin": "https://www.linkedin.com/in/lauri-elias-rainio-007547339/",
+  "zenodo": "https://zenodo.org",
+  "about": {
+    "description": "Spektre Labs is an independent research laboratory based in Helsinki.",
+    "overview": [
+      "Spektre Labs is an independent research laboratory based in Helsinki.",
+      "The lab is dedicated to the discovery of structural invariants across complex systems. Its work focuses on identifying patterns that persist across domains and scales, from physical systems to cognition, artificial intelligence, and institutional dynamics.",
+      "Spektre Labs operates as a research engine: computational systems are orchestrated to explore large theoretical spaces, test structural hypotheses, and formalize coherent frameworks describing complex systems."
+    ],
+    "researchOutput": {
+      "title": "Research Output",
+      "paragraphs": [
+        "The primary artifact produced by Spektre Labs is the Spektre Corpus, a collection of formal research papers investigating coherence, feedback failure, and collapse dynamics across multiple theoretical frameworks.",
+        "The corpus examines how structural relationships emerge across domains including physics, information theory, dynamical systems, and institutional systems.",
+        "All research artifacts are published openly."
+      ]
+    },
+    "authorSection": {
+      "title": "Author",
+      "name": "Lauri Elias Rainio",
+      "role": "Founder, Spektre Labs",
+      "bio": "Independent researcher working on structural theories of coherence in complex systems."
+    }
+  },
+  "home": {
+    "hero": {
+      "tagline": "Mining structure from latent space.",
+      "description": [
+        "Spektre Labs is an independent research laboratory exploring structural invariants across complex systems.",
+        "Rather than modeling phenomena individually, the lab investigates the conditions under which systems remain coherent - and when they collapse."
+      ]
+    },
+    "whatWeDo": {
+      "title": "Orchestrating Computational Intelligence",
+      "description": "Spektre Labs uses computational systems to explore large theoretical spaces and identify structural relationships that appear across domains.",
+      "detail": "Research focuses on invariants governing coherence, feedback dynamics, and systemic collapse.",
+      "domains": [
+        "complex systems",
+        "information theory",
+        "artificial intelligence",
+        "cognition",
+        "institutional systems",
+        "cosmology"
+      ]
+    },
+    "research": {
+      "title": "Research",
+      "description": "Spektre Labs investigates structural invariants across complex systems through several interconnected research layers.",
+      "detail": "These include theoretical foundations, complex systems, artificial intelligence, cognition, information architectures, and physics."
+    },
+    "method": {
+      "title": "Method",
+      "description": "Research is conducted through computational orchestration: a methodology combining formal modeling, computational exploration, and iterative falsification to identify structural invariants across domains."
+    }
+  },
+  "method": {
+    "title": "Computational Orchestration",
+    "description": "Spektre Labs conducts research through computational orchestration, a methodology that uses computational systems to explore, test, and formalize structural hypotheses about complex systems.",
+    "introduction": [
+      "Spektre Labs conducts research through computational orchestration, a methodology that uses computational systems to explore, test, and formalize structural hypotheses about complex systems.",
+      "The objective is not to model isolated phenomena, but to identify structural invariants that persist across domains, from physical and informational systems to cognition, artificial intelligence, and institutional dynamics.",
+      "Computation serves as an exploratory instrument, enabling systematic traversal of large theoretical spaces and revealing structures that may not emerge through conventional analytical reasoning alone."
+    ],
+    "process": {
+      "title": "Research Process",
+      "introduction": "Research follows four stages.",
+      "steps": [
+        {
+          "title": "Formal Modeling",
+          "paragraphs": [
+            "Structural hypotheses are expressed in mathematical or algorithmic form, defining variables, constraints, and transformation rules. The aim is to produce a structure that can be examined across multiple domains."
+          ]
+        },
+        {
+          "title": "Computational Exploration",
+          "paragraphs": [
+            "Computational systems explore the implications of candidate structures, enabling rapid traversal of theoretical search spaces and revealing emergent patterns."
+          ]
+        },
+        {
+          "title": "Iterative Falsification",
+          "paragraphs": [
+            "Candidate structures are repeatedly stress-tested. Unstable formulations are discarded, while coherent structures that survive falsification are retained."
+          ]
+        },
+        {
+          "title": "Structural Synthesis",
+          "paragraphs": [
+            "Surviving structures are integrated into broader theoretical frameworks, allowing cross-domain correspondences and deeper invariants to emerge."
+          ]
+        }
+      ]
+    },
+    "crossDomainValidation": {
+      "title": "Cross-Domain Validation",
+      "paragraphs": [
+        "Structures identified in one domain are examined across others, including complex systems, information architectures, cognition, artificial intelligence, institutional systems, and cosmology.",
+        "When a structural relationship appears consistently across independent domains, it suggests the presence of a deeper invariant."
+      ],
+      "domains": [
+        "complex systems",
+        "information architectures",
+        "cognition",
+        "artificial intelligence",
+        "institutional systems",
+        "cosmology"
+      ]
+    },
+    "roleOfComputationalSystems": {
+      "title": "Role of Computational Systems",
+      "paragraphs": [
+        "Computational systems assist with exploration, verification, and falsification across large conceptual spaces.",
+        "They function as amplifiers of reasoning, while the human researcher directs the research program and evaluates resulting structures."
+      ]
+    },
+    "researchPhilosophy": {
+      "title": "Research Philosophy",
+      "paragraphs": [
+        "Spektre Labs focuses on structural discovery: identifying invariant relationships that govern coherence, stability, and collapse across complex systems."
+      ]
+    }
+  }
+}
+

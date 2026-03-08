@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/research", priority: 0.8, changeFrequency: "monthly" },
     { path: "/method", priority: 0.8, changeFrequency: "monthly" },
     { path: "/about", priority: 0.6, changeFrequency: "yearly" },
+    { path: "/llms.txt", priority: 0.4, changeFrequency: "monthly" },
   ];
 
   const artifactRoutes = getArtifacts().map((artifact) => ({

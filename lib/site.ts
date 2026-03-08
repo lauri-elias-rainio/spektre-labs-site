@@ -2,9 +2,22 @@ import type { Metadata } from "next";
 
 import lab from "@/data/lab.json";
 
-const siteUrlString = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+function getSiteUrlString() {
+  const configuredUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ??
+    process.env.VERCEL_URL;
 
-export const siteUrl = new URL(siteUrlString);
+  if (!configuredUrl) {
+    return "http://localhost:3000";
+  }
+
+  return configuredUrl.startsWith("http")
+    ? configuredUrl
+    : `https://${configuredUrl}`;
+}
+
+export const siteUrl = new URL(getSiteUrlString());
 
 export function absoluteUrl(path = "/") {
   return new URL(path, siteUrl).toString();

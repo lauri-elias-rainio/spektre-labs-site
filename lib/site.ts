@@ -9,7 +9,7 @@ function getSiteUrlString() {
     process.env.VERCEL_URL;
 
   if (!configuredUrl) {
-    return "http://localhost:3000";
+    return "https://spektrelabs.org";
   }
 
   return configuredUrl.startsWith("http")

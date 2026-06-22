@@ -43,6 +43,33 @@ export default function ShoreworldPage() {
         </figure>
       </Reveal>
 
+      {/* ENTER the live procedural engine — the headline act */}
+      <Reveal delay={90} className="mt-10 sm:mt-12">
+        <a
+          href="/shoreworld/experience"
+          className="group flex flex-col gap-5 rounded-[var(--radius)] border border-[var(--line)] px-6 py-7 no-underline transition-colors duration-500 hover:border-[var(--line-strong)] sm:flex-row sm:items-center sm:justify-between sm:px-9 sm:py-8"
+          style={{ background: "rgba(10,12,16,0.55)" }}
+        >
+          <div>
+            <p className="label mb-3 text-[0.56rem] tracking-[0.26em]" style={{ color: "var(--signal)" }}>
+              Live · Procedural reality engine
+            </p>
+            <p className="text-[1.25rem] font-semibold tracking-[-0.03em] sm:text-[1.5rem]" style={{ color: "var(--fg)" }}>
+              Enter the Coherence Capital
+            </p>
+            <p className="mt-2 max-w-[48ch] text-[0.92rem] leading-[1.7]" style={{ color: "var(--fg-mute)" }}>
+              The world generated live on your GPU — WebGPU, perfect symmetry, no lag. Not a render. The math, running.
+            </p>
+          </div>
+          <span
+            className="btn-metal shrink-0 self-start transition-transform duration-300 group-hover:translate-x-1 sm:self-center"
+            aria-hidden
+          >
+            Enter →
+          </span>
+        </a>
+      </Reveal>
+
       {/* the premise */}
       <section className="mt-16 sm:mt-20">
         <Reveal>

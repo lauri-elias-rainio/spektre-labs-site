@@ -10,7 +10,12 @@ export function SurfaceCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-neutral-200/80 bg-[var(--panel)] shadow-[0_1px_0_rgba(23,23,23,0.02)] dark:border-neutral-800/80 dark:shadow-none",
+        // Base glass surface from design system
+        "surface surface-hover",
+        // Rounded to system radius
+        "rounded-[var(--radius)]",
+        // Reveal animation
+        "rise",
         className
       )}
       {...props}
@@ -19,4 +24,3 @@ export function SurfaceCard({
     </div>
   );
 }
-

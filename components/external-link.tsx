@@ -18,12 +18,16 @@ export function ExternalLink({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex items-center gap-1 text-[0.95rem] text-neutral-700 underline decoration-neutral-300 underline-offset-[0.28rem] transition-colors hover:text-neutral-950 hover:decoration-neutral-500 dark:text-neutral-300 dark:decoration-neutral-700 dark:hover:text-neutral-50 dark:hover:decoration-neutral-500",
+        "group inline-flex items-baseline gap-[0.2em] text-[0.95rem] text-[var(--fg-dim)] underline decoration-[var(--line-strong)] underline-offset-[0.3rem] decoration-[0.5px] transition-colors duration-500 hover:text-[var(--fg)] hover:decoration-[var(--metal-3)]",
         className
       )}
     >
       <span>{children}</span>
-      <ArrowUpRight className="mt-px h-[0.88rem] w-[0.88rem]" aria-hidden />
+      <ArrowUpRight
+        className="mb-px h-[0.8rem] w-[0.8rem] shrink-0 opacity-50 transition-opacity duration-500 group-hover:opacity-100"
+        style={{ color: "var(--metal-3)" }}
+        aria-hidden
+      />
     </Link>
   );
 }

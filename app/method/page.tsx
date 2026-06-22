@@ -26,10 +26,15 @@ export default function MethodPage() {
 
       <Section title={lab.method.process.title}>
         <div className="max-w-5xl">
-          <p className="max-w-[42rem] text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+          <p
+            className="max-w-[42rem] text-[0.9rem] leading-[1.85]"
+            style={{ color: "var(--fg-mute)" }}
+          >
             {lab.method.process.introduction}
           </p>
-          <div className="mt-10">
+          {/* hairline separator before diagram */}
+          <div className="rule mt-10 mb-0" />
+          <div className="mt-0">
             <MethodDiagram steps={lab.method.process.steps} />
           </div>
         </div>

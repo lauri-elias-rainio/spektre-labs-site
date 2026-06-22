@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import { cn } from "@/lib/utils";
 
 export function ProseBlock({
@@ -12,10 +14,24 @@ export function ProseBlock({
   return (
     <div
       className={cn(
-        "max-w-4xl space-y-6 text-neutral-600 dark:text-neutral-400",
+        // Tight editorial measure — no wide rivers
+        "max-w-[52ch] space-y-6",
+        // Ink: dim not muted — readable but recessive against headings
+        "text-[var(--fg-dim)]",
+        // Size tiers
         size === "lead"
-          ? "text-base leading-[1.84] sm:text-[1.03rem]"
-          : "text-sm leading-[1.88] sm:text-[1.01rem]",
+          ? [
+              "text-base leading-[1.84] sm:text-[1.05rem]",
+              // Lead: slightly brighter
+              "text-[var(--fg-dim)]",
+            ]
+          : [
+              "text-[0.9375rem] leading-[1.9] sm:text-[0.975rem]",
+              // Body: truly dim, comfortable in long runs
+              "text-[var(--fg-mute)]",
+            ],
+        // Smooth prose transitions on hover contexts
+        "transition-colors duration-500",
         className
       )}
     >
@@ -23,4 +39,3 @@ export function ProseBlock({
     </div>
   );
 }
-

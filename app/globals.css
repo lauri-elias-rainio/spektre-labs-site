@@ -1,94 +1,216 @@
 @import "tailwindcss";
 
+/*
+  SPEKTRE LABS — luxury super-tech design system.
+  Art direction: committed OLED dark. Prada restraint · Fear of God elevation ·
+  Virgil Abloh industrial-editorial · Apple-grade material & motion.
+  Monochrome with a single platinum metal axis. Material, not flat:
+  hairlines, grain, specular, depth.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --panel: rgba(255, 255, 255, 0.9);
+  /* OLED depth stack — true black base, near-black layered surfaces */
+  --black: #000000;
+  --bg: #000000;
+  --bg-1: #060708;
+  --bg-2: #0b0c0e;
+  --bg-3: #121316;
+  --panel: rgba(14, 16, 19, 0.72);
+
+  /* ink */
+  --fg: #f4f5f7;
+  --fg-dim: #b6bac1;
+  --fg-mute: #7d828b;
+  --fg-faint: #50545c;
+
+  /* platinum / chrome metal axis */
+  --metal-hi: #ffffff;
+  --metal-1: #e8eaee;
+  --metal-2: #b9bdc6;
+  --metal-3: #888d97;
+  --metal-4: #565b65;
+
+  /* single cold signal accent (restrained) */
+  --signal: #cfe3ff;
+  --signal-glow: rgba(150, 190, 255, 0.16);
+
+  /* hairlines */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-soft: rgba(255, 255, 255, 0.045);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --radius: 14px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --font-display: var(--font-display), "Times New Roman", serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --panel: rgba(10, 10, 10, 0.88);
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  text-rendering: geometricPrecision;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  border-color: var(--line);
 }
 
 html {
   scroll-behavior: smooth;
+  background: var(--black);
+  -webkit-text-size-adjust: 100%;
+  color-scheme: dark;
 }
 
-:focus-visible {
-  outline: 2px solid color-mix(in oklab, black 28%, transparent);
-  outline-offset: 2px;
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-rendering: geometricPrecision;
+  line-height: 1.55;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ambient depth — soft platinum glow + vignette, fixed behind content */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(120% 80% at 50% -20%, rgba(120, 140, 175, 0.10), transparent 60%),
+    radial-gradient(80% 50% at 85% 110%, rgba(90, 105, 135, 0.06), transparent 60%),
+    var(--bg);
+  pointer-events: none;
+}
+
+/* film grain — material richness over OLED black (depth, not flat) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
 
 ::selection {
-  background: color-mix(in oklab, black 12%, transparent);
+  background: rgba(207, 227, 255, 0.18);
+  color: #fff;
 }
 
-@media (prefers-color-scheme: dark) {
-  ::selection {
-    background: color-mix(in oklab, white 14%, transparent);
-  }
-
-  :focus-visible {
-    outline: 2px solid color-mix(in oklab, white 34%, transparent);
-  }
+:focus-visible {
+  outline: 1px solid var(--metal-2);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 a {
-  text-underline-offset: 3px;
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 4px;
   text-decoration-thickness: 1px;
 }
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   letter-spacing: -0.03em;
 }
 
-p,
-li {
+p, li {
   hanging-punctuation: first last;
   text-wrap: pretty;
 }
 
 code {
-  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* ---- material utilities ---- */
 
-  *,
-  *::before,
-  *::after {
+/* brushed-platinum text */
+.metal-text {
+  background: linear-gradient(177deg, #ffffff 0%, #dadee5 26%, #9aa0ab 52%, #c8ccd4 70%, #6e737d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* hairline-framed glass panel with inner specular */
+.surface {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0) 40%), var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 1px 0 rgba(0, 0, 0, 0.6),
+    0 24px 60px -30px rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.surface-hover {
+  transition: border-color 0.5s var(--ease), transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+}
+.surface-hover:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 30px 80px -34px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+/* industrial label — Abloh-grade mono metadata tag */
+.label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  font-weight: 500;
+}
+
+/* hairline rule */
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong) 18%, var(--line-strong) 82%, transparent);
+  border: 0;
+}
+
+/* chrome button face */
+.btn-metal {
+  background: linear-gradient(180deg, #f6f7f9, #d2d6dd 48%, #aeb3bc 52%, #cdd1d8);
+  color: #0a0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 8px 24px -10px rgba(0, 0, 0, 0.8);
+  transition: filter 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.btn-metal:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+/* slow reveal */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 1s var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }

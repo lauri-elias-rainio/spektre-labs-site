@@ -14,32 +14,44 @@ export function ArtifactFeature({
   return (
     <section className={cn(className)}>
       <div className={cn("max-w-5xl", isPrimary && "lg:pl-8")}>
+        {/* Abloh quotation-mark device + kicker label */}
+        <p className="label mb-5 text-[var(--fg-faint)]">
+          &ldquo;{artifact.slug}&rdquo;
+        </p>
+
         <h2
           className={cn(
-            "text-balance font-semibold tracking-tight",
+            "text-balance tracking-tight",
             isPrimary
-              ? "max-w-[44rem] text-3xl sm:text-4xl lg:text-[3.38rem] lg:leading-[1.01]"
-              : "text-2xl sm:text-3xl"
+              ? "metal-text font-semibold max-w-[44rem] text-3xl sm:text-4xl lg:text-[3.38rem] lg:leading-[1.01]"
+              : "font-semibold text-2xl sm:text-3xl text-[var(--fg)]"
           )}
         >
           {artifact.title}
         </h2>
+
         <p
           className={cn(
-            "mt-5 max-w-4xl text-pretty text-neutral-700 dark:text-neutral-300",
+            "mt-6 text-pretty text-[var(--fg-dim)]",
             isPrimary
-              ? "max-w-[40rem] text-lg leading-[1.8] sm:text-[1.18rem]"
-              : "text-base leading-[1.8]"
+              ? "max-w-[40rem] text-lg leading-[1.82] sm:text-[1.18rem]"
+              : "max-w-4xl text-base leading-[1.80]"
           )}
         >
           {artifact.summary}
         </p>
       </div>
 
-      <div className={cn("mt-10 grid gap-8 lg:grid-cols-12", isPrimary ? "lg:gap-12" : "lg:gap-10")}>
+      <div
+        className={cn(
+          "mt-12 grid gap-8 lg:grid-cols-12",
+          isPrimary ? "lg:gap-14" : "lg:gap-10"
+        )}
+      >
+        {/* body paragraphs */}
         <div
           className={cn(
-            "space-y-6 lg:col-span-8",
+            "space-y-7 lg:col-span-8",
             isPrimary ? "max-w-4xl lg:pl-8" : "max-w-3xl"
           )}
         >
@@ -47,10 +59,9 @@ export function ArtifactFeature({
             <p
               key={paragraph}
               className={cn(
-                "text-neutral-600 dark:text-neutral-400",
                 paragraph === "K(crit) ~= 0.127"
-                  ? "font-mono text-lg text-neutral-800 dark:text-neutral-200"
-                  : "text-sm leading-[1.9] sm:text-[1.02rem]"
+                  ? "font-mono text-lg text-[var(--signal)] tracking-tight"
+                  : "text-[var(--fg-mute)] text-sm leading-[1.92] sm:text-[1.02rem]"
               )}
             >
               {paragraph}
@@ -58,20 +69,27 @@ export function ArtifactFeature({
           ))}
         </div>
 
+        {/* sticky sidebar — repository metadata */}
         <div className="lg:col-span-4 lg:flex lg:justify-end">
-          <div className="border-t border-neutral-200/80 pt-6 dark:border-neutral-800/80 lg:sticky lg:top-28 lg:w-full lg:max-w-[17rem]">
-            <p className="text-[0.68rem] font-medium uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">
-              Repository
-            </p>
+          <div
+            className="border-t pt-6 lg:sticky lg:top-28 lg:w-full lg:max-w-[17rem]"
+            style={{ borderColor: "var(--line-strong)" }}
+          >
+            <p className="label mb-4">Repository</p>
             {artifact.github ? (
-              <div className="mt-4">
-                <ExternalLink href={artifact.github}>{artifact.github}</ExternalLink>
+              <div
+                className="surface rounded-[10px] p-4"
+              >
+                <ExternalLink href={artifact.github}>
+                  {artifact.github}
+                </ExternalLink>
               </div>
-            ) : null}
+            ) : (
+              <p className="text-sm text-[var(--fg-faint)]">Unreleased</p>
+            )}
           </div>
         </div>
       </div>
     </section>
   );
 }
-

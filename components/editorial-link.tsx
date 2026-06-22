@@ -19,7 +19,7 @@ export function EditorialLink({
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
       className={cn(
-        "text-[0.95rem] text-neutral-700 underline decoration-neutral-300 underline-offset-[0.28rem] transition-colors hover:text-neutral-950 hover:decoration-neutral-500 dark:text-neutral-300 dark:decoration-neutral-700 dark:hover:text-neutral-50 dark:hover:decoration-neutral-500",
+        "text-[0.95rem] leading-snug text-[var(--fg-dim)] underline decoration-[var(--line-strong)] underline-offset-[0.3rem] decoration-[0.5px] transition-colors duration-500 hover:text-[var(--fg)] hover:decoration-[var(--metal-3)]",
         className
       )}
     >

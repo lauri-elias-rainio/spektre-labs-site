@@ -42,24 +42,31 @@ export default function ArtifactPage({ params }: { params: Params }) {
   return (
     <div>
       <StructuredData data={getArtifactStructuredData(artifact)} />
-      <BackLink href="/artifacts" className="mb-8">
+
+      {/* back nav */}
+      <BackLink href="/artifacts" className="mb-10">
         Back to Artifacts
       </BackLink>
 
+      {/* page header — title + summary as description */}
       <PageHeader title={artifact.title} description={artifact.summary} />
 
-      <section className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-14">
+      {/* body grid — generous gutter, editorial proportion */}
+      <section className="mt-20 grid gap-10 lg:grid-cols-12 lg:gap-16">
+        {/* left gutter — structural breathing room */}
         <div className="lg:col-span-3" />
-        <div className="grid gap-6 lg:col-span-9 lg:grid-cols-12">
+
+        <div className="grid gap-8 lg:col-span-9 lg:grid-cols-12">
+          {/* main body prose */}
           <div className="lg:col-span-7">
-            <ProseBlock size="lead" className="space-y-6 max-w-3xl">
+            <ProseBlock size="lead" className="space-y-7 max-w-3xl">
               {artifact.description.map((paragraph) => (
                 <p
                   key={paragraph}
                   className={
                     paragraph === "K(crit) ~= 0.127"
-                      ? "font-mono text-lg text-neutral-800 dark:text-neutral-200"
-                      : undefined
+                      ? "font-mono text-lg text-[var(--signal)] tracking-tight"
+                      : "text-[var(--fg-mute)] leading-[1.90]"
                   }
                 >
                   {paragraph}
@@ -68,39 +75,50 @@ export default function ArtifactPage({ params }: { params: Params }) {
             </ProseBlock>
           </div>
 
-          <div className="border-t border-neutral-200/80 pt-6 dark:border-neutral-800/80 lg:col-span-5 lg:max-w-[20rem] lg:justify-self-end lg:sticky lg:top-28 lg:self-start">
-            <MetadataList
-              items={[
-                {
-                  label: "Slug",
-                  value: (
-                    <span className="font-mono text-[0.82rem] text-neutral-500 dark:text-neutral-400">
-                      {absoluteUrl(`/artifacts/${artifact.slug}`)}
-                    </span>
-                  ),
-                },
-                {
-                  label: "GitHub",
-                  value: artifact.github ? (
-                    <ExternalLink href={artifact.github}>{artifact.github}</ExternalLink>
-                  ) : (
-                    "Unavailable"
-                  ),
-                },
-                {
-                  label: "Zenodo",
-                  value: artifact.zenodo ? (
-                    <ExternalLink href={artifact.zenodo}>{artifact.zenodo}</ExternalLink>
-                  ) : (
-                    "Unavailable"
-                  ),
-                },
-              ]}
-            />
+          {/* sticky metadata sidebar */}
+          <div
+            className="border-t pt-6 lg:col-span-5 lg:max-w-[20rem] lg:justify-self-end lg:sticky lg:top-28 lg:self-start"
+            style={{ borderColor: "var(--line-strong)" }}
+          >
+            {/* Abloh-style label above the data panel */}
+            <p className="label mb-5">Artifact metadata</p>
+            <div className="surface rounded-[12px] p-5">
+              <MetadataList
+                items={[
+                  {
+                    label: "Slug",
+                    value: (
+                      <span className="font-mono text-[0.78rem] text-[var(--fg-mute)] break-all">
+                        {absoluteUrl(`/artifacts/${artifact.slug}`)}
+                      </span>
+                    ),
+                  },
+                  {
+                    label: "GitHub",
+                    value: artifact.github ? (
+                      <ExternalLink href={artifact.github}>
+                        {artifact.github}
+                      </ExternalLink>
+                    ) : (
+                      <span className="text-[var(--fg-faint)]">Unreleased</span>
+                    ),
+                  },
+                  {
+                    label: "Zenodo",
+                    value: artifact.zenodo ? (
+                      <ExternalLink href={artifact.zenodo}>
+                        {artifact.zenodo}
+                      </ExternalLink>
+                    ) : (
+                      <span className="text-[var(--fg-faint)]">Unreleased</span>
+                    ),
+                  },
+                ]}
+              />
+            </div>
           </div>
         </div>
       </section>
     </div>
   );
 }
-

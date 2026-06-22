@@ -24,46 +24,55 @@ export function Navigation({ className }: { className?: string }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b border-neutral-200/70 bg-white/96 backdrop-blur-md dark:border-neutral-800/70 dark:bg-neutral-950/96",
+        "sticky top-0 z-50 border-b border-[var(--line)] bg-[rgba(0,0,0,0.88)] backdrop-blur-xl",
         className
       )}
     >
-      <Container className="py-4 sm:py-[1.15rem]">
+      <Container className="py-[1.1rem] sm:py-[1.25rem]">
         <div className="flex items-baseline justify-between gap-6">
+          {/* Wordmark — mono label weight, platinum on OLED */}
           <Link
             href="/"
-            className="text-[0.94rem] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50"
+            className="label text-[0.72rem] tracking-[0.28em] text-[var(--metal-1)] transition-colors duration-500 hover:text-[var(--metal-hi)]"
           >
             {lab.name}
           </Link>
 
+          {/* Desktop nav */}
           <nav aria-label="Primary" className="hidden items-center gap-8 sm:flex">
-            <div className="flex items-center gap-[1.35rem]">
+            <div className="flex items-center gap-[1.6rem]">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
                   className={cn(
-                    "relative text-[0.89rem] transition-colors after:absolute after:-bottom-[1.18rem] after:left-0 after:h-px after:w-full after:scale-x-[0.6] after:bg-neutral-950 after:opacity-0 after:transition-all dark:after:bg-neutral-50",
+                    "relative text-[0.8rem] tracking-[0.04em] font-medium transition-colors duration-500",
+                    "after:absolute after:-bottom-[1.28rem] after:left-0 after:h-px after:w-full",
+                    "after:scale-x-0 after:bg-[var(--metal-2)] after:opacity-0",
+                    "after:transition-all after:duration-500 after:[transition-timing-function:var(--ease)]",
                     isActive(item.href)
-                      ? "text-neutral-950 after:scale-x-100 after:opacity-100 dark:text-neutral-50"
-                      : "text-neutral-700 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-neutral-50"
+                      ? "text-[var(--fg)] after:scale-x-100 after:opacity-100"
+                      : "text-[var(--fg-mute)] hover:text-[var(--fg-dim)] hover:after:scale-x-100 hover:after:opacity-60"
                   )}
                 >
                   {item.label}
                 </Link>
               ))}
             </div>
-            <ExternalLink href={LINKS.github} className="text-[0.89rem]">
+            <ExternalLink
+              href={LINKS.github}
+              className="label text-[0.66rem] tracking-[0.22em] text-[var(--fg-faint)] transition-colors duration-500 hover:text-[var(--fg-mute)]"
+            >
               GitHub
             </ExternalLink>
           </nav>
         </div>
 
+        {/* Mobile nav */}
         <nav
           aria-label="Primary mobile"
-          className="mt-3 flex gap-4 overflow-x-auto border-t border-neutral-200/70 pt-3 sm:hidden dark:border-neutral-800/70"
+          className="mt-3 flex gap-5 overflow-x-auto border-t border-[var(--line-soft)] pt-3 sm:hidden"
         >
           {navItems.map((item) => (
             <Link
@@ -71,16 +80,19 @@ export function Navigation({ className }: { className?: string }) {
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
               className={cn(
-                "whitespace-nowrap border-b border-transparent pb-1 text-[0.95rem] transition-colors",
+                "whitespace-nowrap border-b pb-1 text-[0.82rem] tracking-[0.02em] transition-colors duration-500",
                 isActive(item.href)
-                  ? "border-neutral-950 text-neutral-950 dark:border-neutral-50 dark:text-neutral-50"
-                  : "text-neutral-600 dark:text-neutral-400"
+                  ? "border-[var(--metal-3)] text-[var(--fg)]"
+                  : "border-transparent text-[var(--fg-mute)] hover:text-[var(--fg-dim)]"
               )}
             >
               {item.label}
             </Link>
           ))}
-          <ExternalLink href={LINKS.github} className="whitespace-nowrap text-[0.95rem]">
+          <ExternalLink
+            href={LINKS.github}
+            className="whitespace-nowrap text-[0.82rem] text-[var(--fg-faint)] transition-colors duration-500 hover:text-[var(--fg-mute)]"
+          >
             GitHub
           </ExternalLink>
         </nav>
@@ -88,4 +100,3 @@ export function Navigation({ className }: { className?: string }) {
     </header>
   );
 }
-

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type React from "react";
 
 import { PageHeader } from "@/components/page-header";
 import { ProseBlock } from "@/components/prose-block";
@@ -20,23 +21,30 @@ export default function ResearchPage() {
   const introduction = getResearchIntroduction();
   return (
     <div>
-      <PageHeader title="Research" description="Research is organized into interconnected layers." />
+      {/* Page header — inherits updated luxury styles from component */}
+      <PageHeader
+        title="Research"
+        description="Research is organized into interconnected layers."
+      />
 
-      <ProseBlock size="lead" className="mt-12 max-w-[42rem] sm:mt-14">
-        {introduction.slice(0, 2).map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </ProseBlock>
+      {/* Lead introduction — editorial body copy */}
+      <div className="rise mt-14 sm:mt-16" style={{ animationDelay: "0.1s" }}>
+        <ProseBlock size="lead" className="max-w-[42rem] text-[var(--fg-dim)]">
+          {introduction.slice(0, 2).map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </ProseBlock>
+      </div>
 
-      <Section title="Research Map">
+      {/* Research Map — structural diagram overview */}
+      <Section title="Research Map" eyebrow="Structure">
         <ResearchMap layers={research} />
       </Section>
 
-      <Section title="Research Layers">
+      {/* Research Layers — deep editorial grid */}
+      <Section title="Research Layers" eyebrow="Detail">
         <ResearchGrid items={research} />
       </Section>
     </div>
   );
 }
-
-

@@ -16,12 +16,19 @@ export function BackLink({
     <Link
       href={href}
       className={cn(
-        "inline-flex items-center gap-2 text-sm text-neutral-600 underline decoration-transparent underline-offset-4 transition-colors hover:text-neutral-950 hover:decoration-neutral-300 dark:text-neutral-400 dark:hover:text-neutral-50 dark:hover:decoration-neutral-700",
+        "group inline-flex items-center gap-2.5 text-[0.8rem] tracking-[0.06em] uppercase font-mono transition-colors duration-500",
         className
       )}
+      style={{ color: "var(--fg-faint)" }}
     >
-      <ArrowLeft className="h-4 w-4" aria-hidden />
-      <span>{children}</span>
+      <ArrowLeft
+        className="h-3.5 w-3.5 shrink-0 transition-transform duration-500 group-hover:-translate-x-0.5"
+        style={{ color: "var(--fg-mute)" }}
+        aria-hidden
+      />
+      <span className="group-hover:text-[var(--fg-dim)] transition-colors duration-500">
+        {children}
+      </span>
     </Link>
   );
 }

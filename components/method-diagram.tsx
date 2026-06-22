@@ -16,38 +16,70 @@ export function MethodDiagram({
   return (
     <ol
       className={cn(
-        "grid gap-6 border-l border-neutral-200 pl-5 dark:border-neutral-800 sm:gap-9 sm:border-l-0 sm:pl-0 lg:grid-cols-2",
+        "grid gap-0 lg:grid-cols-2",
         className
       )}
     >
       {steps.map((s, i) => (
-        <li key={s.title}>
-          <div className="border-t border-neutral-200/80 pt-5 dark:border-neutral-800/80 sm:pt-6">
-            <div className="flex items-baseline justify-between gap-4">
-              <h3 className="text-base font-semibold tracking-tight">{s.title}</h3>
-              <span className="text-[0.7rem] tabular-nums text-neutral-500 dark:text-neutral-400">
+        <li
+          key={s.title}
+          className="rise group relative"
+          style={{ animationDelay: `${i * 120}ms` }}
+        >
+          {/* top hairline — full bleed per column */}
+          <div className="border-t border-[var(--line-strong)] pt-7 pb-10 pr-10" >
+            {/* step index + connector */}
+            <div className="flex items-start justify-between gap-6 mb-5">
+              {/* mono step tag */}
+              <span className="label" style={{ color: "var(--fg-faint)" }}>
+                STEP
+              </span>
+              {/* large editorial index */}
+              <span
+                className="font-mono tabular-nums text-[2.4rem] leading-none font-light tracking-[-0.04em]"
+                style={{ color: "var(--line-strong)" }}
+              >
                 {String(i + 1).padStart(2, "0")}
               </span>
             </div>
+
+            {/* title */}
+            <h3
+              className="text-[1.05rem] font-semibold tracking-[-0.025em] leading-snug"
+              style={{ color: "var(--fg)" }}
+            >
+              {s.title}
+            </h3>
+
             {s.paragraphs?.length ? (
-              <div className="mt-4 space-y-4">
+              <div className="mt-5 space-y-4">
                 {s.paragraphs.map((paragraph) => (
                   <p
                     key={paragraph}
-                    className="text-sm leading-[1.82] text-neutral-600 dark:text-neutral-400"
+                    className="text-[0.9rem] leading-[1.85]"
+                    style={{ color: "var(--fg-dim)" }}
                   >
                     {paragraph}
                   </p>
                 ))}
               </div>
             ) : null}
+
             {s.bullets?.length ? (
-              <ul className="mt-5 space-y-2">
+              <ul className="mt-6 space-y-0">
                 {s.bullets.map((bullet) => (
                   <li
                     key={bullet}
-                    className="border-b border-neutral-200/80 pb-2 text-sm leading-relaxed text-neutral-700 dark:border-neutral-800/80 dark:text-neutral-300"
+                    className="flex items-baseline gap-3 border-b border-[var(--line)] py-2.5 text-[0.875rem] leading-relaxed last:border-b-0"
+                    style={{ color: "var(--fg-dim)" }}
                   >
+                    {/* hairline tick */}
+                    <span
+                      className="mt-px shrink-0 text-[0.6rem] font-mono"
+                      style={{ color: "var(--fg-faint)" }}
+                    >
+                      —
+                    </span>
                     {bullet}
                   </li>
                 ))}

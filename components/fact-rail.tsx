@@ -1,4 +1,3 @@
-import { SurfaceCard } from "@/components/surface-card";
 import type { ReactNode } from "react";
 
 export function FactRail({
@@ -7,20 +6,27 @@ export function FactRail({
   items: Array<{ label: string; value: ReactNode }>;
 }) {
   return (
-    <SurfaceCard className="p-7 sm:p-8">
-      <dl className="divide-y divide-neutral-200/80 dark:divide-neutral-800/80">
-        {items.map((item) => (
-          <div key={item.label} className="py-4 first:pt-0 last:pb-0">
-            <dt className="text-[0.68rem] font-medium uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">
+    <div className="surface p-7 sm:p-8">
+      <dl>
+        {items.map((item, i) => (
+          <div
+            key={item.label}
+            className="rise grid gap-2 border-b border-[var(--line)] py-5 first:pt-0 last:border-b-0 last:pb-0 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-8 sm:items-baseline"
+            style={{ animationDelay: `${i * 80}ms` }}
+          >
+            <dt className="label" style={{ color: "var(--fg-faint)", paddingTop: "0.1em" }}>
               {item.label}
             </dt>
-            <dd className="mt-2 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
+            <dd
+              className="text-[0.9rem] leading-[1.75]"
+              style={{ color: "var(--fg-dim)" }}
+            >
               {item.value}
             </dd>
           </div>
         ))}
       </dl>
-    </SurfaceCard>
+    </div>
   );
 }
 

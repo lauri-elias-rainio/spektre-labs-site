@@ -16,24 +16,33 @@ export function Section({
   return (
     <section
       className={cn(
-        "mt-24 border-t border-neutral-200/80 pt-12 dark:border-neutral-800/80 sm:mt-32 sm:pt-16 lg:mt-36 lg:pt-20",
+        "mt-24 pt-12 sm:mt-32 sm:pt-16 lg:mt-36 lg:pt-20",
         className
       )}
     >
-      <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
-        <header className="lg:col-span-2 xl:col-span-3">
+      {/* Hairline rule — full-bleed editorial divider */}
+      <div className="rule mb-10 sm:mb-12 lg:mb-14" />
+
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+        {/* Left column: eyebrow + title */}
+        <header className="lg:col-span-3 xl:col-span-3">
           {eyebrow ? (
-            <p className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">
-              {eyebrow}
-            </p>
+            <p className="label mb-4 text-[var(--fg-mute)]">{eyebrow}</p>
           ) : null}
-          <h2 className="mt-3 text-balance text-[1.6rem] font-semibold tracking-tight sm:text-[1.9rem] lg:text-[2rem]">
+          <h2
+            className={cn(
+              "text-balance text-[1.6rem] font-semibold tracking-[-0.02em] leading-[1.12]",
+              "text-[var(--fg)] sm:text-[1.9rem] lg:text-[2rem]",
+              "transition-colors duration-500"
+            )}
+          >
             {title}
           </h2>
         </header>
-        <div className="lg:col-span-10 xl:col-span-9">{children}</div>
+
+        {/* Right column: content */}
+        <div className="lg:col-span-9 xl:col-span-9">{children}</div>
       </div>
     </section>
   );
 }
-

@@ -8,9 +8,13 @@ export function Container({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("mx-auto w-full max-w-6xl px-6 sm:px-10", className)}
+      className={cn(
+        // Max-width editorial column — generous gutters at all breakpoints
+        "mx-auto w-full max-w-[1200px]",
+        "px-6 sm:px-10 lg:px-14 xl:px-16",
+        className
+      )}
       {...props}
     />
   );
 }
-

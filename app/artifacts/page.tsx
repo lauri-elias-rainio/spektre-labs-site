@@ -23,27 +23,37 @@ export default function ArtifactsPage() {
   return (
     <div>
       <StructuredData data={getArtifactsPageStructuredData(artifacts)} />
+
       <PageHeader title="Artifacts" />
 
-      <ProseBlock size="lead" className="mt-12 max-w-[39rem] sm:mt-14">
+      {/* intro lead — generous negative space, platinum-warm */}
+      <ProseBlock size="lead" className="mt-14 max-w-[39rem] sm:mt-16">
         {introduction.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
+          <p key={paragraph} className="text-[var(--fg-dim)] leading-[1.82]">
+            {paragraph}
+          </p>
         ))}
       </ProseBlock>
 
+      {/* Spektre Corpus — primary featured section */}
       {corpus ? (
-        <section className="mt-24 border-t border-neutral-200/80 pt-20 dark:border-neutral-800/80 sm:mt-32 sm:pt-24">
+        <section
+          className="mt-28 border-t pt-24 sm:mt-36 sm:pt-28"
+          style={{ borderColor: "var(--line-strong)" }}
+        >
           <ArtifactFeature artifact={corpus} />
         </section>
       ) : null}
 
+      {/* Spektre Protocol — secondary featured section */}
       {protocol ? (
-        <section className="mt-24 border-t border-neutral-200/80 pt-16 dark:border-neutral-800/80 sm:mt-28 sm:pt-20">
+        <section
+          className="mt-24 border-t pt-20 sm:mt-32 sm:pt-24"
+          style={{ borderColor: "var(--line)" }}
+        >
           <ArtifactFeature artifact={protocol} />
         </section>
       ) : null}
     </div>
   );
 }
-
-

@@ -15,16 +15,20 @@ export function MetadataList({
   className?: string;
 }) {
   return (
-    <dl className={cn("divide-y divide-neutral-200/80 dark:divide-neutral-800/80", className)}>
-      {items.map((item) => (
+    <dl className={cn("", className)}>
+      {items.map((item, i) => (
         <div
           key={item.label}
-          className="grid gap-1.5 py-4 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-5"
+          className="rise grid gap-2 border-b border-[var(--line)] py-5 last:border-b-0 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-8 sm:items-baseline"
+          style={{ animationDelay: `${i * 60}ms` }}
         >
-          <dt className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">
+          <dt className="label" style={{ color: "var(--fg-faint)", paddingTop: "0.12em" }}>
             {item.label}
           </dt>
-          <dd className="min-w-0 text-[0.96rem] leading-[1.8] text-neutral-700 dark:text-neutral-300">
+          <dd
+            className="min-w-0 text-[0.95rem] leading-[1.8]"
+            style={{ color: "var(--fg-dim)" }}
+          >
             {item.value}
           </dd>
         </div>

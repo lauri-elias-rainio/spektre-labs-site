@@ -63,6 +63,8 @@ html {
   background: var(--black);
   -webkit-text-size-adjust: 100%;
   color-scheme: dark;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {

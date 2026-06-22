@@ -14,6 +14,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "AI-native film and media generation. Dark-luxury sci-fi aesthetics as the product. Spektre Labs Studio — from Research to Screen.",
   path: "/studio",
+  image: "/generated/studio-hero.png",
 });
 
 /*

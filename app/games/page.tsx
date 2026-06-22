@@ -10,6 +10,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Coherence as interactive structure — AAA generative worlds derived from the axiom. In development.",
   path: "/games",
+  image: "/generated/games/hero.png",
 });
 
 const FRAMES: { src: string; caption: string }[] = [

@@ -10,6 +10,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "The unifying universe the films and games inhabit — one axiom, one aesthetic. Atlantean-cybernetic, dark-luxury. In development.",
   path: "/shoreworld",
+  image: "/generated/shoreworld/hero.png",
 });
 
 const FRAMES: { src: string; caption: string; wide?: boolean }[] = [

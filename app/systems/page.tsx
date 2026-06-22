@@ -13,6 +13,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "σ-gate: deterministic trust gate for AI and agent output. Leaked secrets, prompt-injection, and PII halted without a model call. Zero dependencies. Open core on GitHub.",
   path: "/systems",
+  image: "/generated/divisions/systems.png",
 });
 
 /* ─────────────────────────────────────────────────────────────────

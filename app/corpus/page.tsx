@@ -11,6 +11,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "The Spektre Corpus — open-access research papers on coherence, collapse, and the σ-instability principle. All falsifiable, all CC BY.",
   path: "/corpus",
+  image: "/generated/divisions/research.png",
 });
 
 type Paper = {

@@ -9,6 +9,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "The Spektre Labs divisions map. Research → Systems → Studio → Games → Shoreworld. One axiom: 1 = 1.",
   path: "/universe",
+  image: "/generated/og/universe.png",
 });
 
 /*

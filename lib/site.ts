@@ -23,20 +23,32 @@ export function absoluteUrl(path = "/") {
   return new URL(path, siteUrl).toString();
 }
 
+// routes that ship a real per-route opengraph-image; everything else falls back to the root card
+const OG_ROUTES = new Set(["/", "/about", "/research", "/method", "/artifacts"]);
+
 export function createPageMetadata({
   title,
   description,
   path,
   type = "website",
+  image,
 }: {
   title: string;
   description: string;
   path: string;
   type?: "website" | "article";
+  image?: string; // override OG with a real asset (e.g. on-canon Imagen concept art)
 }): Metadata {
   const normalizedPath = path === "/" ? "/" : path.replace(/\/$/, "");
-  const ogImagePath =
-    normalizedPath === "/" ? "/opengraph-image" : `${normalizedPath}/opengraph-image`;
+  const hasOgRoute =
+    OG_ROUTES.has(normalizedPath) || normalizedPath.startsWith("/artifacts/");
+  const ogImagePath = image
+    ? image
+    : hasOgRoute
+      ? normalizedPath === "/"
+        ? "/opengraph-image"
+        : `${normalizedPath}/opengraph-image`
+      : "/opengraph-image"; // safe default — the new pages had broken OG routes
 
   return {
     title,

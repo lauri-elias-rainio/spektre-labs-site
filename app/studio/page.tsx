@@ -4,7 +4,7 @@ import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
-import { StudioReel } from "@/components/studio-reel";
+import { StudioFilms } from "@/components/studio-films";
 import { EditorialLink } from "@/components/editorial-link";
 import { createPageMetadata } from "@/lib/site";
 import { LINKS } from "@/lib/links";
@@ -131,7 +131,7 @@ export default function StudioPage() {
         eyebrow="Production · Active"
         className="mt-32 pt-16 sm:mt-40 sm:pt-20 lg:mt-44 lg:pt-24"
       >
-        <StudioReel />
+        <StudioFilms />
 
         <Reveal delay={100} className="mt-8">
           <p className="label" style={{ color: "var(--fg-faint)" }}>

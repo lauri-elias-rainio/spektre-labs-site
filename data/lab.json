@@ -27,8 +27,8 @@
     "authorSection": {
       "title": "Author",
       "name": "Lauri Elias Rainio",
-      "role": "Founder, Spektre Labs",
-      "bio": "Independent researcher working on structural theories of coherence in complex systems."
+      "role": "Founder · Independent Researcher · Systems Architect",
+      "bio": "Lauri Elias Rainio is an independent systems architect and self-taught researcher. His work begins from a single question — what makes any system, whether code, a market, an institution, or a mind, hold its structure or collapse — and pursues it across software, formal theory, and design. He arrived at research the way he learned everything else: directly and obsessively, from first principles, building the engineering, machine learning, and formal methods behind the Spektre protocol himself. Spektre Labs is the consolidation of that work — one invariant, 1 = 1, traced from physics to cognition and made executable in code."
     }
   },
   "home": {

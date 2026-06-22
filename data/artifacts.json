@@ -37,6 +37,22 @@
       ],
       "github": "https://github.com/spektre-labs/spektre-protocol",
       "prominence": "secondary"
+    },
+    {
+      "slug": "sigma-gate",
+      "title": "σ-gate",
+      "summary": "The protocol made executable: a deterministic coherence and trust gate for AI systems - declared output measured against what is safe to realize.",
+      "homeDescription": [
+        "σ-gate is the operational layer of the protocol - the point where 1 = 1 stops being a theorem and becomes running code."
+      ],
+      "description": [
+        "σ-gate is the operational layer of the Spektre protocol - the point where 1 = 1 stops being a theorem and becomes running code.",
+        "It is a deterministic trust gate for AI and agent output: leaked secrets, prompt-injection, and structural-coherence failures are caught without a model and without a network call, returning the same verdict every time.",
+        "The open core ships as a zero-dependency library; coherence (σ) scoring is available as a hosted service.",
+        "Where the corpus proves the theory and the protocol formalizes it, σ-gate enforces it."
+      ],
+      "github": "https://github.com/spektre-labs/sigma-gate",
+      "prominence": "secondary"
     }
   ]
 }

@@ -14,32 +14,34 @@ import { getArtifactBySlug, getArtifacts } from "@/lib/artifacts";
 import { absoluteUrl, createPageMetadata } from "@/lib/site";
 import { getArtifactStructuredData } from "@/lib/structured-data";
 
-type Params = {
+type Params = Promise<{
   slug: string;
-};
+}>;
 
 export function generateStaticParams() {
   const artifacts = getArtifacts();
   return artifacts.map((a) => ({ slug: a.slug }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: Params;
-}): Metadata {
-  const artifact = getArtifactBySlug(params.slug);
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const artifact = getArtifactBySlug(slug);
   if (!artifact) return { title: "Artifact" };
   return createPageMetadata({
     title: artifact.title,
     description: artifact.summary,
-    path: `/artifacts/${params.slug}`,
+    path: `/artifacts/${slug}`,
     type: "article",
   });
 }
 
-export default function ArtifactPage({ params }: { params: Params }) {
-  const artifact = getArtifactBySlug(params.slug);
+export default async function ArtifactPage({ params }: { params: Params }) {
+  const { slug } = await params;
+  const artifact = getArtifactBySlug(slug);
   if (!artifact) notFound();
 
   const allArtifacts = getArtifacts();

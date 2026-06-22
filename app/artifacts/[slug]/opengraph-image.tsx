@@ -6,9 +6,9 @@ export { contentType, size };
 export default async function OpenGraphImage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const artifact = getArtifactBySlug(slug);
 
   return createOgImage({

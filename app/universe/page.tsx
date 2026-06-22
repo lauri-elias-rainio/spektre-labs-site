@@ -73,6 +73,7 @@ const DIVISIONS: Division[] = [
     substrate: "The World · IP",
     line: "The fiction the films and games inhabit. One universe, one aesthetic, one axiom.",
     tier: "VISION",
+    href: "/shoreworld",
     img: "/generated/divisions/shoreworld.png",
   },
 ];

@@ -22,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/connect", priority: 0.6, changeFrequency: "yearly" },
     { path: "/press", priority: 0.5, changeFrequency: "yearly" },
     { path: "/corpus", priority: 0.8, changeFrequency: "monthly" },
+    { path: "/shoreworld", priority: 0.6, changeFrequency: "monthly" },
     { path: "/llms.txt", priority: 0.4, changeFrequency: "monthly" },
   ];
 

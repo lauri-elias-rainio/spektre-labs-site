@@ -25,7 +25,7 @@ export function getGlobalStructuredData() {
           "@type": "Person",
           name: lab.author,
         },
-        sameAs: [lab.github, lab.linkedin, `https://orcid.org/${lab.orcid}`],
+        sameAs: [lab.github, lab.linkedin, lab.youtube, `https://orcid.org/${lab.orcid}`],
       },
       {
         "@type": "Person",
@@ -37,7 +37,7 @@ export function getGlobalStructuredData() {
         worksFor: {
           "@id": organizationId,
         },
-        sameAs: [lab.linkedin, lab.github, `https://orcid.org/${lab.orcid}`],
+        sameAs: [lab.linkedin, lab.github, lab.youtube, `https://orcid.org/${lab.orcid}`],
       },
       {
         "@type": "WebSite",

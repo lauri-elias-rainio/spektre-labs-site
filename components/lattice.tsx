@@ -69,7 +69,8 @@ export function Lattice() {
     let w = 0, h = 0, dpr = 1;
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      // Cap DPR at 2 — 2.5 wastes GPU fill on Retina without visible gain
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = rect.width;
       h = rect.height;
       canvas.width = Math.round(w * dpr);
@@ -87,11 +88,45 @@ export function Lattice() {
     };
     window.addEventListener("pointermove", onMove);
 
-    let raf = 0;
-    let t = reduce ? 0.6 : 0;
+    // ---- visibility / intersection pause gates ----
+    let visible = true;   // IntersectionObserver
+    let pageVisible = !document.hidden; // visibilitychange
 
-    const render = () => {
-      t += 0.0016;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible && pageVisible) scheduleFrame();
+      },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
+
+    const onVisibility = () => {
+      pageVisible = !document.hidden;
+      if (pageVisible && visible) scheduleFrame();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // ---- 30 fps throttle ----
+    const TARGET_MS = 1000 / 30;
+    let lastFrameTime = 0;
+
+    let raf = 0;
+    let animT = reduce ? 0.6 : 0;
+    let rafScheduled = false;
+
+    const render = (now: number) => {
+      rafScheduled = false;
+
+      // throttle to ~30 fps
+      const elapsed = now - lastFrameTime;
+      if (elapsed < TARGET_MS - 1) {
+        scheduleFrame();
+        return;
+      }
+      lastFrameTime = now - (elapsed % TARGET_MS);
+
+      animT += 0.0016;
       mx += (tmx - mx) * 0.04;
       my += (tmy - my) * 0.04;
 
@@ -100,7 +135,7 @@ export function Lattice() {
       const scale = Math.min(w, h) * 0.42;
       const persp = 3.0;
 
-      const ay = t + mx * 0.5;
+      const ay = animT + mx * 0.5;
       const ax = -0.42 + my * 0.32;
       const cay = Math.cos(ay), say = Math.sin(ay);
       const cax = Math.cos(ax), sax = Math.sin(ax);
@@ -161,14 +196,27 @@ export function Lattice() {
         }
       }
 
-      if (!reduce) raf = requestAnimationFrame(render);
+      if (!reduce) scheduleFrame();
     };
 
-    render();
-    if (reduce) render();
+    function scheduleFrame() {
+      if (rafScheduled || !visible || !pageVisible) return;
+      rafScheduled = true;
+      raf = requestAnimationFrame(render);
+    }
+
+    if (reduce) {
+      render(0);
+      render(0);
+    } else {
+      scheduleFrame();
+    }
 
     return () => {
       cancelAnimationFrame(raf);
+      rafScheduled = false;
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
     };

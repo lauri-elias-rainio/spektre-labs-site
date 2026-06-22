@@ -1,30 +1,185 @@
 @import "tailwindcss";
 
+/* ============================================================
+   SPEKTRE DESIGN SYSTEM — OLED-black × platinum × one signal
+   STYLE_LAW: industrial dark-luxury minimalism × Atlantean
+   cybernetics. Extend only — no existing classNames removed.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. DESIGN TOKENS  (Tailwind v4 @theme — CSS-variable bridge)
+   ---------------------------------------------------------- */
+@theme inline {
+  /* --- Colour: OLED base ---------------------------------- */
+  --color-spk-black:      #000000;
+  --color-spk-void:       #030303;
+  --color-spk-surface-1:  #0a0a0a;
+  --color-spk-surface-2:  #111113;
+  --color-spk-surface-3:  #1a1a1c;
+
+  /* --- Colour: platinum palette (hairline → brightest) ---- */
+  --color-spk-pt-dim:     #3a3d44;
+  --color-spk-pt-mid:     #6e737d;
+  --color-spk-pt-3:       #888d97;
+  --color-spk-pt-2:       #b9bdc6;
+  --color-spk-pt-1:       #dadee5;
+  --color-spk-pt-hi:      #edf0f4;
+  --color-spk-white:      #ffffff;
+
+  /* --- Colour: one cold signal (§ STYLE_LAW: ONE signal) -- */
+  --color-spk-signal:     #cfe3ff;
+  --color-spk-signal-dim: #6ba4d8;
+
+  /* --- Legacy aliases (keep existing spektre-stage vars) -- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans:        var(--font-geist-sans);
+  --font-mono:        var(--font-geist-mono);
+
+  /* --- Type scale (Apple-grade, 8-step modular) ----------- */
+  --font-size-spk-2xs:  0.60rem;  /* 9.6px — metadata micro */
+  --font-size-spk-xs:   0.66rem;  /* 10.5px — label */
+  --font-size-spk-sm:   0.82rem;  /* 13.1px — caption */
+  --font-size-spk-base: 0.96rem;  /* 15.4px — body */
+  --font-size-spk-md:   1.08rem;  /* 17.3px — lead */
+  --font-size-spk-lg:   1.32rem;  /* 21.1px — subhead */
+  --font-size-spk-xl:   1.72rem;  /* 27.5px — section title */
+  --font-size-spk-2xl:  2.24rem;  /* 35.8px — page title */
+  --font-size-spk-3xl:  3.00rem;  /* 48px   — display */
+  --font-size-spk-4xl:  4.00rem;  /* 64px   — hero */
+  --font-size-spk-5xl:  5.50rem;  /* 88px   — cinematic */
+
+  /* --- Line-height rhythm --------------------------------- */
+  --line-height-spk-tight:   1.02;
+  --line-height-spk-snug:    1.18;
+  --line-height-spk-base:    1.55;
+  --line-height-spk-relaxed: 1.84;
+  --line-height-spk-loose:   1.96;
+
+  /* --- Letter-spacing ------------------------------------- */
+  --letter-spacing-spk-display: -0.04em;
+  --letter-spacing-spk-title:   -0.03em;
+  --letter-spacing-spk-label:    0.24em;
+  --letter-spacing-spk-micro:    0.18em;
+
+  /* --- Spacing rhythm (4px base × 2× scale, 24-step) ----- */
+  --spacing-spk-1:   0.25rem;  /* 4px  */
+  --spacing-spk-2:   0.5rem;   /* 8px  */
+  --spacing-spk-3:   0.75rem;  /* 12px */
+  --spacing-spk-4:   1rem;     /* 16px */
+  --spacing-spk-5:   1.25rem;  /* 20px */
+  --spacing-spk-6:   1.5rem;   /* 24px */
+  --spacing-spk-8:   2rem;     /* 32px */
+  --spacing-spk-10:  2.5rem;   /* 40px */
+  --spacing-spk-12:  3rem;     /* 48px */
+  --spacing-spk-16:  4rem;     /* 64px */
+  --spacing-spk-20:  5rem;     /* 80px */
+  --spacing-spk-24:  6rem;     /* 96px */
+  --spacing-spk-32:  8rem;     /* 128px */
+  --spacing-spk-40:  10rem;    /* 160px */
+  --spacing-spk-48:  12rem;    /* 192px */
+  --spacing-spk-64:  16rem;    /* 256px */
+
+  /* --- Motion tokens (STYLE_LAW §6: Apple-grade ease) ----- */
+  --ease-spk:         cubic-bezier(0.16, 1, 0.3, 1);   /* spring — primary */
+  --ease-spk-out:     cubic-bezier(0.0,  0, 0.3, 1);   /* decelerate */
+  --ease-spk-in:      cubic-bezier(0.5,  0, 1,   0);   /* accelerate */
+  --ease-spk-snap:    cubic-bezier(0.18, 1, 0.22, 1);  /* ultra-fast snap */
+
+  --duration-spk-instant: 80ms;
+  --duration-spk-fast:    160ms;
+  --duration-spk-base:    280ms;
+  --duration-spk-slow:    480ms;
+  --duration-spk-enter:   640ms;
+  --duration-spk-reveal:  900ms;
+  --duration-spk-scene:  1200ms;
+
+  /* --- Border radius ------------------------------------- */
+  --radius-spk-none: 0px;
+  --radius-spk-xs:   2px;
+  --radius-spk-sm:   4px;
+  --radius-spk-md:   8px;
+  --radius-spk-lg:   12px;
+  --radius-spk-xl:   20px;
+  --radius-spk-full: 9999px;
+
+  /* --- Hairline / border tokens -------------------------- */
+  --border-spk-hairline: 0.5px;
+  --border-spk-thin:     1px;
+  --border-spk-rule:     1px;
+
+  /* --- Layout: max-width grid ---------------------------- */
+  --layout-spk-text:    40rem;   /* prose column */
+  --layout-spk-content: 52rem;   /* content column */
+  --layout-spk-wide:    72rem;   /* wide layout */
+  --layout-spk-full:    90rem;   /* max site width */
+}
+
+/* ----------------------------------------------------------
+   2. CSS CUSTOM PROPERTIES  (runtime, used by components)
+   ---------------------------------------------------------- */
 :root {
+  /* Legacy vars — keep for existing components */
   --background: #ffffff;
   --foreground: #171717;
   --panel: rgba(255, 255, 255, 0.9);
+
+  /* Spektre palette — always available */
+  --spk-black:      #000000;
+  --spk-void:       #030303;
+  --spk-surface-1:  #0a0a0a;
+  --spk-surface-2:  #111113;
+  --spk-surface-3:  #1a1a1c;
+
+  --spk-pt-dim:     #3a3d44;
+  --spk-pt-mid:     #6e737d;
+  --spk-pt-3:       #888d97;
+  --spk-pt-2:       #b9bdc6;
+  --spk-pt-1:       #dadee5;
+  --spk-pt-hi:      #edf0f4;
+  --spk-white:      #ffffff;
+
+  --spk-signal:     #cfe3ff;
+  --spk-signal-dim: #6ba4d8;
+
+  /* Panel: light mode — glass surface */
+  --spk-panel-bg:   rgba(255, 255, 255, 0.92);
+  --spk-panel-border: rgba(23, 23, 23, 0.08);
+
+  /* Motion — available to JS/inline styles */
+  --spk-ease:         cubic-bezier(0.16, 1, 0.3, 1);
+  --spk-ease-out:     cubic-bezier(0.0,  0, 0.3, 1);
+  --spk-ease-in:      cubic-bezier(0.5,  0, 1,   0);
+  --spk-ease-snap:    cubic-bezier(0.18, 1, 0.22, 1);
+
+  --spk-dur-instant:  80ms;
+  --spk-dur-fast:     160ms;
+  --spk-dur-base:     280ms;
+  --spk-dur-slow:     480ms;
+  --spk-dur-enter:    640ms;
+  --spk-dur-reveal:   900ms;
+  --spk-dur-scene:    1200ms;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* Dark mode — OLED true-black spine */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --panel: rgba(10, 10, 10, 0.88);
+    --background: #000000;
+    --foreground: #edf0f4;
+    --panel: rgba(10, 10, 10, 0.92);
+
+    --spk-panel-bg:     rgba(10, 10, 10, 0.92);
+    --spk-panel-border: rgba(237, 240, 244, 0.07);
   }
 }
 
+/* ----------------------------------------------------------
+   3. BASE RESET + TYPOGRAPHY
+   ---------------------------------------------------------- */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   text-rendering: geometricPrecision;
   line-height: 1.55;
@@ -36,22 +191,26 @@ html {
   scroll-behavior: smooth;
 }
 
+/* 2px platinum ring — #b9bdc6 on #000000 = 11.16:1 (WCAG AA ×2.5) */
 :focus-visible {
-  outline: 2px solid color-mix(in oklab, black 28%, transparent);
-  outline-offset: 2px;
+  outline: 2px solid var(--spk-pt-2);
+  outline-offset: 3px;
 }
 
 ::selection {
-  background: color-mix(in oklab, black 12%, transparent);
+  background: rgba(207, 227, 255, 0.22);
+  color: #fff;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   ::selection {
-    background: color-mix(in oklab, white 14%, transparent);
+    background: rgba(23, 23, 23, 0.12);
+    color: #000;
   }
-
+  /* Solid 2px ring — #171717 on white = 18:1, exceeds WCAG AA */
   :focus-visible {
-    outline: 2px solid color-mix(in oklab, white 34%, transparent);
+    outline: 2px solid #171717;
+    outline-offset: 3px;
   }
 }
 
@@ -60,31 +219,29 @@ a {
   text-decoration-thickness: 1px;
 }
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   letter-spacing: -0.03em;
 }
 
-p,
-li {
+p, li {
   hanging-punctuation: first last;
   text-wrap: pretty;
 }
 
 code {
-  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* --- Spektre hero stage (OLED-platinum spine, scoped to the hero) --- */
+/* ----------------------------------------------------------
+   4. SPEKTRE STAGE  (hero section — scoped, 3D swarm owns it)
+   ---------------------------------------------------------- */
 .spektre-stage {
   --metal-hi: #ffffff;
-  --metal-1: #e8eaee;
-  --metal-2: #b9bdc6;
-  --metal-3: #888d97;
-  --signal: #cfe3ff;
+  --metal-1:  #e8eaee;
+  --metal-2:  #b9bdc6;
+  --metal-3:  #888d97;
+  --signal:   #cfe3ff;
   --ease-spektre: cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   isolation: isolate;
@@ -94,7 +251,7 @@ code {
 }
 
 .spektre-stage::after {
-  /* faint film grain so the black is material, never flat (~0.035). */
+  /* film grain — material black, never flat (~0.035 opacity) */
   content: "";
   position: absolute;
   inset: 0;
@@ -104,6 +261,9 @@ code {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
+/* ----------------------------------------------------------
+   5. METAL TEXT  (platinum gradient — shared utility)
+   ---------------------------------------------------------- */
 .spektre-metal-text {
   background: linear-gradient(
     177deg,
@@ -119,28 +279,193 @@ code {
   -webkit-text-fill-color: transparent;
 }
 
-.spektre-label {
-  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+/* Richer vertical fall for display / hero contexts */
+.spk-metal-display {
+  background: linear-gradient(
+    180deg,
+    #ffffff   0%,
+    #edf0f4  15%,
+    #b9bdc6  42%,
+    #dadee5  60%,
+    #888d97  82%,
+    #6e737d 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ----------------------------------------------------------
+   6. LABEL / METADATA  (Mono Abloh — STYLE_LAW §5)
+   ---------------------------------------------------------- */
+.spektre-label,
+.spk-label {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.66rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #7d828b;
+  color: var(--spk-pt-mid);
   font-weight: 500;
 }
 
-.spektre-rise {
+/* Signal accent label */
+.spk-label-signal {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.60rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--spk-signal-dim);
+  font-weight: 500;
+}
+
+/* ----------------------------------------------------------
+   7. MOTION UTILITIES  (STYLE_LAW §6 — Apple-grade)
+   ---------------------------------------------------------- */
+.spektre-rise,
+.spk-rise {
   opacity: 0;
   transform: translateY(14px);
-  animation: spektre-rise 1s var(--ease-spektre) forwards;
+  animation: spk-rise var(--spk-dur-reveal) var(--spk-ease) forwards;
 }
 
+.spk-rise-fast {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: spk-rise var(--spk-dur-enter) var(--spk-ease) forwards;
+}
+
+.spk-fade {
+  opacity: 0;
+  animation: spk-fade var(--spk-dur-enter) var(--spk-ease-out) forwards;
+}
+
+.spk-reveal {
+  opacity: 0;
+  transform: translateY(20px) scale(0.992);
+  animation: spk-reveal var(--spk-dur-scene) var(--spk-ease) forwards;
+}
+
+/* Stagger delays — compose with .spk-rise etc. */
+.spk-delay-1 { animation-delay:  80ms; }
+.spk-delay-2 { animation-delay: 160ms; }
+.spk-delay-3 { animation-delay: 280ms; }
+.spk-delay-4 { animation-delay: 420ms; }
+.spk-delay-5 { animation-delay: 600ms; }
+.spk-delay-6 { animation-delay: 800ms; }
+
+@keyframes spk-rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Legacy alias — same keyframe */
 @keyframes spektre-rise {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes spk-fade {
+  to { opacity: 1; }
+}
+
+@keyframes spk-reveal {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Hairline scanline — cinematic horizontal rule */
+@keyframes spk-scan {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+/* ----------------------------------------------------------
+   8. LAYOUT PRIMITIVES  (STYLE_LAW §1: symmetry is law)
+   ---------------------------------------------------------- */
+
+/* Symmetric center column */
+.spk-col-text    { max-width: var(--layout-spk-text); }
+.spk-col-content { max-width: var(--layout-spk-content); }
+.spk-col-wide    { max-width: var(--layout-spk-wide); }
+.spk-col-full    { max-width: var(--layout-spk-full); }
+
+/* 12-col editorial grid (mirrors existing lg:grid-cols-12) */
+.spk-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--spacing-spk-8);
+}
+
+/* Perfect bilateral axis lines — vertical rails */
+.spk-axis-left,
+.spk-axis-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+}
+.spk-axis-left  { left: 0;  background: rgba(237, 240, 244, 0.06); }
+.spk-axis-right { right: 0; background: rgba(237, 240, 244, 0.06); }
+
+/* Horizontal divider hairline */
+.spk-rule {
+  border: none;
+  border-top: 1px solid rgba(237, 240, 244, 0.08);
+  margin: 0;
+}
+
+/* On OLED: tighter opacity */
+.spektre-stage .spk-rule {
+  border-top-color: rgba(255, 255, 255, 0.07);
+}
+
+/* Surface cards — OLED dark glass */
+.spk-surface {
+  background: var(--spk-panel-bg);
+  border: 1px solid var(--spk-panel-border);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+}
+
+/* ----------------------------------------------------------
+   9. FILM GRAIN OVERLAY  (material, never flat — §3)
+      Apply to any section needing texture depth.
+   ---------------------------------------------------------- */
+.spk-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.spk-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.028;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+}
+
+/* ----------------------------------------------------------
+   10. SIGNAL ACCENT  (one cold signal — STYLE_LAW §2)
+       Never use more than once per view.
+   ---------------------------------------------------------- */
+.spk-signal-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--spk-signal);
+  box-shadow: 0 0 6px 1px rgba(207, 227, 255, 0.45);
+}
+
+.spk-signal-text {
+  color: var(--spk-signal);
+}
+
+/* ----------------------------------------------------------
+   11. REDUCED-MOTION SAFETY (STYLE_LAW §6 — mandatory)
+   ---------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

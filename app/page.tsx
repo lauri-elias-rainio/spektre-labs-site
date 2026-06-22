@@ -4,6 +4,10 @@ import { EditorialLink } from "@/components/editorial-link";
 import { Hero } from "@/components/hero";
 import { ProseBlock } from "@/components/prose-block";
 import { Section } from "@/components/section";
+import { ProductSection } from "@/components/sections/product";
+import { ParadigmSection } from "@/components/sections/paradigm";
+import { CapabilitiesSection } from "@/components/sections/capabilities";
+import { SiteFooter } from "@/components/sections/site-footer";
 import { getArtifacts } from "@/lib/artifacts";
 import lab from "@/data/lab.json";
 import { createPageMetadata } from "@/lib/site";
@@ -22,6 +26,12 @@ export default function Home() {
   return (
     <div>
       <Hero />
+
+      {/* ── Non-hero sections — components/sections/*.tsx ── */}
+      <ProductSection />
+      <ParadigmSection />
+      <CapabilitiesSection />
+      <SiteFooter />
 
       <Section title={lab.home.whatWeDo.title} className="mt-20 pt-10 sm:mt-24 sm:pt-12 lg:mt-28 lg:pt-16">
         <div className="max-w-[45rem]">

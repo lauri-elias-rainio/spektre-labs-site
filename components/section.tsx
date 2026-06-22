@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -13,8 +15,12 @@ export function Section({
   children: React.ReactNode;
   className?: string;
 }) {
+  // React.useId is stable across server+client, safe for aria associations.
+  const headingId = React.useId();
+
   return (
     <section
+      aria-labelledby={headingId}
       className={cn(
         "mt-24 border-t border-neutral-200/80 pt-12 dark:border-neutral-800/80 sm:mt-32 sm:pt-16 lg:mt-36 lg:pt-20",
         className
@@ -27,7 +33,10 @@ export function Section({
               {eyebrow}
             </p>
           ) : null}
-          <h2 className="mt-3 text-balance text-[1.6rem] font-semibold tracking-tight sm:text-[1.9rem] lg:text-[2rem]">
+          <h2
+            id={headingId}
+            className="mt-3 text-balance text-[1.6rem] font-semibold tracking-tight sm:text-[1.9rem] lg:text-[2rem]"
+          >
             {title}
           </h2>
         </header>
@@ -36,4 +45,3 @@ export function Section({
     </section>
   );
 }
-

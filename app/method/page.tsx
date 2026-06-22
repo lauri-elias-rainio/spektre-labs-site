@@ -4,8 +4,10 @@ import { PageHeader } from "@/components/page-header";
 import { ProseBlock } from "@/components/prose-block";
 import { Section } from "@/components/section";
 import { MethodDiagram } from "@/components/method-diagram";
+import { StructuredData } from "@/components/structured-data";
 import lab from "@/data/lab.json";
 import { createPageMetadata } from "@/lib/site";
+import { getMethodPageStructuredData } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Method",
@@ -16,6 +18,7 @@ export const metadata: Metadata = createPageMetadata({
 export default function MethodPage() {
   return (
     <div>
+      <StructuredData data={getMethodPageStructuredData()} />
       <PageHeader title={lab.method.title} description={lab.method.description} />
 
       <ProseBlock size="lead" className="mt-12 max-w-[42rem] sm:mt-14">

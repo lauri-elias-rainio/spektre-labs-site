@@ -1,5 +1,9 @@
 import * as THREE from "three";
 
+import {
+  createCinematicComposer,
+  type CinematicPipeline,
+} from "../hero/effects";
 import { buildScene, type SceneHandle } from "./scene";
 
 export type RendererKind = "webgpu" | "webgl";
@@ -129,12 +133,20 @@ async function mountWebGPU(
   }
 }
 
-/** WebGL2 fallback — identical scene, classic UnrealBloom-free render. */
-function mountWebGL(
+/**
+ * WebGL2 fallback — identical scene, now driven through the cinematic
+ * post-processing layer (selective bloom · DoF · film grain · vignette · ACES).
+ * If the postprocessing addons are absent the pipeline degrades to a no-op
+ * passthrough (still ACES-tonemapped) — never blank, never throws.
+ *
+ * Performance: pixelRatio clamped <= 2; the RAF loop pauses on tab-blur
+ * (document hidden) and resumes on focus — no compute while unseen.
+ */
+async function mountWebGL(
   canvas: HTMLCanvasElement,
   handle: SceneHandle,
   getReduced: () => boolean,
-): MountedScene {
+): Promise<MountedScene> {
   const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
@@ -142,39 +154,68 @@ function mountWebGL(
     powerPreference: "high-performance",
   });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
 
+  // high-DPR clamp — caps fill cost on retina/4K so we hold 60fps.
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   renderer.setPixelRatio(dpr);
   renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
   const env = attachPlatinumEnv(handle.scene, renderer);
 
+  // the cinematic layer (separate module; graceful no-op if addons missing).
+  const pipeline: CinematicPipeline = await createCinematicComposer(
+    renderer,
+    handle.scene,
+    handle.camera,
+    canvas.clientWidth,
+    canvas.clientHeight,
+  );
+
+  const clock = new THREE.Clock();
   let raf = 0;
-  const start = performance.now();
   let rendered = false;
+  let paused = false;
+
+  const renderFrame = (delta: number) => pipeline.render(delta);
+
   const loop = () => {
     raf = requestAnimationFrame(loop);
-    const now = (performance.now() - start) / 1000;
+    const delta = clock.getDelta();
+    const elapsed = clock.elapsedTime;
     if (getReduced()) {
+      // reduced-motion: render exactly one still frame, then hold.
       if (!rendered) {
         handle.update(0);
-        renderer.render(handle.scene, handle.camera);
+        renderFrame(0);
         rendered = true;
       }
       return;
     }
-    handle.update(now);
-    renderer.render(handle.scene, handle.camera);
+    handle.update(elapsed);
+    renderFrame(delta);
   };
   loop();
+
+  // pause on tab-blur — no animation/compute while the page is hidden.
+  const onVisibility = () => {
+    const hidden = document.hidden;
+    if (hidden && !paused) {
+      paused = true;
+      cancelAnimationFrame(raf);
+      clock.stop();
+    } else if (!hidden && paused) {
+      paused = false;
+      clock.start();
+      loop();
+    }
+  };
+  document.addEventListener("visibilitychange", onVisibility);
 
   const onResize = () => {
     const w = canvas.clientWidth;
     const h = canvas.clientHeight;
-    renderer.setSize(w, h, false);
     handle.resize(w, h);
+    pipeline.setSize(w, h, window.devicePixelRatio || 1);
   };
   window.addEventListener("resize", onResize);
 
@@ -183,6 +224,8 @@ function mountWebGL(
     dispose: () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      pipeline.dispose();
       env.dispose();
       renderer.dispose();
       handle.dispose();
@@ -204,5 +247,5 @@ export async function mountHero(
     const gpu = await mountWebGPU(canvas, handle, getReduced);
     if (gpu) return gpu;
   }
-  return mountWebGL(canvas, handle, getReduced);
+  return await mountWebGL(canvas, handle, getReduced);
 }

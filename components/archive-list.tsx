@@ -26,7 +26,7 @@ export function ArchiveList({ items }: { items: Artifact[] }) {
               >
                 {item.title}
               </Link>
-              <p className="mt-1 font-mono text-[0.7rem] text-neutral-400 dark:text-neutral-500">
+              <p className="mt-1 font-mono text-[0.7rem] text-neutral-400 dark:text-neutral-400">
                 /{item.slug}
               </p>
             </div>
@@ -38,6 +38,7 @@ export function ArchiveList({ items }: { items: Artifact[] }) {
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 md:justify-end">
               <Link
                 href={`/artifacts/${item.slug}`}
+                aria-label={`Open ${item.title}`}
                 className="text-xs font-medium uppercase tracking-[0.18em] text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
               >
                 Open

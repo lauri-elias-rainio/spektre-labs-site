@@ -81,6 +81,77 @@ export function getArtifactsPageStructuredData(artifacts: Artifact[]) {
   };
 }
 
+export function getResearchPageStructuredData() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": absoluteUrl("/research#page"),
+        url: absoluteUrl("/research"),
+        name: "Research",
+        description:
+          "Research organized as interconnected layers across which coherence, stability, and collapse can be studied.",
+        isPartOf: { "@id": websiteId },
+        publisher: { "@id": organizationId },
+        inLanguage: "en",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: lab.name,
+            item: absoluteUrl("/"),
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Research",
+            item: absoluteUrl("/research"),
+          },
+        ],
+      },
+    ],
+  };
+}
+
+export function getMethodPageStructuredData() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": absoluteUrl("/method#page"),
+        url: absoluteUrl("/method"),
+        name: lab.method.title,
+        description: lab.method.description,
+        isPartOf: { "@id": websiteId },
+        publisher: { "@id": organizationId },
+        inLanguage: "en",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: lab.name,
+            item: absoluteUrl("/"),
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Method",
+            item: absoluteUrl("/method"),
+          },
+        ],
+      },
+    ],
+  };
+}
+
 export function getArtifactStructuredData(artifact: Artifact) {
   return {
     "@context": "https://schema.org",

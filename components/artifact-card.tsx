@@ -28,7 +28,7 @@ export function ArtifactCard({
         )}
       >
         <div className="mb-4 flex items-center justify-between gap-4">
-          <span className="font-mono text-[0.7rem] text-neutral-400 dark:text-neutral-500">
+          <span className="font-mono text-[0.7rem] text-neutral-400 dark:text-neutral-400">
             /{artifact.slug}
           </span>
         </div>
@@ -57,6 +57,7 @@ export function ArtifactCard({
         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-neutral-200/80 pt-5 dark:border-neutral-800/80">
           <Link
             href={`/artifacts/${artifact.slug}`}
+            aria-label={`View details for ${artifact.title}`}
             className="text-xs font-medium uppercase tracking-[0.18em] text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
           >
             View details

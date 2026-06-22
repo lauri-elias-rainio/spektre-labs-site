@@ -26,7 +26,7 @@ export function ResearchGrid({
         >
           <div className="flex items-start justify-between gap-4">
             <h3 className="max-w-[32rem] text-lg font-semibold tracking-tight">{item.layer}</h3>
-            <span className="text-[0.7rem] tabular-nums text-neutral-400 dark:text-neutral-500">
+            <span className="text-[0.7rem] tabular-nums text-neutral-400 dark:text-neutral-400">
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>

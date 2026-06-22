@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { HeroScene } from "@/components/hero-scene";
+import { SigmaScene } from "@/components/hero/sigma-scene-component";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
@@ -21,8 +21,8 @@ const GHOST_BTN =
 export function Hero() {
   return (
     <section className="spektre-stage relative -mx-6 -mt-10 overflow-hidden border-b border-white/10 px-6 pb-24 pt-24 sm:-mx-10 sm:px-10 sm:pb-28 sm:pt-28 lg:-mx-14 lg:px-14 lg:pb-36 lg:pt-32">
-      {/* The generative seal — WebGPU → WebGL2 → poster, lazy + reduced-motion safe. */}
-      <HeroScene />
+      {/* The Σ centerpiece — WebGPU → WebGL2 → poster, lazy + reduced-motion safe. */}
+      <SigmaScene />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
         <p className="spektre-label spektre-rise" style={{ animationDelay: "0ms" }}>

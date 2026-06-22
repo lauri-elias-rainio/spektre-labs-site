@@ -23,8 +23,9 @@ export function ExternalLink({
       )}
     >
       <span>{children}</span>
+      {/* The icon is decorative; the SR hint below announces the new-tab behaviour */}
       <ArrowUpRight className="mt-px h-[0.88rem] w-[0.88rem]" aria-hidden />
+      <span className="sr-only">(opens in new tab)</span>
     </Link>
   );
 }
-

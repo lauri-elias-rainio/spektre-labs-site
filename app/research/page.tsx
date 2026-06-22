@@ -5,8 +5,10 @@ import { ProseBlock } from "@/components/prose-block";
 import { ResearchMap } from "@/components/research-map";
 import { Section } from "@/components/section";
 import { ResearchGrid } from "@/components/research-grid";
+import { StructuredData } from "@/components/structured-data";
 import { getResearchIntroduction, getResearchLayers } from "@/lib/research";
 import { createPageMetadata } from "@/lib/site";
+import { getResearchPageStructuredData } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Research",
@@ -20,6 +22,7 @@ export default function ResearchPage() {
   const introduction = getResearchIntroduction();
   return (
     <div>
+      <StructuredData data={getResearchPageStructuredData()} />
       <PageHeader title="Research" description="Research is organized into interconnected layers." />
 
       <ProseBlock size="lead" className="mt-12 max-w-[42rem] sm:mt-14">

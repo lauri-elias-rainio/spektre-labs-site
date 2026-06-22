@@ -1,5 +1,10 @@
 import * as THREE from "three";
 
+import {
+  createPlatinumMaterial,
+  createSignalMaterial,
+} from "../hero/materials";
+
 /**
  * The Spektre 1 = 1 seal scene — renderer-agnostic.
  *
@@ -20,7 +25,6 @@ const METAL_HI = 0xffffff;
 const METAL_1 = 0xe8eaee;
 const METAL_2 = 0xb9bdc6;
 const METAL_3 = 0x888d97;
-const SIGNAL = 0xcfe3ff;
 
 const OCTAD = 8; // the Atlantean octad — 8-fold radial symmetry.
 
@@ -36,8 +40,11 @@ export interface SceneHandle {
   dispose: () => void;
 }
 
+// Reuse the shared platinum material module (PBR + cold fresnel rim) so the
+// seal reads with a single specular edge against true-black, identical across
+// renderers. Brand/capability, not income.
 function platinum(color: number, metalness = 1, roughness = 0.34) {
-  return new THREE.MeshStandardMaterial({
+  return createPlatinumMaterial({
     color,
     metalness,
     roughness,
@@ -115,15 +122,9 @@ export function buildScene(width: number, height: number): SceneHandle {
   //    rendered in the single cold signal. This is the "declared = realized"
   //    keyline; exactly one signal element in the view.
   const keylineGeo = track(new THREE.BoxGeometry(0.018, 3.0, 0.018));
-  const keylineMat = track(
-    new THREE.MeshStandardMaterial({
-      color: SIGNAL,
-      emissive: SIGNAL,
-      emissiveIntensity: 1.6,
-      metalness: 0,
-      roughness: 1,
-    }),
-  );
+  // shared signal material: pure emissive, toneMapped=false so it drives the
+  // selective bloom in the cinematic layer before tonemapping.
+  const keylineMat = track(createSignalMaterial(1.6));
   const signalKeyline = new THREE.Mesh(keylineGeo, keylineMat);
   seal.add(signalKeyline);
 

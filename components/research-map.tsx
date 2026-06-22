@@ -8,7 +8,7 @@ export function ResearchMap({ layers }: { layers: ResearchLayer[] }) {
           <div className="h-full border-t border-neutral-200/80 pt-5 dark:border-neutral-800/80 sm:pt-6">
             <div className="flex items-start justify-between gap-4">
               <h3 className="max-w-[16rem] text-base font-semibold tracking-tight">{layer.layer}</h3>
-              <span className="text-[0.7rem] tabular-nums text-neutral-400 dark:text-neutral-500">
+              <span className="text-[0.7rem] tabular-nums text-neutral-400 dark:text-neutral-400">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>
@@ -37,7 +37,7 @@ export function ResearchMap({ layers }: { layers: ResearchLayer[] }) {
             </ul>
 
             {layer.items.length > 4 ? (
-              <p className="mt-4 text-[0.7rem] uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">
+              <p className="mt-4 text-[0.7rem] uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-400">
                 + {layer.items.length - 4} more
               </p>
             ) : null}

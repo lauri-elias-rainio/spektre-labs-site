@@ -52,6 +52,27 @@ export default function StudioPage() {
         </figure>
       </Reveal>
 
+      {/* ── Motion — a real clip generated in-canon on Vertex Veo 3.0 ── */}
+      <Reveal delay={60} className="mt-5 sm:mt-6">
+        <figure className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
+          <video
+            src="/generated/studio/coherence-gate.mp4"
+            poster="/generated/studio-hero.png"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="aspect-video w-full object-cover"
+            aria-label="The Coherence Gate — a colossal symmetric Atlantean monolith rising from a black sea, generated in-canon on Vertex Veo 3.0"
+          />
+          <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
+            <span>Motion · generated · Vertex Veo 3.0 · on-canon</span>
+            <span>1 = 1</span>
+          </figcaption>
+        </figure>
+      </Reveal>
+
       {/* ── Opening statement — full editorial weight ───────────────── */}
       <Reveal delay={80} className="mt-14 sm:mt-16">
         <div className="max-w-[48rem]">

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
+import { GuardDemo } from "@/components/guard-demo";
 import { ProductPanel, type ProductDimension } from "@/components/product-panel";
 import { Reveal } from "@/components/reveal";
 import { createPageMetadata } from "@/lib/site";
@@ -175,6 +176,33 @@ export default function SystemsPage() {
             },
           ]}
         />
+      </section>
+
+      {/* ── § 2.5 · TRY THE GATE — live, in-browser ─────────────── */}
+      <section className="mt-32 sm:mt-44 lg:mt-52">
+        <div className="rule mb-14" />
+        <Reveal delay={0}>
+          <div className="mb-10 grid gap-6 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-4">
+              <p className="label mb-4 text-[var(--fg-faint)]">Proof · Try it</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
+                Declared,<br />then realized.
+              </h2>
+            </div>
+            <div className="lg:col-span-8">
+              <p className="max-w-[34rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
+                The gate runs right here — the open-core detectors, ported to your browser. No model,
+                no network, no key. Type anything, or load an example. The verdict is deterministic:
+                the same input gives the same answer, every time.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+        <Reveal delay={120}>
+          <div className="mx-auto max-w-[44rem]">
+            <GuardDemo />
+          </div>
+        </Reveal>
       </section>
 
       {/* ── § 3 · TWO-LAYER ARCHITECTURE ────────────────────────── */}

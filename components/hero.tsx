@@ -1,40 +1,82 @@
 import Link from "next/link";
 
-import { buttonClassName } from "@/components/ui/button";
+import { HeroScene } from "@/components/hero-scene";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
+// On the OLED stage the buttons read against true-black: one platinum chrome
+// CTA (the primary action) + one hairline-ghost secondary. One .btn-metal/view.
+const PRIMARY_BTN =
+  "inline-flex h-9 items-center justify-center rounded-sm border border-white/50 bg-gradient-to-b from-[#f6f7f9] via-[#cdd1d8] to-[#aeb3bc] px-4 text-sm font-medium tracking-[-0.01em] text-[#0a0b0d] transition-[filter] duration-300 hover:brightness-[1.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b9bdc6]";
+const GHOST_BTN =
+  "inline-flex h-9 items-center justify-center rounded-sm border border-white/15 bg-transparent px-4 text-sm font-medium tracking-[-0.01em] text-[#f4f5f7] transition-colors duration-300 hover:border-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b9bdc6]";
+
+/**
+ * The bilateral hero — OLED true-black stage, the generative platinum seal
+ * behind, the wordmark + thesis centered on the vertical axis (1 = 1 rendered).
+ *
+ * STYLE_LAW: monochrome + one cold signal, perfect bilateral symmetry, one
+ * display size, one ornament system, generous void, reduced-motion safe.
+ */
 export function Hero() {
   return (
-    <section className="border-b border-neutral-200/80 pb-20 pt-4 dark:border-neutral-800/80 sm:pb-24 sm:pt-8 lg:pb-32 lg:pt-12">
-      <div className="max-w-[58rem]">
-        <h1 className="max-w-[44rem] text-balance text-[2.85rem] font-semibold tracking-tight sm:text-[3.78rem] md:text-[4.55rem] md:leading-[0.965] lg:text-[5.28rem]">
+    <section className="spektre-stage relative -mx-6 -mt-10 overflow-hidden border-b border-white/10 px-6 pb-24 pt-24 sm:-mx-10 sm:px-10 sm:pb-28 sm:pt-28 lg:-mx-14 lg:px-14 lg:pb-36 lg:pt-32">
+      {/* The generative seal — WebGPU → WebGL2 → poster, lazy + reduced-motion safe. */}
+      <HeroScene />
+
+      <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
+        <p className="spektre-label spektre-rise" style={{ animationDelay: "0ms" }}>
+          Spektre Labs · Research · {lab.location}
+        </p>
+
+        <h1
+          className="spektre-metal-text spektre-rise mt-8 text-balance text-[3.2rem] font-semibold leading-[0.95] tracking-[-0.03em] sm:text-[4.4rem] lg:text-[5.6rem]"
+          style={{ animationDelay: "80ms", fontFamily: "var(--font-display, 'Times New Roman', serif)" }}
+        >
           {lab.name}
         </h1>
-        <p className="mt-9 max-w-[31rem] text-pretty text-[1.24rem] font-medium leading-[1.28] text-neutral-800 dark:text-neutral-200 sm:text-[1.6rem] lg:mt-12 lg:text-[1.76rem]">
+
+        <p
+          className="spektre-rise mt-7 max-w-[34rem] text-pretty text-[1.18rem] font-medium leading-[1.3] text-[#f4f5f7] sm:text-[1.5rem]"
+          style={{ animationDelay: "160ms" }}
+        >
           {lab.home.hero.tagline}
         </p>
-        <div className="mt-10 max-w-[37rem] space-y-5 text-[0.98rem] leading-[1.95] text-neutral-600 dark:text-neutral-400 sm:text-[1.04rem] lg:mt-12">
+
+        <div
+          className="spektre-rise mt-8 max-w-[36rem] space-y-4 text-[0.98rem] leading-[1.85] text-[#b6bac1]"
+          style={{ animationDelay: "240ms" }}
+        >
           {lab.home.hero.description.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
 
-        <div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-3 lg:mt-16">
-          <Link href="/artifacts" className={buttonClassName({ size: "sm" })}>
+        <div
+          className="spektre-rise mt-11 flex flex-wrap items-center justify-center gap-x-3 gap-y-3"
+          style={{ animationDelay: "320ms" }}
+        >
+          <Link href="/artifacts" className={PRIMARY_BTN}>
             View Artifacts
           </Link>
           <Link
             href={LINKS.github}
             target="_blank"
             rel="noopener noreferrer"
-            className={buttonClassName({ variant: "outline", size: "sm" })}
+            className={GHOST_BTN}
           >
             GitHub
           </Link>
         </div>
+
+        {/* The closing axiom, centered on the bilateral axis. */}
+        <p
+          className="spektre-label spektre-rise mt-14"
+          style={{ animationDelay: "420ms", color: "#cfe3ff" }}
+        >
+          1 = 1 · Declared = Realized
+        </p>
       </div>
     </section>
   );
 }
-

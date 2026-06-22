@@ -78,6 +78,69 @@ code {
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+/* --- Spektre hero stage (OLED-platinum spine, scoped to the hero) --- */
+.spektre-stage {
+  --metal-hi: #ffffff;
+  --metal-1: #e8eaee;
+  --metal-2: #b9bdc6;
+  --metal-3: #888d97;
+  --signal: #cfe3ff;
+  --ease-spektre: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  isolation: isolate;
+  background: #000000;
+  color: #f4f5f7;
+  color-scheme: dark;
+}
+
+.spektre-stage::after {
+  /* faint film grain so the black is material, never flat (~0.035). */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.spektre-metal-text {
+  background: linear-gradient(
+    177deg,
+    #ffffff 0%,
+    #dadee5 26%,
+    #9aa0ab 52%,
+    #c8ccd4 70%,
+    #6e737d 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.spektre-label {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #7d828b;
+  font-weight: 500;
+}
+
+.spektre-rise {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: spektre-rise 1s var(--ease-spektre) forwards;
+}
+
+@keyframes spektre-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -68,9 +68,15 @@ v = guard(output)
 if not v["safe_to_ship"]:
     raise ValueError(v["block_reasons"])`;
 
-const HOSTED_CODE_SNIPPET = `curl "https://swagletz-sigmagate.hf.space/check?text=your+text"
-# HTTP 402 — permissionless pay-to (x402)
-# No signup. No API key.`;
+const HOSTED_CODE_SNIPPET = `# 1 · call the live endpoint — no signup, no API key
+curl "https://swagletz-sigmagate.hf.space/check?text=your+text"
+
+# 2 · HTTP 402 — permissionless pay-per-call (x402)
+# { "price_usdc": 0.001, "chain": "solana", "asset": "USDC",
+#   "pay_to": "7oDg…BzxyG", "then": "re-call with &tx=<sig>" }
+
+# 3 · pay 0.001 USDC on Solana, re-call with the signature
+curl "…/check?text=your+text&tx=<solana_signature>"   # → σ-score`;
 
 const DESIGN_PRINCIPLES = [
   {

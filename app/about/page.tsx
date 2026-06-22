@@ -75,6 +75,202 @@ export default function AboutPage() {
         </Reveal>
       ) : null}
 
+      {/* ── Founder narrative ─────────────────────────────────────────── */}
+      <Section title="Origin" eyebrow="Founder">
+        <div className="max-w-[54rem]">
+          {/* Intro pull-quote */}
+          <Reveal delay={0}>
+            <blockquote className="mb-12 border-l-2 border-[var(--signal)] pl-6 sm:pl-8">
+              <p className="text-[1.1rem] font-semibold leading-[1.62] tracking-[-0.022em] text-[var(--fg)] sm:text-[1.2rem]">
+                One mind saw the same structure everywhere, and refused to look away until it was real.
+              </p>
+            </blockquote>
+          </Reveal>
+
+          {/* Narrative grid — two columns on lg */}
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
+            {/* Column A — origin */}
+            <div>
+              <Reveal delay={60}>
+                <p className="label mb-5 text-[var(--fg-faint)]">The path</p>
+              </Reveal>
+              <ProseBlock className="text-[var(--fg-dim)]">
+                <Reveal as="p" delay={100}>
+                  No lab credential. No institutional ladder. An autodidact systems
+                  architect who came up building and selling real commercial systems,
+                  then taught himself into AI and formal research because the questions
+                  would not leave.
+                </Reveal>
+                <Reveal as="p" delay={160}>
+                  That outsider path is not a weakness. It is the origin of the whole
+                  thing: someone with no permission to start, who started anyway, and
+                  held himself to a higher bar than the institutions would have required.
+                </Reveal>
+              </ProseBlock>
+            </div>
+
+            {/* Column B — the invariant */}
+            <div>
+              <Reveal delay={60}>
+                <p className="label mb-5 text-[var(--fg-faint)]">The structure</p>
+              </Reveal>
+              <ProseBlock className="text-[var(--fg-dim)]">
+                <Reveal as="p" delay={100}>
+                  What he kept seeing — in code, in markets, in institutions, in a
+                  person&apos;s word — was one structure under everything: a gap between
+                  what is declared and what is realized. Everyone had normalized the gap.
+                  He named it.
+                </Reveal>
+                <Reveal as="p" delay={160}>
+                  σ = realized − declared. And he found the one law that, if it held,
+                  would close it: <span className="metal-text font-semibold">1&thinsp;=&thinsp;1</span>.
+                </Reveal>
+              </ProseBlock>
+            </div>
+          </div>
+
+          {/* Full-stack narrative bar */}
+          <Reveal delay={200}>
+            <div className="mt-12 surface rounded-[var(--radius)] p-8 sm:p-10">
+              <p className="label mb-6 text-[var(--fg-faint)]">The whole stack — one mind</p>
+
+              {/* Stack trace — symmetric, minimal */}
+              <div className="grid gap-0 divide-y divide-[var(--line)]">
+                {[
+                  {
+                    layer: "Theory",
+                    detail: "σ = realized − declared. 1 = 1. The Spektre Corpus.",
+                    status: "REAL",
+                  },
+                  {
+                    layer: "Protocol",
+                    detail: "K_crit. Coherence collapse formalized and citable.",
+                    status: "REAL",
+                  },
+                  {
+                    layer: "Systems",
+                    detail: "σ-gate — deterministic AI trust layer. Ships.",
+                    status: "SHIPPING",
+                  },
+                  {
+                    layer: "Studio",
+                    detail: "The aesthetic in motion. @spektrelabs, live.",
+                    status: "EMERGING",
+                  },
+                  {
+                    layer: "World",
+                    detail: "Games · Shoreworld — the arc.",
+                    status: "VISION",
+                  },
+                ].map((row, i) => (
+                  <Reveal key={row.layer} as="div" delay={240 + i * 55}>
+                    <div className="flex items-center gap-6 py-4">
+                      <span
+                        className="w-[5.5rem] shrink-0 font-mono text-[0.7rem] tabular-nums uppercase tracking-[0.18em]"
+                        style={{ color: "var(--fg-faint)" }}
+                      >
+                        {row.layer}
+                      </span>
+                      <p className="flex-1 text-[0.88rem] leading-[1.65] text-[var(--fg-dim)]">
+                        {row.detail}
+                      </p>
+                      <span
+                        className="label shrink-0"
+                        style={{
+                          color:
+                            row.status === "REAL" || row.status === "SHIPPING"
+                              ? "var(--signal)"
+                              : row.status === "EMERGING"
+                              ? "var(--fg-mute)"
+                              : "var(--fg-faint)",
+                        }}
+                      >
+                        {row.status}
+                      </span>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+
+              {/* Closing axiom */}
+              <Reveal delay={540}>
+                <div className="mt-8 rule" />
+                <div className="mt-6 flex items-center gap-4">
+                  <span className="h-px w-5 bg-[var(--line-strong)]" />
+                  <span className="label text-[var(--fg-faint)]">
+                    One mind. The whole stack. One invariant at every layer.
+                  </span>
+                </div>
+              </Reveal>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* ── One mind / one invariant — σ framing ─────────────────────── */}
+      <Section title="The invariant" eyebrow="1 = 1">
+        <div className="max-w-[52rem]">
+          {/* Symmetric two-column proof */}
+          <div className="grid gap-6 sm:grid-cols-2">
+            {/* Left panel */}
+            <Reveal delay={0}>
+              <div className="surface surface-hover rounded-[var(--radius)] p-8 sm:p-10 h-full">
+                <p className="label mb-5 text-[var(--fg-faint)]">Declared</p>
+                <p className="metal-text text-[2.2rem] font-semibold leading-[1.0] tracking-[-0.04em] sm:text-[2.6rem]">
+                  σ
+                </p>
+                <div className="rule my-6" />
+                <p className="text-[0.9rem] leading-[1.85] text-[var(--fg-dim)]">
+                  The gap between what is declared and what is realized.
+                  Measurable. Closeable. Published honestly — including the zeros.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Right panel — mirror */}
+            <Reveal delay={80}>
+              <div className="surface surface-hover rounded-[var(--radius)] p-8 sm:p-10 h-full">
+                <p className="label mb-5 text-[var(--fg-faint)]">Realized</p>
+                <p className="metal-text text-[2.2rem] font-semibold leading-[1.0] tracking-[-0.04em] sm:text-[2.6rem]">
+                  1&thinsp;=&thinsp;1
+                </p>
+                <div className="rule my-6" />
+                <p className="text-[0.9rem] leading-[1.85] text-[var(--fg-dim)]">
+                  The law. Inner equals outer. The claim equals the artifact.
+                  The surface is never larger than the substance behind it.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Center glyph node — symmetry mark */}
+          <Reveal delay={160}>
+            <div className="mt-12 flex flex-col items-center gap-4">
+              <Glyph variant="node" size={48} strokeOpacity={0.22} />
+              <p className="label text-center text-[var(--fg-faint)]">
+                Coherence is the standard — at every layer
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Manifesto excerpt */}
+          <Reveal delay={220}>
+            <div className="mt-12 border-l-2 border-[var(--line-strong)] pl-6 sm:pl-8">
+              <p className="text-[0.96rem] leading-[1.95] text-[var(--fg-dim)] sm:text-[1.01rem]">
+                We do not ship hype. We ship the smaller true thing over the larger false one.
+                We subtract until only the necessary remains, render it in one cold language,
+                and prove every claim a stranger could doubt. When what we declared is not yet
+                realized, we publish the gap — because the number cannot lie, and neither will we.
+              </p>
+              <div className="mt-5 flex items-center gap-4">
+                <span className="h-px w-5 bg-[var(--line-strong)]" />
+                <span className="label text-[var(--fg-faint)]">Spektre Labs — Manifesto</span>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
       {/* ── Research Output ──────────────────────────────────────────── */}
       <Section title={lab.about.researchOutput.title} eyebrow="Output">
         <div className="max-w-[44rem]">

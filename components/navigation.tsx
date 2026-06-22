@@ -13,7 +13,9 @@ const navItems: Array<{ href: string; label: string }> = [
   { href: "/artifacts", label: "Artifacts" },
   { href: "/research", label: "Research" },
   { href: "/method", label: "Method" },
+  { href: "/systems", label: "Systems" },
   { href: "/studio", label: "Studio" },
+  { href: "/manifesto", label: "Manifesto" },
   { href: "/about", label: "About" },
 ];
 

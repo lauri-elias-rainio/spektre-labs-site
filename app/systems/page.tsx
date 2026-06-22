@@ -346,6 +346,47 @@ export default function SystemsPage() {
         </Reveal>
       </section>
 
+      {/* ── § 4.5 · MCP TOOL — install into any agent ───────────── */}
+      <section className="mt-32 sm:mt-44 lg:mt-52">
+        <div className="rule mb-14" />
+        <Reveal delay={0}>
+          <div className="mb-10 grid gap-6 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-4">
+              <p className="label mb-4 text-[var(--fg-faint)]">Distribution · MCP</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
+                Give any agent<br />the gate.
+              </h2>
+            </div>
+            <div className="lg:col-span-8">
+              <p className="mb-7 max-w-[40rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
+                σ-gate ships a zero-dependency MCP server. One command and any agent — Claude Code,
+                Claude Desktop, Cursor, Cline — has a deterministic <code className="text-[var(--fg)]">guard</code>{" "}
+                tool it can call before shipping output. No model, no key, no token cost.
+              </p>
+              <div className="rounded-[10px] border border-[var(--line)] bg-[var(--bg-2)] overflow-hidden">
+                <div className="flex items-center justify-between border-b border-[var(--line)] px-5 py-3">
+                  <span className="label text-[var(--fg-faint)]">bash</span>
+                  <span className="label text-[var(--fg-faint)]">MCP</span>
+                </div>
+                <pre className="overflow-x-auto px-5 py-5 text-[0.82rem] leading-[1.75] text-[var(--fg-dim)] font-mono">
+                  <code>claude mcp add guard -- python3 mcp_server.py</code>
+                </pre>
+              </div>
+              <div className="mt-7">
+                <a
+                  href="https://github.com/spektre-labs/sigma-gate"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-metal rounded-[10px] px-6 py-3 text-[0.88rem] font-semibold tracking-tight"
+                >
+                  GitHub ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       {/* ── § 5 · DESIGN PRINCIPLES ──────────────────────────────── */}
       <section className="mt-32 sm:mt-44 lg:mt-52">
         <div className="rule mb-14" />

@@ -28,6 +28,7 @@ type Division = {
   line: string;        // one honest line
   tier: "REAL" | "EMERGING" | "VISION";
   href?: string;       // only REAL/EMERGING divisions get a link
+  img: string;         // generated on-canon visual (Imagen)
 };
 
 const DIVISIONS: Division[] = [
@@ -38,6 +39,7 @@ const DIVISIONS: Division[] = [
     line: "The source. Formal theory of coherence — K_crit, σ — everything is licensed by this.",
     tier: "REAL",
     href: "/research",
+    img: "/generated/divisions/research.png",
   },
   {
     index: "02",
@@ -46,6 +48,7 @@ const DIVISIONS: Division[] = [
     line: "Coherence as executable tools. The theory proven and monetized in code.",
     tier: "REAL",
     href: "/systems",
+    img: "/generated/divisions/systems.png",
   },
   {
     index: "03",
@@ -54,6 +57,7 @@ const DIVISIONS: Division[] = [
     line: "Coherence as narrative. Dark-luxury sci-fi aesthetic generated and broadcast.",
     tier: "EMERGING",
     href: "/studio",
+    img: "/generated/divisions/studio-2.png",
   },
   {
     index: "04",
@@ -61,6 +65,7 @@ const DIVISIONS: Division[] = [
     substrate: "AAA Generative Worlds",
     line: "Coherence as interactive structure. Playable worlds derived from the axiom.",
     tier: "VISION",
+    img: "/generated/divisions/games.png",
   },
   {
     index: "05",
@@ -68,6 +73,7 @@ const DIVISIONS: Division[] = [
     substrate: "The World · IP",
     line: "The fiction the films and games inhabit. One universe, one aesthetic, one axiom.",
     tier: "VISION",
+    img: "/generated/divisions/shoreworld.png",
   },
 ];
 
@@ -207,6 +213,20 @@ export default function UniversePage() {
                     Trajectory — not shipped product
                   </p>
                 )}
+              </div>
+
+              {/* generated on-canon visual */}
+              <div className="shrink-0 sm:w-64 lg:w-80">
+                <div className="overflow-hidden rounded-[10px] border border-[var(--line)] transition-colors duration-500 group-hover:border-[var(--line-strong)]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={div.img}
+                    alt={`${div.name} — generated in the Spektre canon`}
+                    loading="lazy"
+                    className="aspect-video w-full object-cover opacity-75 grayscale transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0"
+                    style={div.tier === "VISION" ? { opacity: 0.55 } : undefined}
+                  />
+                </div>
               </div>
 
               {/* right arrow / status — only for linked divisions */}

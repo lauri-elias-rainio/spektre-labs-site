@@ -73,6 +73,37 @@ export default function StudioPage() {
         </figure>
       </Reveal>
 
+      {/* ── Showreel — more real in-canon Veo shots ──────────────────── */}
+      <Reveal delay={40} className="mt-5 sm:mt-6">
+        <p className="label mb-4 text-[var(--fg-faint)]">Showreel · generated in-canon · Vertex Veo 3.0</p>
+        <div className="grid gap-5 sm:grid-cols-2">
+          {[
+            { src: "/generated/studio/spire.mp4", cap: "The Spire — ascent past an engraved platinum monolith" },
+            { src: "/generated/studio/capital.mp4", cap: "The Capital — radial descent over concentric rings" },
+          ].map((c) => (
+            <figure
+              key={c.src}
+              className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]"
+            >
+              <video
+                src={c.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="none"
+                className="aspect-video w-full object-cover"
+                aria-label={`${c.cap} — generated in-canon on Vertex Veo 3.0`}
+              />
+              <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
+                <span>{c.cap}</span>
+                <span>1 = 1</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Reveal>
+
       {/* ── Opening statement — full editorial weight ───────────────── */}
       <Reveal delay={80} className="mt-14 sm:mt-16">
         <div className="max-w-[48rem]">

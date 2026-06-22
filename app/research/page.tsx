@@ -10,6 +10,19 @@ import { Glyph } from "@/components/glyph";
 import { Reveal } from "@/components/reveal";
 import { getResearchIntroduction, getResearchLayers, getResearchItemCount } from "@/lib/research";
 import { createPageMetadata } from "@/lib/site";
+import corpus from "@/data/corpus-papers.json";
+
+/* ─── Corpus grounding — built ONLY from the real 72-paper data (σ-honest) ── */
+type CorpusPaper = { section: string; index: number; title: string; github: string; doi: string };
+const CORPUS_PAPERS = corpus.papers as CorpusPaper[];
+const DOMAINS = (() => {
+  const counts = new Map<string, number>();
+  for (const p of CORPUS_PAPERS) counts.set(p.section, (counts.get(p.section) ?? 0) + 1);
+  return [...counts.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+})();
+const CORPUS_COUNT = corpus.count as number;
 
 export const metadata: Metadata = createPageMetadata({
   title: "Research",
@@ -172,6 +185,50 @@ export default function ResearchPage() {
             </Reveal>
           ))}
         </div>
+      </Section>
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          CORPUS FOUNDATION — the claims grounded in real, DOI-resolvable papers
+          (built ONLY from data/corpus-papers.json — σ-honest, no fabrication)
+      ══════════════════════════════════════════════════════════════════════ */}
+      <Section title="The corpus beneath" eyebrow="Grounding">
+        <Reveal delay={0}>
+          <p className="max-w-[54ch] text-[1.02rem] leading-[1.84]" style={{ color: "var(--fg-dim)" }}>
+            The claims above are not assertions in isolation. Each is formalized in the open
+            corpus — <span className="text-[var(--fg)]">{CORPUS_COUNT} papers</span> across{" "}
+            <span className="text-[var(--fg)]">{DOMAINS.length} domains</span>, every one
+            DOI-resolvable on Zenodo, every one CC&nbsp;BY. The map below is the falsifiability
+            surface: one resolvable counter-paper overturns a claim.
+          </p>
+        </Reveal>
+
+        {/* domain map — real sections + live counts, each links into the corpus */}
+        <Reveal delay={80} className="mt-12">
+          <div className="grid grid-cols-2 gap-px bg-[var(--line-soft)] sm:grid-cols-3 lg:grid-cols-4">
+            {DOMAINS.map((d) => (
+              <a
+                key={d.name}
+                href="/corpus"
+                className="group flex items-baseline justify-between gap-3 bg-[var(--bg)] px-4 py-4 no-underline transition-colors duration-500 hover:bg-[var(--bg-1)]"
+              >
+                <span className="text-[0.86rem] leading-[1.3] text-[var(--fg-dim)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                  {d.name}
+                </span>
+                <span className="label tabular-nums shrink-0 text-[var(--fg-faint)] transition-colors duration-500 group-hover:text-[var(--signal)]">
+                  {String(d.count).padStart(2, "0")}
+                </span>
+              </a>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal delay={120} className="mt-10">
+          <a href="/corpus" className="no-underline">
+            <span className="label text-[var(--fg-mute)] transition-colors duration-300 hover:text-[var(--fg)]">
+              Read the full corpus → {CORPUS_COUNT} papers, open access
+            </span>
+          </a>
+        </Reveal>
       </Section>
 
       {/* ══════════════════════════════════════════════════════════════════════

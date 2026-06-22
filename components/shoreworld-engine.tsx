@@ -388,7 +388,22 @@ export default function ShoreworldEngine({
           if (postProcessing) await postProcessing.renderAsync();
           else await renderer.renderAsync(scene, camera);
         };
-        renderer.setAnimationLoop(animate);
+
+        // a11y — respect prefers-reduced-motion: render ONE static frame, no loop
+        const reduceMotion =
+          typeof window !== "undefined" &&
+          window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+        if (reduceMotion) {
+          camera.position.set(Math.sin(0.6) * 50, 15, Math.cos(0.6) * 50);
+          camera.lookAt(0, 8.5, 0);
+          emissive.emissiveIntensity = 3.4;
+          coreGlow.intensity = 22;
+          if (postProcessing) await postProcessing.renderAsync();
+          else await renderer.renderAsync(scene, camera);
+          setFps(0);
+        } else {
+          renderer.setAnimationLoop(animate);
+        }
 
         cleanup = () => {
           renderer.setAnimationLoop(null);

@@ -6,6 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
 import { StudioFilms } from "@/components/studio-films";
 import { EditorialLink } from "@/components/editorial-link";
+import { CanonVideo } from "@/components/canon-video";
 import { createPageMetadata } from "@/lib/site";
 import { LINKS } from "@/lib/links";
 
@@ -55,16 +56,11 @@ export default function StudioPage() {
       {/* ── Motion — a real clip generated in-canon on Vertex Veo 3.0 ── */}
       <Reveal delay={60} className="mt-5 sm:mt-6">
         <figure className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
-          <video
+          <CanonVideo
             src="/generated/studio/coherence-gate.mp4"
             poster="/generated/studio-hero.png"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
+            label="The Coherence Gate — a colossal symmetric Atlantean monolith rising from a black sea, generated in-canon on Vertex Veo 3.0"
             className="aspect-video w-full object-cover"
-            aria-label="The Coherence Gate — a colossal symmetric Atlantean monolith rising from a black sea, generated in-canon on Vertex Veo 3.0"
           />
           <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
             <span>Motion · generated · Vertex Veo 3.0 · on-canon</span>
@@ -85,15 +81,10 @@ export default function StudioPage() {
               key={c.src}
               className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]"
             >
-              <video
+              <CanonVideo
                 src={c.src}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="none"
+                label={`${c.cap} — generated in-canon on Vertex Veo 3.0`}
                 className="aspect-video w-full object-cover"
-                aria-label={`${c.cap} — generated in-canon on Vertex Veo 3.0`}
               />
               <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
                 <span>{c.cap}</span>

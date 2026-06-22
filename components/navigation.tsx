@@ -10,13 +10,15 @@ import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
 const navItems: Array<{ href: string; label: string }> = [
+  { href: "/universe", label: "Universe" },
   { href: "/artifacts", label: "Artifacts" },
   { href: "/research", label: "Research" },
-  { href: "/method", label: "Method" },
   { href: "/systems", label: "Systems" },
   { href: "/studio", label: "Studio" },
+  { href: "/method", label: "Method" },
   { href: "/manifesto", label: "Manifesto" },
   { href: "/about", label: "About" },
+  { href: "/connect", label: "Connect" },
 ];
 
 export function Navigation({ className }: { className?: string }) {

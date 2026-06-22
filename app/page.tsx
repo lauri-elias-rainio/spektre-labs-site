@@ -264,6 +264,9 @@ export default function Home() {
                 Spektre expands through a single structural arc: from formal research outward
                 into systems, media, and world-building. Every division inherits the invariant.
               </p>
+              <EditorialLink href="/universe" className="mt-6 self-start">
+                Full overview&nbsp;→
+              </EditorialLink>
             </div>
           </div>
         </Reveal>
@@ -457,7 +460,70 @@ export default function Home() {
         <div className="rule mt-14" />
       </section>
 
-      {/* ── § 6 · FINAL CTA ─────────────────────────────────────────────
+      {/* ── § 6 · CLOSING ───────────────────────────────────────────────
+          Strong terse statement. Two CTAs. Glyph seal. Perfect symmetry.
+      ─────────────────────────────────────────────────────────────── */}
+      <section className="relative mt-40 sm:mt-52 lg:mt-64 overflow-hidden">
+        <div className="rule mb-0" />
+
+        {/* Glyph seal — centered absolute backdrop */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>
+          <Glyph variant="seal" size={560} strokeOpacity={0.06} />
+        </div>
+
+        <div className="relative flex flex-col items-center px-6 py-28 text-center sm:py-36 lg:py-48">
+          {/* Label */}
+          <Reveal delay={0}>
+            <p className="label text-[var(--fg-faint)]">Gate · Access</p>
+          </Reveal>
+
+          {/* Statement */}
+          <Reveal delay={80}>
+            <h2 className="metal-text mt-8 max-w-[28rem] text-balance text-[2.6rem] font-semibold tracking-[-0.045em] leading-[1.03] sm:text-[3.5rem] lg:text-[4.5rem]">
+              The gate is open.
+            </h2>
+          </Reveal>
+
+          {/* Sub-copy */}
+          <Reveal delay={160}>
+            <p className="mt-7 max-w-[26rem] text-pretty text-[1rem] leading-[1.86] text-[var(--fg-mute)]">
+              Coherence is deterministic. Either a system holds 1&nbsp;=&nbsp;1
+              or it does not. See the proof — or step inside.
+            </p>
+          </Reveal>
+
+          {/* Symmetric hairline */}
+          <Reveal delay={220}>
+            <div className="mt-10 flex items-center gap-6 sm:gap-10">
+              <span className="h-px w-12 bg-[var(--line-strong)] sm:w-20" />
+              <Glyph variant="node" size={18} strokeOpacity={0.45} />
+              <span className="h-px w-12 bg-[var(--line-strong)] sm:w-20" />
+            </div>
+          </Reveal>
+
+          {/* CTAs */}
+          <Reveal delay={300}>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href="/systems"
+                className="btn-metal rounded-[10px] px-8 py-3.5 text-[0.92rem] font-semibold tracking-tight"
+              >
+                See the gate
+              </Link>
+              <Link
+                href="/connect"
+                className="rounded-[10px] border border-[var(--line-strong)] px-8 py-3.5 text-[0.92rem] font-medium tracking-tight text-[var(--fg-dim)] transition-colors duration-500 hover:border-[var(--metal-3)] hover:text-[var(--fg)]"
+              >
+                Work with us
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="rule" />
+      </section>
+
+      {/* ── § 7 · FINAL CTA ─────────────────────────────────────────────
           Centered, generous black, maximum restraint.
       ─────────────────────────────────────────────────────────────── */}
       <section className="mt-40 sm:mt-52 lg:mt-64 pb-40 lg:pb-56">

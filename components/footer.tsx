@@ -1,75 +1,151 @@
 import { Container } from "@/components/container";
-import { EditorialLink } from "@/components/editorial-link";
 import { ExternalLink } from "@/components/external-link";
+import { Glyph } from "@/components/glyph";
+import { Reveal } from "@/components/reveal";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
+
+/* Perfectly symmetric link grid — left = right, declared = realized */
+const EXTERNAL_LINKS: Array<{ key: string; label: string; href: string; meta: string }> = [
+  { key: "github",   label: "GitHub",   href: LINKS.github,   meta: "src" },
+  { key: "youtube",  label: "YouTube",  href: LINKS.youtube,  meta: "studio" },
+  { key: "orcid",    label: "ORCID",    href: LINKS.orcid,    meta: "research" },
+  { key: "zenodo",   label: "Zenodo",   href: LINKS.zenodo,   meta: "corpus" },
+  { key: "linkedin", label: "LinkedIn", href: LINKS.linkedin, meta: "contact" },
+  { key: "email",    label: "Email",    href: LINKS.email,    meta: "direct" },
+];
+
+/* Split into two symmetric columns — left=right */
+const LEFT_LINKS  = EXTERNAL_LINKS.slice(0, 3);
+const RIGHT_LINKS = EXTERNAL_LINKS.slice(3);
 
 export function Footer() {
   return (
     <footer className="border-t border-[var(--line)]">
-      <Container className="py-14 sm:py-20">
-        {/* Hairline top accent — editorial column rule */}
-        <div className="mb-10 h-px w-full bg-gradient-to-r from-transparent via-[var(--line-strong)] to-transparent" />
+      {/* Glyph divider — the 1=1 ornament, perfectly centered */}
+      <div className="flex justify-center pt-14 sm:pt-20">
+        <Reveal delay={0} y={12}>
+          <Glyph variant="divider" size={200} strokeOpacity={0.35} />
+        </Reveal>
+      </div>
 
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
-          {/* Left: identity block */}
-          <div className="lg:col-span-6 xl:col-span-5">
-            {/* Mono wordmark label */}
-            <p className="label text-[0.64rem] tracking-[0.28em] text-[var(--fg-faint)]">
-              Spektre Labs
-            </p>
-
-            {/* Location — generous vertical rhythm */}
-            <p className="mt-5 text-[1.05rem] leading-[1.6] tracking-[-0.01em] text-[var(--fg-dim)]">
-              {lab.location}
-            </p>
-
-            {/* Email — editorial link with subtle underline */}
-            <div className="mt-2">
-              <EditorialLink
-                href={LINKS.email}
-                className="text-[0.88rem] text-[var(--fg-mute)] transition-colors duration-500 hover:text-[var(--fg-dim)]"
-              >
-                {lab.email}
-              </EditorialLink>
-            </div>
-          </div>
-
-          {/* Right: metadata grid — Abloh mono labels */}
-          <div className="lg:col-span-6 xl:col-span-7 lg:justify-self-end">
-            <div className="flex flex-col gap-1 border-t border-[var(--line-soft)] pt-5">
-              {/* Column header label */}
-              <p className="label mb-3 text-[0.62rem] tracking-[0.3em] text-[var(--fg-faint)]">
-                External
+      <Container className="pb-16 pt-10 sm:pb-24 sm:pt-14">
+        {/* ── Seal + Wordmark — absolute center anchor ── */}
+        <Reveal delay={60} y={20}>
+          <div className="mb-16 flex flex-col items-center gap-5 sm:mb-20">
+            <Glyph variant="seal" size={72} strokeOpacity={0.28} />
+            <div className="flex flex-col items-center gap-1">
+              <p className="label text-[0.62rem] tracking-[0.36em] text-[var(--fg-faint)]">
+                {lab.name.toUpperCase()}
               </p>
-
-              <div className="flex flex-col items-start gap-[0.85rem]">
-                <ExternalLink
-                  href={LINKS.orcid}
-                  className="label text-[0.72rem] tracking-[0.18em] text-[var(--fg-mute)] transition-colors duration-500 hover:text-[var(--fg-dim)]"
-                >
-                  ORCID
-                </ExternalLink>
-                <ExternalLink
-                  href={LINKS.github}
-                  className="label text-[0.72rem] tracking-[0.18em] text-[var(--fg-mute)] transition-colors duration-500 hover:text-[var(--fg-dim)]"
-                >
-                  GitHub
-                </ExternalLink>
-              </div>
+              <p
+                className="label text-[0.55rem] tracking-[0.22em] text-[var(--fg-faint)]"
+                style={{ opacity: 0.42 }}
+              >
+                1 = 1
+              </p>
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        {/* Bottom rule + copyright line — full-width editorial footer mark */}
-        <div className="mt-14 flex flex-col gap-4 border-t border-[var(--line-soft)] pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="label text-[0.6rem] tracking-[0.24em] text-[var(--fg-faint)]">
-            {new Date().getFullYear()} — Spektre Labs
-          </p>
-          <p className="label text-[0.6rem] tracking-[0.24em] text-[var(--fg-faint)]">
-            AI Research · Helsinki
-          </p>
-        </div>
+        {/* ── Symmetric link grid — 3 left · 3 right ── */}
+        <Reveal delay={100} y={16}>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-0 sm:grid-cols-[1fr_auto_1fr] sm:gap-x-0">
+            {/* Left column */}
+            <div className="flex flex-col gap-[0.9rem] sm:items-end sm:pr-12 lg:pr-20">
+              <p className="label mb-1 text-[0.58rem] tracking-[0.32em] text-[var(--fg-faint)]"
+                 style={{ opacity: 0.5 }}>
+                EXTERNAL
+              </p>
+              {LEFT_LINKS.map((link) => (
+                <div key={link.key} className="flex items-baseline gap-2 sm:flex-row-reverse">
+                  <span
+                    className="label text-[0.55rem] tracking-[0.18em] text-[var(--fg-faint)]"
+                    style={{ opacity: 0.38 }}
+                  >
+                    [{link.meta}]
+                  </span>
+                  <ExternalLink
+                    href={link.href}
+                    className="label text-[0.7rem] tracking-[0.2em] text-[var(--fg-mute)] transition-colors duration-500 hover:text-[var(--metal-2)]"
+                  >
+                    {link.label}
+                  </ExternalLink>
+                </div>
+              ))}
+            </div>
+
+            {/* Center hairline rule — the symmetry axis */}
+            <div className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center sm:gap-2">
+              <div className="h-full w-px bg-gradient-to-b from-transparent via-[var(--line-strong)] to-transparent" />
+              <Glyph variant="node" size={10} strokeOpacity={0.4} />
+              <div className="h-full w-px bg-gradient-to-b from-transparent via-[var(--line-strong)] to-transparent" />
+            </div>
+
+            {/* Right column */}
+            <div className="flex flex-col gap-[0.9rem] sm:items-start sm:pl-12 lg:pl-20">
+              <p className="label mb-1 text-[0.58rem] tracking-[0.32em] text-[var(--fg-faint)]"
+                 style={{ opacity: 0.5 }}>
+                IDENTITY
+              </p>
+              {RIGHT_LINKS.map((link) => (
+                <div key={link.key} className="flex items-baseline gap-2">
+                  <ExternalLink
+                    href={link.href}
+                    className="label text-[0.7rem] tracking-[0.2em] text-[var(--fg-mute)] transition-colors duration-500 hover:text-[var(--metal-2)]"
+                  >
+                    {link.label}
+                  </ExternalLink>
+                  <span
+                    className="label text-[0.55rem] tracking-[0.18em] text-[var(--fg-faint)]"
+                    style={{ opacity: 0.38 }}
+                  >
+                    [{link.meta}]
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ── Location + ORCID — identity metadata row ── */}
+        <Reveal delay={140} y={12}>
+          <div className="mt-14 flex flex-col items-center gap-2 border-t border-[var(--line-soft)] pt-8 sm:mt-16">
+            <p className="label text-[0.62rem] tracking-[0.28em] text-[var(--fg-faint)]">
+              {lab.author}
+            </p>
+            <div className="flex items-center gap-4">
+              <span className="label text-[0.58rem] tracking-[0.22em] text-[var(--fg-faint)]"
+                    style={{ opacity: 0.5 }}>
+                {lab.location}
+              </span>
+              <span
+                className="h-[3px] w-[3px] rounded-full bg-[var(--line-strong)]"
+                aria-hidden
+              />
+              <span className="label text-[0.58rem] tracking-[0.22em] text-[var(--fg-faint)]"
+                    style={{ opacity: 0.5 }}>
+                ORCID {lab.orcid}
+              </span>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ── Bottom mark — year · axiom · systems architect ── */}
+        <Reveal delay={180} y={8}>
+          <div className="mt-10 flex flex-col items-center gap-[0.4rem] sm:flex-row sm:justify-between">
+            <p className="label text-[0.58rem] tracking-[0.24em] text-[var(--fg-faint)]"
+               style={{ opacity: 0.4 }}>
+              {new Date().getFullYear()} — {lab.name}
+            </p>
+            <p
+              className="label text-[0.58rem] tracking-[0.24em] text-[var(--fg-faint)]"
+              style={{ opacity: 0.4 }}
+            >
+              Structural Invariance · AI Research · σ = 1
+            </p>
+          </div>
+        </Reveal>
       </Container>
     </footer>
   );

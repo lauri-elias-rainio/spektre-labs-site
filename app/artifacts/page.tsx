@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 
+import { ArtifactCard } from "@/components/artifact-card";
 import { ArtifactFeature } from "@/components/artifact-feature";
+import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
 import { ProseBlock } from "@/components/prose-block";
+import { Reveal } from "@/components/reveal";
 import { StructuredData } from "@/components/structured-data";
 import { getArtifacts, getArtifactsIntroduction } from "@/lib/artifacts";
 import { createPageMetadata } from "@/lib/site";
@@ -17,8 +20,13 @@ export const metadata: Metadata = createPageMetadata({
 export default function ArtifactsPage() {
   const artifacts = getArtifacts();
   const introduction = getArtifactsIntroduction();
-  const corpus = artifacts.find((artifact) => artifact.slug === "spektre-corpus");
-  const protocol = artifacts.find((artifact) => artifact.slug === "spektre-protocol");
+  const corpus = artifacts.find((a) => a.slug === "spektre-corpus");
+  const protocol = artifacts.find((a) => a.slug === "spektre-protocol");
+  const sigmaGate = artifacts.find((a) => a.slug === "sigma-gate");
+
+  // Items not individually featured above — feed the archive
+  const featuredSlugs = new Set(["spektre-corpus", "spektre-protocol"]);
+  const archiveItems = artifacts.filter((a) => !featuredSlugs.has(a.slug));
 
   return (
     <div>
@@ -26,14 +34,28 @@ export default function ArtifactsPage() {
 
       <PageHeader title="Artifacts" />
 
-      {/* intro lead — generous negative space, platinum-warm */}
+      {/* intro — generous negative space */}
       <ProseBlock size="lead" className="mt-14 max-w-[39rem] sm:mt-16">
-        {introduction.map((paragraph) => (
-          <p key={paragraph} className="text-[var(--fg-dim)] leading-[1.82]">
-            {paragraph}
-          </p>
+        {introduction.map((paragraph, i) => (
+          <Reveal key={paragraph} delay={i * 60}>
+            <p className="text-[var(--fg-dim)] leading-[1.84]">{paragraph}</p>
+          </Reveal>
         ))}
       </ProseBlock>
+
+      {/* theory → axiom divider */}
+      <Reveal delay={120}>
+        <div className="mt-16 flex items-center gap-6 sm:mt-20">
+          <Glyph variant="divider" size={200} strokeOpacity={0.3} />
+          <span
+            className="label shrink-0"
+            style={{ color: "var(--fg-faint)" }}
+          >
+            Axiom · σ = 1
+          </span>
+          <Glyph variant="divider" size={200} strokeOpacity={0.3} />
+        </div>
+      </Reveal>
 
       {/* Spektre Corpus — primary featured section */}
       {corpus ? (
@@ -52,6 +74,49 @@ export default function ArtifactsPage() {
           style={{ borderColor: "var(--line)" }}
         >
           <ArtifactFeature artifact={protocol} />
+        </section>
+      ) : null}
+
+      {/* σ-gate — card treatment linking to full product page */}
+      {sigmaGate ? (
+        <section
+          className="mt-20 border-t pt-16 sm:mt-28 sm:pt-20"
+          style={{ borderColor: "var(--line)" }}
+        >
+          <Reveal delay={0}>
+            <p className="label mb-8 text-[var(--fg-faint)]">
+              Operational layer
+            </p>
+          </Reveal>
+          <ArtifactCard
+            artifact={sigmaGate}
+            featured
+            description={sigmaGate.summary}
+            index={0}
+          />
+        </section>
+      ) : null}
+
+      {/* additional archive items (future artifacts) */}
+      {archiveItems.length > 1 ? (
+        <section
+          className="mt-20 border-t pt-16 sm:mt-28 sm:pt-20"
+          style={{ borderColor: "var(--line)" }}
+        >
+          <Reveal delay={0}>
+            <p className="label mb-8 text-[var(--fg-faint)]">
+              All artifacts
+            </p>
+          </Reveal>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {archiveItems.map((item, i) => (
+              <ArtifactCard
+                key={item.slug}
+                artifact={item}
+                index={i}
+              />
+            ))}
+          </div>
         </section>
       ) : null}
     </div>

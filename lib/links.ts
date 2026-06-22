@@ -6,6 +6,7 @@ export const LINKS = {
   orcid: `https://orcid.org/${lab.orcid}`,
   email: `mailto:${lab.email}`,
   linkedin: lab.linkedin,
+  youtube: lab.youtube,
 } as const;
 
 

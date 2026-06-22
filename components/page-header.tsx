@@ -14,29 +14,40 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        "grid gap-7 pb-12 sm:gap-8 sm:pb-16 lg:grid-cols-12 lg:gap-12 lg:pb-20",
-        // Hairline bottom border using system token
+        "relative grid gap-7 pb-14 sm:gap-8 sm:pb-18 lg:grid-cols-12 lg:gap-12 lg:pb-24",
         "border-b border-[var(--line)]",
         className
       )}
     >
-      {/* Left gutter — metadata rail lives here on wide screens */}
-      <div className="hidden lg:col-span-3 lg:block xl:col-span-3">
-        {/* Vertical mono label — Abloh-style index mark */}
-        <p className="label mt-2 text-[var(--fg-faint)] [writing-mode:horizontal-tb]">
-          — SPEKTRE LABS
-        </p>
+      {/* Ambient specular — very faint horizontal streak behind the headline */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 40% at 50% 0%, rgba(200,210,230,0.04) 0%, transparent 100%)",
+        }}
+      />
+
+      {/* Left gutter — metadata rail */}
+      <div className="hidden lg:col-span-3 lg:flex lg:flex-col lg:gap-5 xl:col-span-3">
+        {/* Abloh vertical index mark */}
+        <p className="label mt-2 text-[var(--fg-faint)]">— SPEKTRE LABS</p>
+
+        {/* Hairline accent line that aligns with the headline baseline */}
+        <div
+          aria-hidden="true"
+          className="mt-auto h-px w-8 bg-[var(--line-strong)]"
+        />
       </div>
 
       {/* Right: title + description */}
       <div className="lg:col-span-9 xl:col-span-9">
         <h1
           className={cn(
-            // Brushed platinum metal headline
             "metal-text",
-            "text-balance font-semibold tracking-[-0.03em] leading-[1.04]",
-            "text-[2.05rem] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3.6rem]",
-            // Reveal on mount
+            "text-balance font-semibold tracking-[-0.035em] leading-[1.03]",
+            "text-[2.1rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem]",
             "rise"
           )}
         >
@@ -46,13 +57,12 @@ export function PageHeader({
         {description ? (
           <p
             className={cn(
-              "mt-5 max-w-[44ch] text-pretty leading-[1.82]",
-              "text-[0.98rem] sm:text-[1.05rem]",
+              "mt-6 max-w-[46ch] text-pretty leading-[1.84]",
+              "text-[1rem] sm:text-[1.08rem]",
               "text-[var(--fg-dim)]",
-              // Staggered reveal after title
               "rise"
             )}
-            style={{ animationDelay: "120ms" }}
+            style={{ animationDelay: "130ms" }}
           >
             {description}
           </p>

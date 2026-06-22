@@ -6,6 +6,9 @@ type Step = {
   bullets?: string[];
 };
 
+/* Roman numeral helper — keeps the editorial clock feeling */
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
+
 export function MethodDiagram({
   steps,
   className,
@@ -14,81 +17,114 @@ export function MethodDiagram({
   className?: string;
 }) {
   return (
-    <ol
-      className={cn(
-        "grid gap-0 lg:grid-cols-2",
-        className
-      )}
-    >
-      {steps.map((s, i) => (
-        <li
-          key={s.title}
-          className="rise group relative"
-          style={{ animationDelay: `${i * 120}ms` }}
-        >
-          {/* top hairline — full bleed per column */}
-          <div className="border-t border-[var(--line-strong)] pt-7 pb-10 pr-10" >
-            {/* step index + connector */}
-            <div className="flex items-start justify-between gap-6 mb-5">
-              {/* mono step tag */}
-              <span className="label" style={{ color: "var(--fg-faint)" }}>
-                STEP
-              </span>
-              {/* large editorial index */}
-              <span
-                className="font-mono tabular-nums text-[2.4rem] leading-none font-light tracking-[-0.04em]"
-                style={{ color: "var(--line-strong)" }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-            </div>
+    <div className={cn("relative", className)}>
+      {/* Symmetric center axis — visible only on lg+ */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 left-1/2 hidden -translate-x-px border-l border-[var(--line-soft)] lg:block"
+      />
 
-            {/* title */}
-            <h3
-              className="text-[1.05rem] font-semibold tracking-[-0.025em] leading-snug"
-              style={{ color: "var(--fg)" }}
+      <ol className="grid gap-0 lg:grid-cols-2">
+        {steps.map((s, i) => {
+          /* Mirror left/right on large screens for perfect bilateral symmetry */
+          const isRight = i % 2 === 1;
+
+          return (
+            <li
+              key={s.title}
+              className={cn(
+                "rise group relative",
+                /* right cells get left-padding on large screens */
+                isRight ? "lg:pl-12 lg:pr-0" : "lg:pr-12"
+              )}
+              style={{ animationDelay: `${i * 110}ms` }}
             >
-              {s.title}
-            </h3>
+              {/* Top hairline per cell */}
+              <div
+                className={cn(
+                  "border-t border-[var(--line-strong)] pb-12 pt-8",
+                  /* right cells on lg: shift hairline to flush right of center gap */
+                  isRight && "lg:border-t-0 lg:border-l lg:border-[var(--line)]"
+                )}
+              >
+                {/* Step meta row */}
+                <div className="mb-6 flex items-center justify-between gap-4">
+                  {/* Abloh-style mono label */}
+                  <span className="label text-[var(--fg-faint)]">STAGE</span>
 
-            {s.paragraphs?.length ? (
-              <div className="mt-5 space-y-4">
-                {s.paragraphs.map((paragraph) => (
-                  <p
-                    key={paragraph}
-                    className="text-[0.9rem] leading-[1.85]"
-                    style={{ color: "var(--fg-dim)" }}
+                  {/* Large editorial roman numeral */}
+                  <span
+                    className="font-mono text-[2rem] font-light leading-none tracking-[-0.03em] tabular-nums"
+                    style={{ color: "var(--line-strong)" }}
                   >
-                    {paragraph}
-                  </p>
-                ))}
+                    {ROMAN[i] ?? String(i + 1)}
+                  </span>
+                </div>
+
+                {/* Step title */}
+                <h3
+                  className="text-[1.08rem] font-semibold leading-snug tracking-[-0.025em]"
+                  style={{ color: "var(--fg)" }}
+                >
+                  {s.title}
+                </h3>
+
+                {/* Hairline accent below title */}
+                <div
+                  aria-hidden="true"
+                  className="mt-4 mb-5 h-px w-5"
+                  style={{ background: "var(--line-strong)" }}
+                />
+
+                {s.paragraphs?.length ? (
+                  <div className="space-y-4">
+                    {s.paragraphs.map((paragraph) => (
+                      <p
+                        key={paragraph}
+                        className="text-[0.925rem] leading-[1.87]"
+                        style={{ color: "var(--fg-dim)" }}
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
+
+                {s.bullets?.length ? (
+                  <ul className="mt-6 space-y-0">
+                    {s.bullets.map((bullet) => (
+                      <li
+                        key={bullet}
+                        className="flex items-baseline gap-3 border-b border-[var(--line)] py-2.5 text-[0.875rem] leading-relaxed last:border-b-0"
+                        style={{ color: "var(--fg-dim)" }}
+                      >
+                        {/* Hairline tick — Abloh detail */}
+                        <span
+                          className="mt-px shrink-0 font-mono text-[0.6rem]"
+                          style={{ color: "var(--fg-faint)" }}
+                        >
+                          —
+                        </span>
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
-            ) : null}
+            </li>
+          );
+        })}
+      </ol>
 
-            {s.bullets?.length ? (
-              <ul className="mt-6 space-y-0">
-                {s.bullets.map((bullet) => (
-                  <li
-                    key={bullet}
-                    className="flex items-baseline gap-3 border-b border-[var(--line)] py-2.5 text-[0.875rem] leading-relaxed last:border-b-0"
-                    style={{ color: "var(--fg-dim)" }}
-                  >
-                    {/* hairline tick */}
-                    <span
-                      className="mt-px shrink-0 text-[0.6rem] font-mono"
-                      style={{ color: "var(--fg-faint)" }}
-                    >
-                      —
-                    </span>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        </li>
-      ))}
-    </ol>
+      {/* Bottom symmetry line — seals the grid */}
+      <div
+        aria-hidden="true"
+        className="mt-0 h-px"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, var(--line-strong) 18%, var(--line-strong) 82%, transparent)",
+        }}
+      />
+    </div>
   );
 }
-

@@ -48,6 +48,7 @@ export default async function ArtifactPage({ params }: { params: Params }) {
   const related = allArtifacts.filter((a) => a.slug !== artifact.slug);
 
   const isSigmaGate = artifact.slug === "sigma-gate";
+  const isCorpus = artifact.slug === "spektre-corpus";
   const github = artifact.github?.trim();
 
   return (
@@ -85,6 +86,18 @@ export default async function ArtifactPage({ params }: { params: Params }) {
                 </Reveal>
               ))}
             </ProseBlock>
+
+            {/* corpus — browse all papers */}
+            {isCorpus && (
+              <Reveal delay={120}>
+                <Link
+                  href="/corpus"
+                  className="btn-metal mt-10 inline-flex items-center gap-2 rounded-[8px] px-6 py-2.5 text-sm font-semibold tracking-tight"
+                >
+                  Browse all 72 papers →
+                </Link>
+              </Reveal>
+            )}
 
             {/* σ-gate product block — what it does + CTA */}
             {isSigmaGate && (

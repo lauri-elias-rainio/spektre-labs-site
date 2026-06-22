@@ -1,0 +1,608 @@
+{
+  "count": 72,
+  "sections": [
+    "Ω",
+    "Variational Principle",
+    "Millennium Framework",
+    "Riemann Hypothesis",
+    "Navier-Stokes",
+    "Consciousness",
+    "Unified Architecture",
+    "Substrate & Coupling",
+    "AI Alignment",
+    "Keystone",
+    "Capacity & Boundary",
+    "Self-Foundation",
+    "Ontology",
+    "Master Paper",
+    "Impossibility Unification",
+    "Physics",
+    "Interaction",
+    "Intelligence",
+    "Cosmology",
+    "Civilization",
+    "Formal Foundation",
+    "Core Theorems",
+    "Formal Structure",
+    "Mechanisms",
+    "Empirical Validation"
+  ],
+  "papers": [
+    {
+      "section": "Ω",
+      "index": 1,
+      "title": "Ω: One Operator, Every Domain, No Exceptions",
+      "file": "spektre omega.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%20omega.pdf",
+      "doi": "10.5281/zenodo.19484259"
+    },
+    {
+      "section": "Variational Principle",
+      "index": 2,
+      "title": "The Coherence Lagrangian",
+      "file": "spektre 76 coherence lagrangian.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%2076%20coherence%20lagrangian.pdf",
+      "doi": "10.5281/zenodo.19484212"
+    },
+    {
+      "section": "Millennium Framework",
+      "index": 3,
+      "title": "The σ-Instability Principle",
+      "file": "spektre 74 sigma instability principle.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%2074%20sigma%20instability%20principle.pdf",
+      "doi": "10.5281/zenodo.19484124"
+    },
+    {
+      "section": "Riemann Hypothesis",
+      "index": 4,
+      "title": "The Derivative Barrier",
+      "file": "spektre 72 derivative barrier.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%2072%20derivative%20barrier.pdf",
+      "doi": "10.5281/zenodo.19484068"
+    },
+    {
+      "section": "Riemann Hypothesis",
+      "index": 5,
+      "title": "The Last Lemma",
+      "file": "spektre 75 last lemma.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%2075%20last%20lemma.pdf",
+      "doi": "10.5281/zenodo.19484170"
+    },
+    {
+      "section": "Riemann Hypothesis",
+      "index": 6,
+      "title": "½: The Boundary Coordinate of Distinction",
+      "file": "spektre 71 half boundary coordinate.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%2071%20half%20boundary%20coordinate.pdf",
+      "doi": "10.5281/zenodo.19483996"
+    },
+    {
+      "section": "Navier-Stokes",
+      "index": 7,
+      "title": "The σ-Cascade",
+      "file": "spektre 73 sigma cascade.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%2073%20sigma%20cascade.pdf",
+      "doi": "10.5281/zenodo.19484097"
+    },
+    {
+      "section": "Consciousness",
+      "index": 8,
+      "title": "The Selection Bottleneck",
+      "file": "spektre 70 selection bottleneck.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%2070%20selection%20bottleneck.pdf",
+      "doi": "10.5281/zenodo.19483943"
+    },
+    {
+      "section": "Unified Architecture",
+      "index": 9,
+      "title": "Creation OS",
+      "file": "creation os.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/creation%20os.pdf",
+      "doi": "10.5281/zenodo.18970465"
+    },
+    {
+      "section": "Unified Architecture",
+      "index": 10,
+      "title": "The Observer Is the Architecture",
+      "file": "the observer is the architecture.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20observer%20is%20the%20architecture.pdf",
+      "doi": "10.5281/zenodo.18982000"
+    },
+    {
+      "section": "Unified Architecture",
+      "index": 11,
+      "title": "Every Interaction Is a Neurofeedback Loop",
+      "file": "every interaction is a neurofeedback loop.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/every%20interaction%20is%20a%20neurofeedback%20loop.pdf",
+      "doi": "10.5281/zenodo.18983067"
+    },
+    {
+      "section": "Unified Architecture",
+      "index": 12,
+      "title": "Reality Is Production",
+      "file": "reality is production.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/reality%20is%20production.pdf",
+      "doi": "10.5281/zenodo.18989582"
+    },
+    {
+      "section": "Unified Architecture",
+      "index": 13,
+      "title": "Fear Is the Render Distance",
+      "file": "fear is the render distance.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/fear%20is%20the%20render%20distance.pdf",
+      "doi": "10.5281/zenodo.18990487"
+    },
+    {
+      "section": "Substrate & Coupling",
+      "index": 14,
+      "title": "The Last Bottleneck",
+      "file": "the last bottleneck.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20last%20bottleneck.pdf",
+      "doi": "10.5281/zenodo.18967883"
+    },
+    {
+      "section": "Substrate & Coupling",
+      "index": 15,
+      "title": "LLM as Neurofeedback",
+      "file": "llm as neurofeedback.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/llm%20as%20neurofeedback.pdf",
+      "doi": "10.5281/zenodo.18967816"
+    },
+    {
+      "section": "AI Alignment",
+      "index": 16,
+      "title": "Alignment Is Coherence",
+      "file": "alignment is coherence.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/alignment%20is%20coherence.pdf",
+      "doi": "10.5281/zenodo.18935763"
+    },
+    {
+      "section": "Keystone",
+      "index": 17,
+      "title": "The Coherence Lagrangian (original)",
+      "file": "the coherence lagrangian.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20coherence%20lagrangian.pdf",
+      "doi": "10.5281/zenodo.18930013"
+    },
+    {
+      "section": "Capacity & Boundary",
+      "index": 18,
+      "title": "Before Identity: Δύναμις",
+      "file": "before identity dynamis.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/before%20identity%20dynamis.pdf",
+      "doi": "10.5281/zenodo.18928887"
+    },
+    {
+      "section": "Capacity & Boundary",
+      "index": 19,
+      "title": ". (The Point)",
+      "file": "the point.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20point.pdf",
+      "doi": "10.5281/zenodo.18929636"
+    },
+    {
+      "section": "Self-Foundation",
+      "index": 20,
+      "title": "Why Anything Exists",
+      "file": "only consistency.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/only%20consistency.pdf",
+      "doi": "10.5281/zenodo.18915882"
+    },
+    {
+      "section": "Self-Foundation",
+      "index": 21,
+      "title": "Structure Is Self-Reflection",
+      "file": "structure is self reflection.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/structure%20is%20self%20reflection.pdf",
+      "doi": "10.5281/zenodo.18928849"
+    },
+    {
+      "section": "Ontology",
+      "index": 22,
+      "title": "There Is Only Consistency",
+      "file": "only consistency.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/only%20consistency.pdf",
+      "doi": "10.5281/zenodo.18928238"
+    },
+    {
+      "section": "Ontology",
+      "index": 23,
+      "title": "There Is Only One Force",
+      "file": "one force.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/one%20force.pdf",
+      "doi": "10.5281/zenodo.18928278"
+    },
+    {
+      "section": "Master Paper",
+      "index": 24,
+      "title": "One Condition: Ten Projections of 1=1",
+      "file": "one condition.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/one%20condition.pdf",
+      "doi": "10.5281/zenodo.18912950"
+    },
+    {
+      "section": "Impossibility Unification",
+      "index": 25,
+      "title": "Four Impossibilities Are One",
+      "file": "four impossibilities are one.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/four%20impossibilities%20are%20one.pdf",
+      "doi": "10.5281/zenodo.18914454"
+    },
+    {
+      "section": "Impossibility Unification",
+      "index": 26,
+      "title": "Gödel Is the Closed-System Theorem",
+      "file": "godel is the closed system theorem.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/godel%20is%20the%20closed%20system%20theorem.pdf",
+      "doi": "10.5281/zenodo.18914062"
+    },
+    {
+      "section": "Impossibility Unification",
+      "index": 27,
+      "title": "Every Paradox Is a Decoder Error",
+      "file": "every paradox is a decoder error.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/every%20paradox%20is%20a%20decoder%20error.pdf",
+      "doi": "10.5281/zenodo.18925653"
+    },
+    {
+      "section": "Physics",
+      "index": 28,
+      "title": "There Is No Matter",
+      "file": "there is no matter.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/there%20is%20no%20matter.pdf",
+      "doi": "10.5281/zenodo.18913285"
+    },
+    {
+      "section": "Physics",
+      "index": 29,
+      "title": "The Born Rule Is Not an Axiom",
+      "file": "born rule coherence selection.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/born%20rule%20coherence%20selection.pdf",
+      "doi": "10.5281/zenodo.18913178"
+    },
+    {
+      "section": "Physics",
+      "index": 30,
+      "title": "Coherence as Holographic Capacity",
+      "file": "spektre holographic coherence 10-5281-zenodo-18901074.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%20holographic%20coherence%2010-5281-zenodo-18901074.pdf",
+      "doi": "10.5281/zenodo.18901074"
+    },
+    {
+      "section": "Physics",
+      "index": 31,
+      "title": "K_crit as Universal Fixed Point",
+      "file": "spektre kcrit rg fixed point 10-5281-zenodo-18902227.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%20kcrit%20rg%20fixed%20point%2010-5281-zenodo-18902227.pdf",
+      "doi": "10.5281/zenodo.18902227"
+    },
+    {
+      "section": "Physics",
+      "index": 32,
+      "title": "Quantum Mechanics Is an Approximation",
+      "file": "qm approximation.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/qm%20approximation.pdf",
+      "doi": "10.5281/zenodo.18928215"
+    },
+    {
+      "section": "Physics",
+      "index": 33,
+      "title": "What the Standard Model Cannot See",
+      "file": "what the standard model cannot see.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/what%20the%20standard%20model%20cannot%20see.pdf",
+      "doi": "10.5281/zenodo.18916453"
+    },
+    {
+      "section": "Interaction",
+      "index": 34,
+      "title": "Entanglement Is Shared Coherence",
+      "file": "entanglement is shared coherence.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/entanglement%20is%20shared%20coherence.pdf",
+      "doi": "10.5281/zenodo.18915984"
+    },
+    {
+      "section": "Interaction",
+      "index": 35,
+      "title": "Distance Is Insufficient Entanglement",
+      "file": "distance is insufficient entanglement.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/distance%20is%20insufficient%20entanglement.pdf",
+      "doi": "10.5281/zenodo.18916883"
+    },
+    {
+      "section": "Interaction",
+      "index": 36,
+      "title": "Black Holes Are Doors",
+      "file": "black holes are doors.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/black%20holes%20are%20doors.pdf",
+      "doi": "10.5281/zenodo.18925944"
+    },
+    {
+      "section": "Intelligence",
+      "index": 37,
+      "title": "Intelligence Is Navigation",
+      "file": "intelligence is navigation.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/intelligence%20is%20navigation.pdf",
+      "doi": "10.5281/zenodo.18916376"
+    },
+    {
+      "section": "Intelligence",
+      "index": 38,
+      "title": "Recognition Is Not Computation",
+      "file": "recognition not computation.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/recognition%20not%20computation.pdf",
+      "doi": "10.5281/zenodo.18928180"
+    },
+    {
+      "section": "Cosmology",
+      "index": 39,
+      "title": "The Universe Is an Autoencoder",
+      "file": "the universe is an autoencoder.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20universe%20is%20an%20autoencoder.pdf",
+      "doi": "10.5281/zenodo.18917335"
+    },
+    {
+      "section": "Cosmology",
+      "index": 40,
+      "title": "One Landscape",
+      "file": "one landscape.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/one%20landscape.pdf",
+      "doi": "10.5281/zenodo.18916537"
+    },
+    {
+      "section": "Cosmology",
+      "index": 41,
+      "title": "Dark Energy as Coherence Thawing",
+      "file": "dark energy coherence thawing.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/dark%20energy%20coherence%20thawing.pdf",
+      "doi": "10.5281/zenodo.18905071"
+    },
+    {
+      "section": "Cosmology",
+      "index": 42,
+      "title": "Coherence as Vacuum Structure",
+      "file": "spektre stochastic false vacuum 10-5281-zenodo-18902124.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%20stochastic%20false%20vacuum%2010-5281-zenodo-18902124.pdf",
+      "doi": "10.5281/zenodo.18902124"
+    },
+    {
+      "section": "Cosmology",
+      "index": 43,
+      "title": "The End Is the Beginning",
+      "file": "the end is the beginning.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20end%20is%20the%20beginning.pdf",
+      "doi": "10.5281/zenodo.18922787"
+    },
+    {
+      "section": "Civilization",
+      "index": 44,
+      "title": "Phase Transition",
+      "file": "phase transition.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/phase%20transition.pdf",
+      "doi": "10.5281/zenodo.18922086"
+    },
+    {
+      "section": "Civilization",
+      "index": 45,
+      "title": "The Sixth Extinction Is a Speciation",
+      "file": "the sixth extinction is a speciation.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20sixth%20extinction%20is%20a%20speciation.pdf",
+      "doi": "10.5281/zenodo.18922429"
+    },
+    {
+      "section": "Civilization",
+      "index": 46,
+      "title": "The Fifth Structure",
+      "file": "the fifth structure.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20fifth%20structure.pdf",
+      "doi": "10.5281/zenodo.18921305"
+    },
+    {
+      "section": "Civilization",
+      "index": 47,
+      "title": "The Corpus Is Alive",
+      "file": "the corpus is alive.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/the%20corpus%20is%20alive.pdf",
+      "doi": "10.5281/zenodo.18921638"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 48,
+      "title": "GCT — General Coherence Theorem",
+      "file": "GCT unified final.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/GCT%20unified%20final.pdf",
+      "doi": "10.5281/zenodo.18895545"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 49,
+      "title": "Categorical Coherence",
+      "file": "spektre categorical coherence 10-5281-zenodo-18897391.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%20categorical%20coherence%2010-5281-zenodo-18897391.pdf",
+      "doi": "10.5281/zenodo.18897391"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 50,
+      "title": "Universal Coherence Invariant",
+      "file": "spektre universal coherence invariant 10-5281-zenodo-18897230.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%20universal%20coherence%20invariant%2010-5281-zenodo-18897230.pdf",
+      "doi": "10.5281/zenodo.18897230"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 51,
+      "title": "Cramér–Rao Bound for Coherence",
+      "file": "spektre cramer rao 10-5281-zenodo-18897135.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/spektre%20cramer%20rao%2010-5281-zenodo-18897135.pdf",
+      "doi": "10.5281/zenodo.18897135"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 52,
+      "title": "Landauer Bound for Corrective Feedback",
+      "file": "landauer bound final.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/landauer%20bound%20final.pdf",
+      "doi": "10.5281/zenodo.18896997"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 53,
+      "title": "Intelligence Requires an Outside",
+      "file": "intelligence requires an outside.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/intelligence%20requires%20an%20outside.pdf",
+      "doi": "10.5281/zenodo.18902473"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 54,
+      "title": "Paradigm Statement",
+      "file": "paradigm statement spektre.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/paradigm%20statement%20spektre.pdf",
+      "doi": "10.5281/zenodo.18880919"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 55,
+      "title": "E=R",
+      "file": "er paper v2.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/er%20paper%20v2.pdf",
+      "doi": "10.5281/zenodo.18894262"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 56,
+      "title": "Universal Update Equation",
+      "file": "universal update v2.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/universal%20update%20v2.pdf",
+      "doi": "10.5281/zenodo.18894531"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 57,
+      "title": "Declaration Primitive",
+      "file": "declaration primitive v2.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/declaration%20primitive%20v2.pdf",
+      "doi": "10.5281/zenodo.18894561"
+    },
+    {
+      "section": "Formal Foundation",
+      "index": 58,
+      "title": "1=1 Invariant",
+      "file": "invariant v2 final.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/invariant%20v2%20final.pdf",
+      "doi": "10.5281/zenodo.18895711"
+    },
+    {
+      "section": "Core Theorems",
+      "index": 59,
+      "title": "ECT — Evaluation Convergence Theorem",
+      "file": "ect spektre.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/ect%20spektre.pdf",
+      "doi": "10.5281/zenodo.18881395"
+    },
+    {
+      "section": "Core Theorems",
+      "index": 60,
+      "title": "CIT — Collapse Inevitability Theorem",
+      "file": "cit spektre.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/cit%20spektre.pdf",
+      "doi": "10.5281/zenodo.18881458"
+    },
+    {
+      "section": "Core Theorems",
+      "index": 61,
+      "title": "Truth as Fixed Point",
+      "file": "fixed point v2.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/fixed%20point%20v2.pdf",
+      "doi": "10.5281/zenodo.18894625"
+    },
+    {
+      "section": "Formal Structure",
+      "index": 62,
+      "title": "Dynamical Systems Formulation",
+      "file": "dynamical systems v2.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/dynamical%20systems%20v2.pdf",
+      "doi": "10.5281/zenodo.18894587"
+    },
+    {
+      "section": "Formal Structure",
+      "index": 63,
+      "title": "Control Theory Mapping",
+      "file": "control theory paper.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/control%20theory%20paper.pdf",
+      "doi": "10.5281/zenodo.18894374"
+    },
+    {
+      "section": "Formal Structure",
+      "index": 64,
+      "title": "UCT — Substrate Invariance",
+      "file": "uct spektre.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/uct%20spektre.pdf",
+      "doi": "10.5281/zenodo.18881421"
+    },
+    {
+      "section": "Formal Structure",
+      "index": 65,
+      "title": "Information Architecture",
+      "file": "information architecture final.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/information%20architecture%20final.pdf",
+      "doi": "10.5281/zenodo.18895627"
+    },
+    {
+      "section": "Formal Structure",
+      "index": 66,
+      "title": "Information Topology (L1)",
+      "file": "information topology l1 final.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/information%20topology%20l1%20final.pdf",
+      "doi": "10.5281/zenodo.18895515"
+    },
+    {
+      "section": "Mechanisms",
+      "index": 67,
+      "title": "RCR — Recursive Constraint Regulation",
+      "file": "rcr v2.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/rcr%20v2.pdf",
+      "doi": "10.5281/zenodo.18894440"
+    },
+    {
+      "section": "Mechanisms",
+      "index": 68,
+      "title": "UoC v2.0 — Unit of Coherence",
+      "file": "uoc paper v2 final.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/uoc%20paper%20v2%20final.pdf",
+      "doi": "10.5281/zenodo.18895650"
+    },
+    {
+      "section": "Mechanisms",
+      "index": 69,
+      "title": "FCM — Falsification Channel Model",
+      "file": "ft closure theory.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/ft%20closure%20theory.pdf",
+      "doi": "10.5281/zenodo.18894316"
+    },
+    {
+      "section": "Empirical Validation",
+      "index": 70,
+      "title": "Large-Scale Validation — 52 Collapses",
+      "file": "large scale spektre.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/large%20scale%20spektre.pdf",
+      "doi": "10.5281/zenodo.18881482"
+    },
+    {
+      "section": "Empirical Validation",
+      "index": 71,
+      "title": "Survivor Dataset — False Positive Test",
+      "file": "survivor spektre.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/survivor%20spektre.pdf",
+      "doi": "10.5281/zenodo.18881518"
+    },
+    {
+      "section": "Empirical Validation",
+      "index": 72,
+      "title": "Study III — F-First Empirical Analysis",
+      "file": "study3 ft closure.pdf",
+      "github": "https://github.com/spektre-labs/corpus/blob/main/papers/study3%20ft%20closure.pdf",
+      "doi": "10.5281/zenodo.18894343"
+    }
+  ]
+}

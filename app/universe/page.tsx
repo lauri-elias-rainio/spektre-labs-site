@@ -65,6 +65,7 @@ const DIVISIONS: Division[] = [
     substrate: "AAA Generative Worlds",
     line: "Coherence as interactive structure. Playable worlds derived from the axiom.",
     tier: "VISION",
+    href: "/games",
     img: "/generated/divisions/games.png",
   },
   {

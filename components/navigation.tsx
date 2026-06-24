@@ -9,15 +9,15 @@ import { ExternalLink } from "@/components/external-link";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
+// Clarity-first funnel — collapsed from 9 flat abstractions to 5 role-clear
+// destinations. σ-gate leads (the one REAL shipping product). Research absorbs
+// Artifacts; Lab folds in Method + Manifesto + About. Studio/Games/Shoreworld
+// are reached from the home divisions + Universe, keeping the bar quiet.
 const navItems: Array<{ href: string; label: string }> = [
-  { href: "/universe", label: "Universe" },
-  { href: "/artifacts", label: "Artifacts" },
+  { href: "/systems", label: "σ-gate" },
   { href: "/research", label: "Research" },
-  { href: "/systems", label: "Systems" },
-  { href: "/studio", label: "Studio" },
-  { href: "/method", label: "Method" },
-  { href: "/manifesto", label: "Manifesto" },
-  { href: "/about", label: "About" },
+  { href: "/universe", label: "Universe" },
+  { href: "/about", label: "Lab" },
   { href: "/connect", label: "Connect" },
 ];
 

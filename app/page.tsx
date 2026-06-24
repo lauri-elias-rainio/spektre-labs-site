@@ -34,47 +34,47 @@ const DIVISIONS: Division[] = [
   {
     index: "01",
     name: "Research",
-    sub: "Corpus · Protocol",
+    sub: "The papers",
     status: "REAL" as const,
     description:
-      "The primary layer. The Spektre Corpus investigates structural invariants across complex systems — physics, cognition, AI, institutional dynamics — unified under a single coherence measure. The Protocol formalises the operator-space hierarchy needed to reason about representational limits.",
-    href: "/artifacts",
+      "The papers. We map why systems stay coherent or collapse — and find the same breaking point, K_crit ≈ 0.127, recurring from physics to AI. Open-source. Read the corpus.",
+    href: "/research",
   },
   {
     index: "02",
     name: "Systems",
-    sub: "σ-gate · Creation OS",
+    sub: "The theory, as code",
     status: "REAL" as const,
     description:
-      "Theory made executable. σ-gate enforces the 1 = 1 axiom deterministically: leaked secrets, prompt injection, and coherence failures halted without a model call. Creation OS is the substrate — the research engine itself, shipping.",
-    href: "/artifacts/sigma-gate",
+      "The theory, as code you can run. σ-gate checks AI output for leaked secrets, injection, and broken coherence — no model, no network, same answer every time, ~85 µs per call. Free core, live demo in your browser.",
+    href: "/systems",
   },
   {
     index: "03",
     name: "Studio",
-    sub: "Film · Media",
+    sub: "The lab, on film",
     status: "EMERGING" as const,
     description:
-      "Generative film and media production built on the same structural principles. A creative OS for faceless narrative cinema. Output is live — the channel is active.",
+      "The lab, on film. We're turning the research into video — the channel is live and growing. Watch the work get made.",
     href: LINKS.youtube,
     external: true,
   },
   {
     index: "04",
     name: "Games",
-    sub: "AAA Generative",
+    sub: "The same law, played",
     status: "VISION" as const,
     description:
-      "A generative AAA game engine whose worlds are structurally coherent, not procedurally random. Coherence = playable meaning. The theory precedes the build.",
+      "Worlds built on the same law. If a system must stay coherent to survive, a game is the cleanest place to prove it. Not built yet — the theory comes first.",
     href: null,
   },
   {
     index: "05",
     name: "Shoreworld",
-    sub: "The World · The IP",
+    sub: "The world · The IP",
     status: "VISION" as const,
     description:
-      "The unified fiction universe underlying the studio and games divisions — a science-fiction world built as a coherence proof. One mind, one invariant, five surfaces.",
+      "The world, and its story. One IP designed from the start as a proof of coherence — a place where 1 = 1 is the physics. Concept stage.",
     href: null,
   },
 ] as const;
@@ -141,9 +141,10 @@ export default function Home() {
 
           {/* Descriptor */}
           <Reveal delay={240}>
-            <p className="mt-8 max-w-[34rem] text-pretty text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] sm:text-[1.1rem]">
-              Declared states equal realized states — or the system fails. One invariant,
-              traced from physics to code. σ&nbsp;measures the distance.
+            <p className="mt-8 max-w-[38rem] text-pretty text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] sm:text-[1.1rem]">
+              What a system promises should match what it delivers. σ&nbsp;is the distance
+              between the two. When σ grows and nothing corrects it, systems collapse — at a
+              measured threshold, K<sub className="tracking-normal">crit</sub>&thinsp;≈&thinsp;0.127.
             </p>
           </Reveal>
         </div>
@@ -486,9 +487,10 @@ export default function Home() {
 
           {/* Sub-copy */}
           <Reveal delay={160}>
-            <p className="mt-7 max-w-[26rem] text-pretty text-[1rem] leading-[1.86] text-[var(--fg-mute)]">
-              Coherence is deterministic. Either a system holds 1&nbsp;=&nbsp;1
-              or it does not. See the proof — or step inside.
+            <p className="mt-7 max-w-[30rem] text-pretty text-[1rem] leading-[1.86] text-[var(--fg-mute)]">
+              Coherence isn&rsquo;t an opinion — either a system holds 1&nbsp;=&nbsp;1 or it
+              doesn&rsquo;t. σ-gate is the proof, and it runs in your browser right now.
+              No signup. No model. No network.
             </p>
           </Reveal>
 
@@ -508,7 +510,7 @@ export default function Home() {
                 href="/systems"
                 className="btn-metal rounded-[10px] px-8 py-3.5 text-[0.92rem] font-semibold tracking-tight"
               >
-                See the gate
+                Run the gate
               </Link>
               <Link
                 href="/connect"

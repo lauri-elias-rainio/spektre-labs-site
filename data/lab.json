@@ -1,7 +1,7 @@
 {
   "name": "Spektre Labs",
-  "tagline": "Mining structure from latent space.",
-  "subtext": "Spektre Labs is an independent research laboratory exploring structural invariants across complex systems.",
+  "tagline": "What you say should equal what you do. We measure the gap.",
+  "subtext": "Independent research lab in Helsinki. One idea: coherence you can measure — what a system declares should equal what it does. Proven in the Spektre Corpus, shipping as σ-gate.",
   "location": "Helsinki",
   "author": "Lauri Elias Rainio",
   "email": "spektre.labs@proton.me",
@@ -15,7 +15,7 @@
     "overview": [
       "Spektre Labs is an independent research laboratory based in Helsinki.",
       "The lab is dedicated to the discovery of structural invariants across complex systems. Its work focuses on identifying patterns that persist across domains and scales, from physical systems to cognition, artificial intelligence, and institutional dynamics.",
-      "Spektre Labs operates as a research engine: computational systems are orchestrated to explore large theoretical spaces, test structural hypotheses, and formalize coherent frameworks describing complex systems."
+      "Everything published is open. The papers live in the Spektre Corpus; the working proof is σ-gate — a free, zero-dependency tool that enforces the same rule in AI output."
     ],
     "researchOutput": {
       "title": "Research Output",
@@ -34,15 +34,22 @@
   },
   "home": {
     "hero": {
-      "tagline": "Mining structure from latent space.",
+      "eyebrow": "Independent Research Lab · Helsinki",
+      "headline": "Does it do what it says?",
+      "axiom": "1 = 1",
+      "axiomGloss": "What a system promises should match what it delivers. σ is the distance between the two.",
+      "tagline": "What you say should equal what you do. We measure the gap.",
+      "sub": "Spektre Labs studies why systems hold together — and why they break. We turned that study into running code: σ-gate, a free tool that checks whether an AI's output is safe and honest before it ships.",
+      "primaryCta": { "label": "See it run", "href": "/systems" },
+      "secondaryCta": { "label": "Read the corpus", "href": "/research" },
       "description": [
-        "Spektre Labs is an independent research laboratory exploring structural invariants across complex systems.",
-        "Rather than modeling phenomena individually, the lab investigates the conditions under which systems remain coherent - and when they collapse."
+        "Spektre Labs studies why systems hold together — and why they break.",
+        "We turned that study into running code: tools that check whether an AI's output is actually safe and honest before it ships."
       ]
     },
     "whatWeDo": {
-      "title": "Orchestrating Computational Intelligence",
-      "description": "Spektre Labs uses computational systems to explore large theoretical spaces and identify structural relationships that appear across domains.",
+      "title": "What we do",
+      "description": "We study one thing in many places: what keeps a system — code, a market, a mind, an institution — holding together, and what makes it fall apart. Then we build tools that measure it.",
       "detail": "Research focuses on invariants governing coherence, feedback dynamics, and systemic collapse.",
       "domains": [
         "complex systems",

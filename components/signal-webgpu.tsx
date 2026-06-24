@@ -467,10 +467,9 @@ export default function SignalWebGPU() {
         camera.position.x = 0; // never leaves the axis — 1 = 1 in motion
         camera.lookAt(0, camera.position.y * 0.5, 0);
 
-        // keep the signal sliver billboarded but pinned dead-center on the axis
-        signalLine.position.set(0, 0, 0);
+        // keep the signal sliver billboarded but pinned dead-center on the axis.
+        // It lives at the group origin (0,0,0) — it can never leave the Y axis.
         signalLine.lookAt(camera.position);
-        signalLine.position.set(0, 0, 0);
 
         draw();
         if (!disposed && running) raf = requestAnimationFrame(renderFrame);

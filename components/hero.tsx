@@ -9,12 +9,14 @@ import lab from "@/data/lab.json";
 // three.js (WebGPU → WebGL2 fallback) inside useEffect — so a plain import is SSR-safe, and if
 // it fails to initialise the <Lattice/> underneath stays visible. No next/dynamic needed.
 
+const hero = lab.home.hero;
+
 export function Hero() {
   return (
     <section className="relative -mx-6 -mt-4 overflow-hidden px-6 pb-24 pt-10 sm:-mx-8 sm:px-8 sm:pb-28 sm:pt-14 lg:pb-36">
-      {/* signal object — WebGPU hero layered over the canvas Lattice fallback */}
+      {/* THE OBELISK — WebGPU signature monolith, layered over the canvas Lattice fallback */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 left-[8%] opacity-90">
+        <div className="absolute inset-0 left-[14%] opacity-90">
           <Lattice />
           <SignalWebGPU />
         </div>
@@ -31,50 +33,70 @@ export function Hero() {
       </div>
 
       <div className="relative max-w-[60rem] pt-16 sm:pt-24 lg:pt-28">
+        {/* eyebrow */}
         <p className="rise label mb-7 text-[var(--fg-mute)]" style={{ animationDelay: "0.05s" }}>
-          &ldquo;Independent Research Laboratory&rdquo;
+          {hero.eyebrow}
         </p>
 
+        {/* the question — the one thing a first-time visitor reads */}
         <h1
-          className="rise metal-text max-w-[46rem] text-balance text-[3.1rem] font-semibold leading-[0.95] tracking-[-0.04em] sm:text-[4.4rem] md:text-[5.6rem] lg:text-[6.6rem]"
+          className="rise-blur metal-text hero-display max-w-[18ch] text-balance"
           style={{ animationDelay: "0.1s" }}
         >
-          {lab.name}
+          {hero.headline}
         </h1>
 
-        <p
-          className="rise mt-8 max-w-[34rem] text-pretty text-[1.4rem] font-medium leading-[1.18] text-[var(--fg)] sm:text-[1.75rem] lg:mt-10 lg:text-[2rem]"
-          style={{ animationDelay: "0.18s" }}
-        >
-          {lab.home.hero.tagline}
-        </p>
-
+        {/* the axiom — the answer, rendered as the one signature mark. Symmetric, 1=1. */}
         <div
-          className="rise mt-9 max-w-[37rem] space-y-4 text-[1.02rem] leading-[1.85] text-[var(--fg-dim)] lg:mt-11"
-          style={{ animationDelay: "0.26s" }}
+          className="rise mt-9 flex items-center gap-5 sm:gap-7"
+          style={{ animationDelay: "0.2s" }}
         >
-          {lab.home.hero.description.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+          <span className="axis-signal h-12 sm:h-14" aria-hidden />
+          <div>
+            <p
+              className="metal-text text-[2.2rem] font-semibold leading-none tracking-[-0.05em] sm:text-[2.8rem]"
+              aria-label="One equals one"
+            >
+              1&thinsp;=&thinsp;1
+            </p>
+            <p className="mt-2 max-w-[32rem] text-[0.95rem] leading-[1.6] text-[var(--fg-mute)]">
+              {hero.axiomGloss}
+            </p>
+          </div>
         </div>
 
+        {/* the concrete proof — what's actually real */}
+        <p
+          className="rise mt-9 max-w-[38rem] text-pretty text-[1.08rem] leading-[1.8] text-[var(--fg-dim)] sm:text-[1.18rem] lg:mt-11"
+          style={{ animationDelay: "0.28s" }}
+        >
+          {hero.sub}
+        </p>
+
+        {/* what to do */}
         <div
           className="rise mt-12 flex flex-wrap items-center gap-3 lg:mt-14"
-          style={{ animationDelay: "0.34s" }}
+          style={{ animationDelay: "0.36s" }}
         >
           <Link
-            href="/artifacts"
+            href={hero.primaryCta.href}
             className="btn-metal rounded-[10px] px-6 py-3 text-[0.95rem] font-semibold tracking-tight"
           >
-            View Artifacts
+            {hero.primaryCta.label}&nbsp;→
+          </Link>
+          <Link
+            href={hero.secondaryCta.href}
+            className="rounded-[10px] border border-[var(--line-strong)] px-6 py-3 text-[0.95rem] font-medium tracking-tight text-[var(--fg-dim)] transition-colors duration-500 hover:border-[var(--metal-3)] hover:text-[var(--fg)]"
+          >
+            {hero.secondaryCta.label}
           </Link>
           <Link
             href={LINKS.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-[10px] border border-[var(--line-strong)] px-6 py-3 text-[0.95rem] font-medium tracking-tight text-[var(--fg-dim)] transition-colors duration-500 hover:border-[var(--metal-3)] hover:text-[var(--fg)]"
+            className="label ml-2 hidden text-[var(--fg-faint)] transition-colors duration-500 hover:text-[var(--fg-mute)] sm:inline"
           >
-            GitHub
+            GitHub&nbsp;↗
           </Link>
         </div>
       </div>

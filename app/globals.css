@@ -1,11 +1,25 @@
 @import "tailwindcss";
 
 /*
-  SPEKTRE LABS — luxury super-tech design system.
+  SPEKTRE LABS — luxury super-tech design system.  AAAA+ tier.
   Art direction: committed OLED dark. Prada restraint · Fear of God elevation ·
   Virgil Abloh industrial-editorial · Apple-grade material & motion.
   Monochrome with a single platinum metal axis. Material, not flat:
   hairlines, grain, specular, depth.
+
+  STYLE_LAW (hard, non-negotiable):
+   1. Perfect bilateral/radial SYMMETRY = 1=1.
+   2. OLED TRUE-BLACK + ONE platinum axis (#e8eaee→#565b65) + ONE cold signal (#cfe3ff). No other color.
+   3. Material, never flat: hairlines, grain, specular, depth.
+   4. Editorial discipline: ONE display size, ONE ornament, ONE signal per view.
+   5. Mono-Abloh voice: mono uppercase metadata labels.
+   6. Apple-grade motion: ease cubic-bezier(0.16,1,0.3,1); prefers-reduced-motion safe.
+   7. EI FEIKKI PASKAA: no fabricated metrics. σ-honest.
+   8. One theme forever.
+
+  This file is ADDITIVE. Every pre-existing token and class is preserved
+  byte-compatible — downstream sites depend on them. New tokens/utilities
+  only extend the vocabulary; they never redefine a depended-upon name.
 */
 
 :root {
@@ -30,7 +44,7 @@
   --metal-3: #888d97;
   --metal-4: #565b65;
 
-  /* single cold signal accent (restrained) */
+  /* single cold signal accent (restrained — the ONLY non-monochrome value) */
   --signal: #cfe3ff;
   --signal-glow: rgba(150, 190, 255, 0.16);
 
@@ -44,7 +58,32 @@
 
   --background: var(--bg);
   --foreground: var(--fg);
+  /* Instrument Serif — RESERVED for a single quotation device only (rule 4). */
   --font-display: var(--font-display), "Times New Roman", serif;
+
+  /* ============================================================
+     AAAA+ DELTAS — new tokens only; nothing above is touched.
+     ============================================================ */
+
+  /* TYPOGRAPHY — ONE display size (rule 4). Kills the three magic
+     breakpoint sizes; the hero h1 pulls from this single clamp token. */
+  --display: clamp(3.1rem, 8vw, 6.6rem);
+  --display-tracking: -0.04em;
+
+  /* MOTION — a 3-value duration vocabulary. No ad-hoc durations anywhere.
+     micro = hovers/taps · reveal = editorial entrances · transition = routes. */
+  --ease-fast: cubic-bezier(0.16, 1, 0.3, 1); /* identical law-curve, semantic alias */
+  --t-micro: 200ms;
+  --t-reveal: 550ms;
+  --t-transition: 300ms;
+
+  /* HAIRLINES — sub-pixel hairline reads as machined on OLED/retina;
+     a true 1px line is slightly heavy at the brand's precision. */
+  --hair: 0.5px;
+
+  /* SPECULAR — the single platinum ornament, extracted from .metal-text so
+     the SAME gradient is reused across text and the env strip (one ornament). */
+  --spec-strip: linear-gradient(180deg, #fff, #dadee5 26%, #9aa0ab 52%, #c8ccd4 70%, #6e737d 100%);
 }
 
 @theme inline {
@@ -110,10 +149,19 @@ body::after {
   color: #fff;
 }
 
+/* The one signal is also the one focus color — every keyboard focus is #cfe3ff. */
 :focus-visible {
   outline: 1px solid var(--metal-2);
   outline-offset: 3px;
   border-radius: 2px;
+}
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-color: var(--signal);
 }
 
 a {
@@ -138,7 +186,7 @@ code {
 
 /* ---- material utilities ---- */
 
-/* brushed-platinum text */
+/* brushed-platinum text — the ONE ornament, source of --spec-strip */
 .metal-text {
   background: linear-gradient(177deg, #ffffff 0%, #dadee5 26%, #9aa0ab 52%, #c8ccd4 70%, #6e737d 100%);
   -webkit-background-clip: text;
@@ -201,18 +249,218 @@ code {
   transform: translateY(-1px);
 }
 
-/* slow reveal */
+/* slow reveal (legacy — kept exactly) */
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .rise { animation: rise 1s var(--ease) both; }
 
+/* ============================================================
+   AAAA+ MATERIAL & MOTION UTILITIES  (additive)
+   ============================================================ */
+
+/* TYPOGRAPHY — the single display size. Refactor the hero h1 onto this
+   class to kill the three magic breakpoint sizes (rule 4: ONE display size).
+   page.tsx hero: replace
+     className="metal-text text-[5rem] ... sm:text-[7.5rem] lg:text-[10rem]"
+   with
+     className="metal-text hero-display"
+*/
+.hero-display {
+  font-size: var(--display);
+  letter-spacing: var(--display-tracking);
+  line-height: 1;
+  font-weight: 600;
+}
+
+/* 3-CHANNEL HEADLINE ENTRY — opacity + blur(4→0) + translateY(12→0).
+   One display headline per view earns this; body copy uses .fade-in. */
+@keyframes rise-blur {
+  from { opacity: 0; filter: blur(4px); transform: translateY(12px); }
+  to   { opacity: 1; filter: blur(0);   transform: none; }
+}
+.rise-blur {
+  animation: rise-blur var(--t-reveal) var(--ease) both;
+}
+
+/* body-copy entrance — plain opacity fade (no blur, no translate) */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in {
+  animation: fade-in var(--t-reveal) var(--ease) both;
+}
+
+/* AXIS SIGNAL — the in-DOM #cfe3ff accent. A 1px vertical gradient line
+   (transparent → signal → transparent) that mirrors the obelisk's emissive
+   axis. Always vertical, always centered: the one signal appears exactly
+   once per view, as a thread, not a fill. */
+.axis-signal {
+  width: 1px;
+  align-self: center;
+  margin-inline: auto;
+  background: linear-gradient(180deg, transparent, var(--signal), transparent);
+  box-shadow: 0 0 8px 0 var(--signal-glow);
+  pointer-events: none;
+}
+.axis-signal::selection { background: transparent; }
+
+/* HAIRLINES — sub-pixel machined line. Use where a 1px rule reads heavy. */
+.hair-x {
+  height: var(--hair);
+  border: 0;
+  background: linear-gradient(90deg, transparent, var(--line-strong) 18%, var(--line-strong) 82%, transparent);
+}
+
+/* SPECULAR ENV STRIP — the same platinum ornament as text, reused as a
+   physical strip (one ornament system: text and strip share --spec-strip). */
+.spec-strip {
+  background: var(--spec-strip);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* MICRO-INTERACTION — the link underline (only permitted text affordance). */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% var(--hair);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--t-micro) var(--ease);
+}
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% var(--hair);
+}
+
+/* ============================================================
+   SCROLL-DRIVEN REVEALS  (compositor-thread, zero main-thread jank)
+   Happy path: native scroll-driven CSS. Browsers without support fall to
+   the IntersectionObserver path that toggles [data-in-view] (below).
+   ============================================================ */
+
+/* IntersectionObserver fallback / default: hidden until [data-in-view]. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(4px);
+  transition:
+    opacity var(--t-reveal) var(--ease),
+    transform var(--t-reveal) var(--ease),
+    filter var(--t-reveal) var(--ease);
+  will-change: opacity, transform, filter;
+}
+[data-reveal][data-in-view] {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+/* body-copy variant — opacity only */
+[data-reveal="fade"] {
+  transform: none;
+  filter: none;
+}
+
+@supports (animation-timeline: view()) {
+  /* Native happy path: the same reveal driven by the element's view timeline.
+     Runs on the compositor; no JS, no observer, no main-thread cost. */
+  @keyframes reveal-in {
+    from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+    to   { opacity: 1; transform: none;             filter: blur(0); }
+  }
+  @keyframes reveal-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  [data-reveal] {
+    /* clear the JS-fallback inline transition; the timeline owns motion now */
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+    animation: reveal-in linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 26%;
+  }
+  [data-reveal="fade"] {
+    animation-name: reveal-fade;
+  }
+}
+
+/* ============================================================
+   VIEW TRANSITIONS  (Next.js experimental.viewTransition)
+   Wrap shared route elements (artifact card → artifact hero) with
+   <ViewTransition name>. Directional 300ms slide on the law curve.
+   Browsers without the API swap instantly (progressive enhancement).
+   ============================================================ */
+@keyframes vt-slide-out {
+  to { opacity: 0; transform: translateX(-2%); }
+}
+@keyframes vt-slide-in {
+  from { opacity: 0; transform: translateX(2%); }
+}
+::view-transition-old(root) {
+  animation: vt-slide-out var(--t-transition) var(--ease) both;
+}
+::view-transition-new(root) {
+  animation: vt-slide-in var(--t-transition) var(--ease) both;
+}
+
+/* ============================================================
+   REDUCED-MOTION SAFETY (STYLE_LAW §6 — mandatory)
+   Every animation names its fallback:
+     rise / rise-blur / fade-in → instant visible end-state
+     scroll-driven reveal       → forced to end-state (static framing)
+     view-transition            → 0s (instant swap)
+     hero camera-descent / tilt → handled in the canvas via this query
+     postFX / bloom / blur      → off (filter cleared below)
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* rise / rise-blur / fade-in → instant visible, no blur, no offset */
+  .rise, .rise-blur, .fade-in {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  /* scroll-driven reveals → forced to their end-state (static framing) */
+  [data-reveal],
+  [data-reveal][data-in-view] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+    animation-timeline: auto !important;
+  }
+
+  /* view transitions → 0s, no slide */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      animation: none !important;
+      animation-timeline: auto !important;
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
   }
 }

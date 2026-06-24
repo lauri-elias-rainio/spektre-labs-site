@@ -63,6 +63,52 @@ export default function AboutPage() {
         <div className="rule mt-14 sm:mt-16 lg:mt-20" />
       </div>
 
+      {/* ── Mission / Vision ─────────────────────────────────────────── */}
+      <div className="mt-16 grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)] sm:mt-20 lg:grid-cols-2">
+        {/* Mission — what we do now (REAL) */}
+        <Reveal delay={0}>
+          <div className="h-full bg-[var(--bg-1)] p-8 sm:p-10 lg:p-12">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="label text-[var(--fg-faint)]">Mission</span>
+              <span className="label text-[var(--signal)]">Now</span>
+            </div>
+            <p className="text-balance text-[1.4rem] font-semibold leading-[1.18] tracking-[-0.025em] text-[var(--fg)] sm:text-[1.65rem]">
+              What you say should equal what you do. We measure the gap, and we close it.
+            </p>
+            <p className="mt-6 text-[0.96rem] leading-[1.85] text-[var(--fg-dim)]">
+              Spektre Labs builds one thing in many forms: coherence you can check. We make
+              1&nbsp;=&nbsp;1 executable — declared equal to realized — then run that one
+              invariant from physics to code to capital, each layer verifiable against the
+              last. We ship the smaller true thing over the larger false one, and when declared
+              is not yet realized, we publish the gap. σ is the name of that gap, and the number
+              cannot lie.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Vision — where it goes (explicitly fenced) */}
+        <Reveal delay={90}>
+          <div className="h-full bg-[var(--bg-1)] p-8 sm:p-10 lg:p-12">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="label text-[var(--fg-faint)]">Vision</span>
+              <span className="label rounded-full border border-[var(--line-strong)] px-2 py-0.5 text-[var(--fg-mute)]">
+                Where it goes
+              </span>
+            </div>
+            <p className="text-balance text-[1.4rem] font-semibold leading-[1.18] tracking-[-0.025em] text-[var(--fg-dim)] sm:text-[1.65rem]">
+              A world measured by coherence — where declared&nbsp;==&nbsp;realized is the
+              standard, not the exception.
+            </p>
+            <p className="mt-6 text-[0.96rem] leading-[1.85] text-[var(--fg-mute)]">
+              One invariant, pointed at five substrates: theory, systems, narrative, worlds.
+              Today the real layers ship — Corpus, Protocol, σ-gate — and the mythic ones are
+              named honestly as what they are: Studio emerging, Games and Shoreworld at concept.
+              This is where it goes, not what is done. The number cannot lie, so neither will the map.
+            </p>
+          </div>
+        </Reveal>
+      </div>
+
       {/* ── Research posture ─────────────────────────────────────────── */}
       {lab.about.overview[2] ? (
         <Reveal delay={80} className="mt-14 sm:mt-18 lg:mt-20">

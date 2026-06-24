@@ -11,10 +11,17 @@ export const metadata: Metadata = createPageMetadata({
   path: "/manifesto",
 });
 
-const PARAGRAPHS = [
-  "What you declare must equal what you realize. Everywhere we looked — in machines, in institutions, in money, in a person's word — there was a gap. The world had agreed to stop seeing it. We named it. We call the distance σ, and we built instruments to close it.",
-  "We do not ship hype. We ship the smaller true thing over the larger false one. We subtract until only the necessary remains, render it in one cold language, and prove every claim a stranger could doubt. When what we declared is not yet realized, we publish the gap — because the number cannot lie, and neither will we.",
-  "This is a research lab the size of a universe and the discipline of a single line. From theory, to code, to cinema, to worlds — one axiom, one standard, no exceptions.",
+/* One line per stanza — each earns its place. Platinum hairline between. */
+const STANZAS = [
+  "1 = 1. What you say should equal what you do. σ is the gap between them — we measure it.",
+  "We do not ship hype. We ship the smaller true thing over the larger false one.",
+  "We subtract until only the necessary remains, render it in one cold language, and prove every claim a stranger could doubt.",
+  "One operator, every substrate — physics, code, capital, mind. The same invariant, checkable at each layer against the last.",
+  "We will not fool ourselves. Nothing is done until it is realized and verified against the reigning standard — never our own word for it.",
+  "When declared is not yet realized, we publish the gap. The number cannot lie, and neither will we.",
+  "Perfect symmetry is 1 = 1 rendered. Left equals right. Declared equals realized. Geometry, never decoration.",
+  "We would rather publish nothing than publish a B. An empty page is coherent; a mediocre one is a lie.",
+  "Independent. Helsinki. We answer to the axiom, not to permission.",
 ];
 
 export default function ManifestoPage() {
@@ -51,14 +58,21 @@ export default function ManifestoPage() {
         <div className="rule mt-14 sm:mt-18 lg:mt-24" />
       </Reveal>
 
-      {/* ── Manifesto body ─────────────────────────────────────────────── */}
-      <div className="mt-14 sm:mt-18 lg:mt-24 max-w-[44rem]">
-        {PARAGRAPHS.map((para, i) => (
-          <Reveal key={i} as="p" delay={320 + i * 110}
-            className="text-[1.12rem] sm:text-[1.22rem] leading-[1.85] text-[var(--fg-dim)] mt-8 first:mt-0"
-          >
-            {para}
-          </Reveal>
+      {/* ── Manifesto body — one line per stanza, hairline-separated ────── */}
+      <div className="mt-14 sm:mt-18 lg:mt-24 mx-auto max-w-[46rem] text-center">
+        {STANZAS.map((line, i) => (
+          <div key={i}>
+            {i > 0 ? (
+              <Reveal delay={300 + i * 90}>
+                <div className="hair-x mx-auto my-9 w-24 sm:my-11 sm:w-32" />
+              </Reveal>
+            ) : null}
+            <Reveal as="p" delay={340 + i * 90}
+              className="text-balance text-[1.18rem] leading-[1.6] tracking-[-0.01em] text-[var(--fg-dim)] sm:text-[1.4rem]"
+            >
+              {line}
+            </Reveal>
+          </div>
         ))}
       </div>
 

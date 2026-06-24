@@ -75,6 +75,10 @@ float map(vec3 p){
   // crown + base octahedral caps -> the monolith reads as one sealed object
   d = smin(d, sdOcta(q - vec3(0.0, 1.18, 0.0), 0.34), 0.12);
   d = smin(d, sdOcta(q + vec3(0.0, 1.18, 0.0), 0.34), 0.12);
+
+  // gyroid micro-structure — a fine machined platinum lattice carved into the
+  // surface (Atlantean cybernetics). Small amplitude keeps the SDF well-behaved.
+  d += dot(sin(q*9.0), cos(q.zxy*9.0)) * 0.013;
   return d * br;
 }
 
@@ -165,6 +169,11 @@ void main(){
     // a single emissive signal sliver caught exactly on the centerline axis
     float axis = smoothstep(0.018, 0.0, abs(p.x)) * smoothstep(1.25, 0.2, abs(p.y));
     col += vec3(0.62,0.78,1.0) * axis * 0.9;
+
+    // THE SIGNAL — a single cold pulse that rises along the object's axis, then
+    // resets. The one moving accent; still under reduced motion.
+    float pls = smoothstep(0.06, 0.0, abs(p.y - (mod(u_time*0.45, 2.6) - 1.3)));
+    col += vec3(0.45,0.66,1.0) * pls * 0.55 * (1.0 - u_reduce);
 
     // subtle anisotropic vertical brushed grain along Y (follows the axis)
     col *= 0.94 + 0.06 * sin(p.y*120.0);
@@ -315,6 +324,8 @@ export default function SignalRaymarch() {
       my += (tmy - my) * 0.05;
       gl.uniform1f(uTime, reduce ? 0.0 : time);
       gl.uniform2f(uMouse, mx, my);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
       if (reduce) { running = false; return; } // one frame is enough when still

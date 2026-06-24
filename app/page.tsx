@@ -499,6 +499,56 @@ export default function Home() {
         </Reveal>
       </section>
 
+      {/* ── § 4.5 · VALUES ──────────────────────────────────────────────
+          Six non-negotiables, a perfectly symmetric grid. Mono name + one
+          terse σ-honest line each. The operating bar, rendered.
+      ─────────────────────────────────────────────────────────────── */}
+      <section className="mt-40 sm:mt-52 lg:mt-64">
+        <div className="rule mb-14 sm:mb-18" />
+        <Reveal delay={0}>
+          <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-4">
+              <p className="label mb-4 text-[var(--fg-faint)]">Standard · Non-negotiable</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem] lg:text-[2.5rem]">
+                Six values.<br />One bar.
+              </h2>
+            </div>
+            <div className="lg:col-span-7 lg:col-start-6 flex flex-col justify-end">
+              <p className="text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] max-w-[38rem]">
+                Not a poster. The actual rules the work is checked against — the
+                same invariant, applied to how we build, not just what we claim.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-px border border-[var(--line)] rounded-[var(--radius)] overflow-hidden bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { name: "Coherence", line: "1 = 1 — inner equals outer, the look equals the substance; σ is the gap and the gap is the work." },
+            { name: "Proof", line: "Nothing is real until realized and checkable. We publish receipts — including the honest zeros." },
+            { name: "Restraint", line: "Subtract until only the necessary remains. One theme, one signal, no second language, ever." },
+            { name: "Symmetry", line: "Perfect bilateral symmetry is 1 = 1 rendered. Geometry carries the meaning, decoration never does." },
+            { name: "First-principles", line: "One operator across every domain. We architect the substrate; we do not polish the old order." },
+            { name: "Sovereignty", line: "Independent, founder-authored, Helsinki. We answer to the axiom, not to permission." },
+          ].map((v, i) => (
+            <Reveal key={v.name} delay={i * 70} className="h-full">
+              <div className="flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-9">
+                <div className="mb-6 flex items-center justify-between">
+                  <span className="label text-[var(--fg-faint)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="axis-signal h-4" aria-hidden />
+                </div>
+                <h3 className="text-[1.2rem] font-semibold tracking-[-0.02em] text-[var(--fg)]">
+                  {v.name}
+                </h3>
+                <p className="mt-3 text-[0.92rem] leading-[1.75] text-[var(--fg-dim)]">
+                  {v.line}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* ── § 5 · FOUNDER TEASER ────────────────────────────────────────
           One architect. Restrained, editorial. Links to /about.
       ─────────────────────────────────────────────────────────────── */}

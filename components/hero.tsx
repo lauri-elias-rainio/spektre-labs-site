@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import { Lattice } from "@/components/lattice";
-import SignalWebGPU from "@/components/signal-webgpu";
+import SignalRaymarch from "@/components/signal-raymarch";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
-// SignalWebGPU is a client component that renders an empty div on the server and only loads
-// three.js (WebGPU → WebGL2 fallback) inside useEffect — so a plain import is SSR-safe, and if
-// it fails to initialise the <Lattice/> underneath stays visible. No next/dynamic needed.
+// SignalRaymarch is a raw-WebGL2 fullscreen raymarched SDF (the platinum monolith).
+// WebGL2 renders on ~99% of browsers (incl. Safari/Firefox) — unlike WebGPU it does
+// not silently fail. SSR-safe (renders a <div>, inits in useEffect). If WebGL2 is
+// somehow unavailable the <Lattice/> canvas underneath stays visible. No next/dynamic.
 
 const hero = lab.home.hero;
 
@@ -16,9 +17,9 @@ export function Hero() {
     <section className="relative -mx-6 -mt-4 overflow-hidden px-6 pb-24 pt-10 sm:-mx-8 sm:px-8 sm:pb-28 sm:pt-14 lg:pb-36">
       {/* THE OBELISK — WebGPU signature monolith, layered over the canvas Lattice fallback */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 left-[14%] opacity-90">
+        <div className="absolute inset-0 left-[8%] opacity-95 sm:left-[18%]">
           <Lattice />
-          <SignalWebGPU />
+          <SignalRaymarch />
         </div>
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
       </div>

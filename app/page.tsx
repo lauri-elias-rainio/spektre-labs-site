@@ -152,6 +152,99 @@ export default function Home() {
         <div className="rule" />
       </section>
 
+      {/* ── § 1.5 · PROOF — WHAT RUNS TODAY ─────────────────────────────
+          The σ-honesty answer to "is any of this real?": three endpoints
+          that respond right now, plus the open source. Nothing floats.
+      ─────────────────────────────────────────────────────────────── */}
+      <section className="mt-32 sm:mt-40 lg:mt-48">
+        <Reveal delay={0}>
+          <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="label mb-3 text-[var(--fg-faint)]">Proof · What runs today</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
+                Theory pays in code.
+              </h2>
+            </div>
+            <EditorialLink href={LINKS.github} external className="shrink-0 self-start sm:self-auto">
+              All open source&nbsp;↗
+            </EditorialLink>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-px border border-[var(--line)] rounded-[var(--radius)] overflow-hidden bg-[var(--line)] sm:grid-cols-3">
+          {[
+            {
+              name: "σ-gate",
+              meta: "Trust gate · ~85 µs/call",
+              line: "Checks AI output for leaked secrets, prompt-injection, and PII before it ships. No model, no network — same input, same verdict.",
+              href: "/systems",
+              external: false,
+            },
+            {
+              name: "sigma-collapse",
+              meta: "The law · live endpoint",
+              line: "POST a system's declared vs realized state, get back σ and a deterministic PASS / HALT verdict with a hash-chained receipt. 1 = 1, computed.",
+              href: "https://sigma-collapse-985332749804.europe-north1.run.app/collapse",
+              external: true,
+            },
+            {
+              name: "btc-edge",
+              meta: "Investor edge · live mempool",
+              line: "Reads the live Bitcoin mempool and returns the exact fee to pay — real sats saved per transaction during fee spikes. Honest €0 when the chain is calm.",
+              href: "https://btc-edge-985332749804.europe-north1.run.app/btc/fees",
+              external: true,
+            },
+          ].map((sys, i) => (
+            <Reveal key={sys.name} delay={i * 90} className="h-full">
+              <a
+                href={sys.href}
+                {...(sys.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="group flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-10"
+              >
+                <div className="mb-6 flex items-center justify-between gap-4">
+                  <span className="flex items-center gap-2.5">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--signal)] opacity-60 motion-safe:animate-ping" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
+                    </span>
+                    <span className="label text-[var(--signal)]">Live</span>
+                  </span>
+                  <span className="label text-[var(--fg-faint)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <h3 className="metal-text text-[1.4rem] font-semibold tracking-[-0.03em] leading-[1.1]">
+                  {sys.name}
+                </h3>
+                <p className="mt-1.5 label text-[var(--fg-faint)]">{sys.meta}</p>
+                <p className="mt-5 flex-1 text-[0.94rem] leading-[1.8] text-[var(--fg-dim)]">
+                  {sys.line}
+                </p>
+                <div className="mt-8 flex items-center gap-3 border-t border-[var(--line)] pt-6">
+                  <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                    {sys.external ? "Call it" : "See it run"}
+                  </span>
+                  <span className="ml-auto label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                    {sys.external ? "↗" : "→"}
+                  </span>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={120}>
+          <p className="mt-8 text-center text-[0.9rem] leading-[1.7] text-[var(--fg-mute)]">
+            Open core — the Spektre Corpus (72 papers), the Protocol, and the σ-gate
+            source are all public on{" "}
+            <EditorialLink href={LINKS.github} external className="text-[var(--fg-dim)]">
+              github.com/spektre-labs
+            </EditorialLink>
+            .
+          </p>
+        </Reveal>
+      </section>
+
       {/* ── § 2 · ARTIFACT TRIPTYCH ─────────────────────────────────────
           Corpus · Protocol · σ-gate — three linked cards, equal weight,
           hairline grid, surface glass panels.

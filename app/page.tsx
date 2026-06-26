@@ -5,7 +5,6 @@ import { EditorialLink } from "@/components/editorial-link";
 import { Glyph } from "@/components/glyph";
 import { Hero } from "@/components/hero";
 import { Reveal } from "@/components/reveal";
-import { getArtifacts } from "@/lib/artifacts";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 import { createPageMetadata } from "@/lib/site";
@@ -33,48 +32,57 @@ type Division = {
 const DIVISIONS: Division[] = [
   {
     index: "01",
-    name: "Research",
-    sub: "Open papers",
+    name: "Labs",
+    sub: "Foundational research",
     status: "REAL" as const,
     description:
-      "Open papers on why systems stay coherent, where they fail, and what happens when correction stops working.",
+      "The research engine. Hard problems are reduced to structures, tests, papers, and executable hypotheses.",
     href: "/research",
   },
   {
     index: "02",
-    name: "Tools",
-    sub: "The live product",
+    name: "Systems",
+    sub: "Products and infrastructure",
     status: "REAL" as const,
     description:
-      "Production tools that check AI output before it ships. Deterministic, model-free, and built for real release flows.",
+      "Software, protocols, trust gates, developer tools, and operational systems built from the research.",
     href: "/systems",
   },
   {
     index: "03",
     name: "Studio",
-    sub: "Video and media",
+    sub: "Media and culture",
     status: "EMERGING" as const,
     description:
-      "Short films and visual explainers that make the work easier to see. The channel is live.",
+      "Film, visual systems, interfaces, and public artifacts that turn abstract work into culture.",
     href: LINKS.youtube,
     external: true,
   },
   {
     index: "04",
-    name: "Games",
-    sub: "Interactive systems",
-    status: "VISION" as const,
+    name: "Intelligence",
+    sub: "AI and orchestration",
+    status: "EMERGING" as const,
     description:
-      "Interactive systems and games built on the same standard. Not shipping yet.",
+      "Agent systems, evaluation loops, memory, orchestration, and human-AI workflows that raise capability.",
     href: null,
   },
   {
     index: "05",
-    name: "Shoreworld",
-    sub: "The world",
+    name: "Compute",
+    sub: "Markets and calculation",
+    status: "EMERGING" as const,
+    description:
+      "Numerical tools, market edges, simulation, routing, fees, optimization, and live computational services.",
+    href: null,
+  },
+  {
+    index: "06",
+    name: "Health",
+    sub: "Medicine and biology",
     status: "VISION" as const,
     description:
-      "A story world built from the same rule. Concept stage.",
+      "A future track for applying the same problem-solving standard to medical, biological, and human systems.",
     href: null,
   },
 ] as const;
@@ -86,264 +94,26 @@ const STATUS_STYLES: Record<"REAL" | "EMERGING" | "VISION", string> = {
 };
 
 export default function Home() {
-  const artifacts = getArtifacts();
-  const corpus = artifacts.find((a) => a.slug === "spektre-corpus");
-  const protocol = artifacts.find((a) => a.slug === "spektre-protocol");
-  const sigmaGate = artifacts.find((a) => a.slug === "sigma-gate");
-
-  const triptych = [corpus, protocol, sigmaGate].filter(Boolean) as NonNullable<
-    typeof corpus
-  >[];
-
   return (
     <div>
       <Hero />
 
-      {/* ── § 1 · AXIOM MOMENT ──────────────────────────────────────────
-          Large symmetric data-statement. Glyph seal as quiet backdrop.
-          Left = right. Declared = realized. σ = 1.
-      ─────────────────────────────────────────────────────────────── */}
-      <section className="relative mt-32 overflow-hidden sm:mt-44 lg:mt-56">
-        {/* rule */}
-        <div className="rule mb-0" />
-
-        {/* Glyph seal — centered absolute backdrop */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>
-          <Glyph variant="seal" size={480} strokeOpacity={0.08} />
-        </div>
-
-        {/* Content — perfectly centered */}
-        <div className="relative flex flex-col items-center px-6 py-24 text-center sm:py-32 lg:py-40">
-          <Reveal delay={0}>
-          <p className="label mb-8 text-[var(--fg-faint)]">Core promise</p>
-          </Reveal>
-
-          {/* The statement */}
-          <Reveal delay={80}>
-            <p
-              className="metal-text text-[5rem] font-semibold tracking-[-0.055em] leading-none sm:text-[7.5rem] lg:text-[10rem]"
-              aria-label="One equals one"
-            >
-              1&thinsp;=&thinsp;1
-            </p>
-          </Reveal>
-
-          <Reveal delay={160}>
-            <p className="mt-8 max-w-[38rem] text-pretty text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] sm:text-[1.1rem]">
-              Declared and delivered should match. When they drift, the work gets harder to
-              trust and harder to ship.
-            </p>
-          </Reveal>
-        </div>
-
-        <div className="rule" />
-      </section>
-
-      {/* ── § 1.5 · PROOF — WHAT RUNS TODAY ─────────────────────────────
-          The σ-honesty answer to "is any of this real?": three endpoints
-          that respond right now, plus the open source. Nothing floats.
-      ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-32 sm:mt-40 lg:mt-48">
-        <Reveal delay={0}>
-          <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="label mb-3 text-[var(--fg-faint)]">Live work</p>
-              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
-                What runs now.
-              </h2>
-            </div>
-            <EditorialLink href={LINKS.github} external className="shrink-0 self-start sm:self-auto">
-              All open source&nbsp;↗
-            </EditorialLink>
-          </div>
-        </Reveal>
-
-        <div className="grid gap-px border border-[var(--line)] rounded-[var(--radius)] overflow-hidden bg-[var(--line)] sm:grid-cols-3">
-          {[
-            {
-              name: "σ-gate",
-              meta: "Trust gate · ~85 µs/call",
-              line: "Checks AI output for leaked secrets, prompt-injection, and PII before it ships. No model, no network — same input, same verdict.",
-              href: "/systems",
-              external: false,
-            },
-            {
-              name: "sigma-collapse",
-              meta: "The law · live endpoint",
-              line: "POST a system's declared vs realized state, get back σ and a deterministic PASS / HALT verdict with a hash-chained receipt. 1 = 1, computed.",
-              href: "https://sigma-collapse-985332749804.europe-north1.run.app/collapse",
-              external: true,
-            },
-            {
-              name: "btc-edge",
-              meta: "Investor edge · live mempool",
-              line: "Reads the live Bitcoin mempool and returns the exact fee to pay — real sats saved per transaction during fee spikes. Honest €0 when the chain is calm.",
-              href: "https://btc-edge-985332749804.europe-north1.run.app/btc/fees",
-              external: true,
-            },
-          ].map((sys, i) => (
-            <Reveal key={sys.name} delay={i * 90} className="h-full">
-              <a
-                href={sys.href}
-                {...(sys.external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="group flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-10"
-              >
-                <div className="mb-6 flex items-center justify-between gap-4">
-                  <span className="flex items-center gap-2.5">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--signal)] opacity-60 motion-safe:animate-ping" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
-                    </span>
-                    <span className="label text-[var(--signal)]">Live</span>
-                  </span>
-                  <span className="label text-[var(--fg-faint)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                </div>
-                <h3 className="metal-text text-[1.4rem] font-semibold tracking-[-0.03em] leading-[1.1]">
-                  {sys.name}
-                </h3>
-                <p className="mt-1.5 label text-[var(--fg-faint)]">{sys.meta}</p>
-                <p className="mt-5 flex-1 text-[0.94rem] leading-[1.8] text-[var(--fg-dim)]">
-                  {sys.line}
-                </p>
-                <div className="mt-8 flex items-center gap-3 border-t border-[var(--line)] pt-6">
-                  <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
-                    {sys.external ? "Call it" : "See it run"}
-                  </span>
-                  <span className="ml-auto label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
-                    {sys.external ? "↗" : "→"}
-                  </span>
-                </div>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={120}>
-          <p className="mt-8 text-center text-[0.9rem] leading-[1.7] text-[var(--fg-mute)]">
-            Open core — the Spektre Corpus (72 papers), the Protocol, and the σ-gate
-            source are all public on{" "}
-            <EditorialLink href={LINKS.github} external className="text-[var(--fg-dim)]">
-              github.com/spektre-labs
-            </EditorialLink>
-            .
-          </p>
-        </Reveal>
-      </section>
-
-      {/* ── § 2 · ARTIFACT TRIPTYCH ─────────────────────────────────────
-          Corpus · Protocol · σ-gate — three linked cards, equal weight,
-          hairline grid, surface glass panels.
-      ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-32 sm:mt-44 lg:mt-52 px-0">
-        {/* Section header */}
-        <Reveal delay={0}>
-          <div className="mb-14 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="label mb-3 text-[var(--fg-faint)]">Core stack</p>
-              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
-                Three live things.<br className="hidden sm:inline" /> One standard.
-              </h2>
-            </div>
-            <EditorialLink href="/artifacts" className="shrink-0 self-start sm:self-auto">
-              View all artifacts&nbsp;→
-            </EditorialLink>
-          </div>
-        </Reveal>
-
-        {/* Glyph divider */}
-        <Reveal delay={60}>
-          <div className="flex justify-center mb-14">
-            <Glyph variant="divider" size={240} strokeOpacity={0.35} />
-          </div>
-        </Reveal>
-
-        {/* Triptych grid */}
-        <div className="grid gap-px border border-[var(--line)] rounded-[var(--radius)] overflow-hidden bg-[var(--line)] sm:grid-cols-3">
-          {triptych.map((artifact, i) => {
-            const isCorpus = artifact.slug === "spektre-corpus";
-            const isPrimary = artifact.prominence === "primary";
-            return (
-              <Reveal key={artifact.slug} delay={i * 100} className="h-full">
-                <Link
-                  href={`/artifacts/${artifact.slug}`}
-                  className="group flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-10 lg:p-12"
-                >
-                  {/* Card header */}
-                  <div className="mb-8 flex items-start justify-between gap-4">
-                    <span className="label text-[var(--fg-faint)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                    {isPrimary ? (
-                      <span className="label text-[var(--signal)]">Primary</span>
-                    ) : (
-                      <span className="label text-[var(--fg-faint)]">
-                        {artifact.slug === "sigma-gate" ? "Executable" : "Framework"}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Artifact glyph node */}
-                  <div className="mb-6 flex justify-start">
-                    <Glyph
-                      variant="node"
-                      size={28}
-                      strokeOpacity={isCorpus ? 0.6 : 0.35}
-                    />
-                  </div>
-
-                  {/* Title */}
-                  <h3
-                    className={
-                      isCorpus
-                        ? "metal-text text-[1.55rem] font-semibold tracking-[-0.03em] leading-[1.1] sm:text-[1.75rem]"
-                        : "text-[1.35rem] font-semibold tracking-[-0.025em] leading-[1.12] text-[var(--fg)] sm:text-[1.5rem]"
-                    }
-                  >
-                    {artifact.title}
-                  </h3>
-
-                  {/* Summary */}
-                  <p className="mt-4 flex-1 text-[0.94rem] leading-[1.82] text-[var(--fg-dim)]">
-                    {artifact.summary}
-                  </p>
-
-                  {/* Footer link cue */}
-                  <div className="mt-8 flex items-center gap-3 border-t border-[var(--line)] pt-6">
-                    {artifact.github ? (
-                      <span className="label truncate text-[var(--fg-faint)]">
-                        {artifact.github.replace("https://", "")}
-                      </span>
-                    ) : null}
-                    <span className="ml-auto label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
-                      →
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── § 3 · DIVISIONS / TRAJECTORY ───────────────────────────────
-          Research → Systems → Studio → Games → Shoreworld.
-          Mono index, honest status tags, editorial stagger.
-      ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-40 sm:mt-52 lg:mt-64">
-        <div className="rule mb-14 sm:mb-18" />
+      <section className="mt-28 sm:mt-36 lg:mt-44">
+        <div className="rule mb-12 sm:mb-14" />
 
         <Reveal delay={0}>
-          <div className="mb-16 grid gap-6 lg:grid-cols-12 lg:gap-14">
+          <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">Where it goes</p>
-              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem] lg:text-[2.5rem]">
-                Five parts.<br />One standard.
+              <p className="label mb-4 text-[var(--fg-faint)]">Arenas</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.25rem] lg:text-[2.75rem]">
+                One company.<br />Multiple hard domains.
               </h2>
             </div>
-            <div className="lg:col-span-7 lg:col-start-6 flex flex-col justify-end">
-              <p className="text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] max-w-[38rem]">
-                The lab starts with research and turns it into tools, media, play, and a world
-                of its own. Every branch keeps the same standard.
+            <div className="flex flex-col justify-end lg:col-span-7 lg:col-start-6">
+              <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)]">
+                Spektre is the parent brand for Labs, Systems, Studio, Intelligence,
+                Compute, and future Health ventures. Each arena turns hard problems into
+                research, products, media, infrastructure, or new companies.
               </p>
               <EditorialLink href="/universe" className="mt-6 self-start">
                 See the map&nbsp;→
@@ -352,15 +122,13 @@ export default function Home() {
           </div>
         </Reveal>
 
-        {/* Editorial sequence */}
         <div className="space-y-0">
           {DIVISIONS.map((div, i) => (
-            <Reveal key={div.index} delay={i * 80}>
-              <div className="group relative border-t border-[var(--line)] py-10 transition-colors duration-500 hover:border-[var(--line-strong)] sm:py-12 lg:py-14">
+            <Reveal key={div.index} delay={i * 70}>
+              <div className="group relative border-t border-[var(--line)] py-9 transition-colors duration-500 hover:border-[var(--line-strong)] sm:py-11 lg:py-12">
                 <div className="grid gap-6 lg:grid-cols-12 lg:gap-14">
-                  {/* Left: index + name */}
                   <div className="flex items-baseline gap-5 lg:col-span-4">
-                    <span className="label tabular-nums text-[var(--fg-faint)] shrink-0">
+                    <span className="label shrink-0 tabular-nums text-[var(--fg-faint)]">
                       {div.index}
                     </span>
                     <div>
@@ -371,14 +139,12 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Centre: description */}
                   <div className="lg:col-span-5 lg:col-start-5">
                     <p className="text-[0.97rem] leading-[1.84] text-[var(--fg-dim)]">
                       {div.description}
                     </p>
                   </div>
 
-                  {/* Right: status + arrow */}
                   <div className="flex items-center justify-between gap-4 lg:col-span-3 lg:col-start-10 lg:flex-col lg:items-end lg:justify-start">
                     <span className={`label ${STATUS_STYLES[div.status]}`}>{div.status}</span>
                     {div.href ? (
@@ -406,12 +172,232 @@ export default function Home() {
                     )}
                   </div>
                 </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
 
-                {/* Hairline accent — slides in on hover */}
-                <span
-                  className="pointer-events-none absolute left-0 top-0 h-px w-0 bg-[var(--metal-3)] transition-[width] duration-700 group-hover:w-full"
-                  aria-hidden
-                />
+        <div className="rule mt-0" />
+      </section>
+
+      {/* ── § 1.5 · PROOF — WHAT RUNS TODAY ─────────────────────────────
+          The σ-honesty answer to "is any of this real?": three endpoints
+          that respond right now, plus the open source. Nothing floats.
+      ─────────────────────────────────────────────────────────────── */}
+      <section className="mt-32 sm:mt-40 lg:mt-48">
+        <Reveal delay={0}>
+          <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="label mb-3 text-[var(--fg-faint)]">Systems proof</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
+                What runs today.
+              </h2>
+              <p className="mt-4 max-w-[34rem] text-[0.98rem] leading-[1.75] text-[var(--fg-mute)]">
+                Examples from Systems and Compute. They prove the build standard; they are
+                not the full scope of Spektre.
+              </p>
+            </div>
+            <EditorialLink href={LINKS.github} external className="shrink-0 self-start sm:self-auto">
+              All open source&nbsp;↗
+            </EditorialLink>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-px border border-[var(--line)] rounded-[var(--radius)] overflow-hidden bg-[var(--line)] sm:grid-cols-3">
+          {[
+            {
+              name: "σ-gate",
+              meta: "AI trust gate · ~85 µs/call",
+              line: "A deterministic release gate for AI output: secrets, prompt injection, PII, and policy failures stopped before shipping.",
+              href: "/systems",
+              external: false,
+            },
+            {
+              name: "sigma-collapse",
+              meta: "Systems endpoint · live receipt",
+              line: "A live API for comparing declared state to realized state and returning a deterministic verdict with a receipt.",
+              href: "https://sigma-collapse-985332749804.europe-north1.run.app/collapse",
+              external: true,
+            },
+            {
+              name: "btc-edge",
+              meta: "Compute edge · live mempool",
+              line: "A live computation service for Bitcoin fees: reads the mempool and returns the exact fee to pay during fee spikes.",
+              href: "https://btc-edge-985332749804.europe-north1.run.app/btc/fees",
+              external: true,
+            },
+          ].map((sys, i) => (
+            <Reveal key={sys.name} delay={i * 90} className="h-full">
+              <a
+                href={sys.href}
+                {...(sys.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="group flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-10"
+              >
+                <div className="mb-6 flex items-center justify-between gap-4">
+                  <span className="flex items-center gap-2.5">
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
+                    <span className="label text-[var(--signal)]">Live</span>
+                  </span>
+                  <span className="label text-[var(--fg-faint)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <h3 className="metal-text text-[1.4rem] font-semibold tracking-[-0.03em] leading-[1.1]">
+                  {sys.name}
+                </h3>
+                <p className="mt-1.5 label text-[var(--fg-faint)]">{sys.meta}</p>
+                <p className="mt-5 flex-1 text-[0.94rem] leading-[1.8] text-[var(--fg-dim)]">
+                  {sys.line}
+                </p>
+                <div className="mt-8 flex items-center gap-3 border-t border-[var(--line)] pt-6">
+                  <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                    {sys.external ? "Call it" : "See it run"}
+                  </span>
+                  <span className="ml-auto label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                    {sys.external ? "↗" : "→"}
+                  </span>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={120}>
+          <p className="mt-8 text-center text-[0.9rem] leading-[1.7] text-[var(--fg-mute)]">
+            Open research and source code are public on{" "}
+            <EditorialLink href={LINKS.github} external className="text-[var(--fg-dim)]">
+              github.com/spektre-labs
+            </EditorialLink>
+            .
+          </p>
+        </Reveal>
+      </section>
+
+      <section className="mt-28 px-0 sm:mt-36 lg:mt-44">
+        <Reveal delay={0}>
+          <div className="mb-14 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="label mb-3 text-[var(--fg-faint)]">Translation layer</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
+                Theory becomes things people can use.
+              </h2>
+            </div>
+            <EditorialLink href="/connect" className="shrink-0 self-start sm:self-auto">
+              Work with Spektre&nbsp;→
+            </EditorialLink>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              name: "Products",
+              meta: "Software · AI · Tools",
+              line: "Systems with a clear job: check, route, compute, protect, generate, or decide.",
+              href: "/systems",
+            },
+            {
+              name: "Services",
+              meta: "Architecture · Builds",
+              line: "Problem framing, technical architecture, prototypes, product builds, and AI workflows.",
+              href: "/connect",
+            },
+            {
+              name: "Research",
+              meta: "Papers · Protocols",
+              line: "Models, tests, protocols, and concepts that make the products stronger.",
+              href: "/research",
+            },
+            {
+              name: "Ventures",
+              meta: "Studio · Compute · Health",
+              line: "New domains where the same standard becomes a company, media property, or platform.",
+              href: "/universe",
+            },
+          ].map((item, i) => (
+            <Reveal key={item.name} delay={i * 80} className="h-full">
+              <Link
+                href={item.href}
+                className="group flex h-full min-h-[18rem] flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-9"
+              >
+                <div className="mb-8 flex items-center justify-between">
+                  <span className="label tabular-nums text-[var(--fg-faint)]">{String(i + 1).padStart(2, "0")}</span>
+                  <Glyph variant="node" size={20} strokeOpacity={0.35} />
+                </div>
+                <h3 className="text-[1.35rem] font-semibold tracking-[-0.025em] leading-[1.12] text-[var(--fg)] sm:text-[1.5rem]">
+                  {item.name}
+                </h3>
+                <p className="mt-2 label text-[var(--fg-faint)]">{item.meta}</p>
+                <p className="mt-5 flex-1 text-[0.94rem] leading-[1.8] text-[var(--fg-dim)]">
+                  {item.line}
+                </p>
+                <div className="mt-8 border-t border-[var(--line)] pt-6">
+                  <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                    Open&nbsp;→
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-36 sm:mt-44 lg:mt-56">
+        <div className="rule mb-14" />
+
+        <Reveal delay={0}>
+          <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-4">
+              <p className="label mb-4 text-[var(--fg-faint)]">Operating model</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.25rem] lg:text-[2.75rem]">
+                Hard problem.<br />Working system.
+              </h2>
+            </div>
+            <div className="flex flex-col justify-end lg:col-span-7 lg:col-start-6">
+              <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)]">
+                The standard is simple: find the real problem, reduce it to structure,
+                build the system, and prove it in use. Theory stays behind the product
+                until someone needs the deep layer.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              name: "Find",
+              meta: "Problem",
+              line: "Enter before the category is clean. Identify the actual load-bearing problem.",
+            },
+            {
+              name: "Structure",
+              meta: "Model",
+              line: "Turn complexity into a usable model, protocol, test, interface, or system map.",
+            },
+            {
+              name: "Build",
+              meta: "Artifact",
+              line: "Ship something that runs: code, demo, endpoint, workflow, media, or tool.",
+            },
+            {
+              name: "Prove",
+              meta: "Use",
+              line: "Expose behavior in the world: open source, live endpoints, receipts, demos, and iteration.",
+            },
+          ].map((step, i) => (
+            <Reveal key={step.name} delay={i * 70} className="h-full">
+              <div className="flex h-full min-h-[16rem] flex-col bg-[var(--bg-1)] p-8 sm:p-9">
+                <div className="mb-8 flex items-center justify-between">
+                  <span className="label tabular-nums text-[var(--fg-faint)]">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="label text-[var(--fg-faint)]">{step.meta}</span>
+                </div>
+                <h3 className="text-[1.35rem] font-semibold tracking-[-0.025em] leading-[1.12] text-[var(--fg)] sm:text-[1.5rem]">
+                  {step.name}
+                </h3>
+                <p className="mt-5 text-[0.94rem] leading-[1.8] text-[var(--fg-dim)]">
+                  {step.line}
+                </p>
               </div>
             </Reveal>
           ))}
@@ -423,7 +409,7 @@ export default function Home() {
       {/* ── § 4 · STUDIO TEASER ─────────────────────────────────────────
           Film · YouTube channel active · structured as editorial spread.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-40 sm:mt-52 lg:mt-64">
+      <section className="mt-36 sm:mt-44 lg:mt-56">
         <Reveal delay={0}>
           <div className="surface overflow-hidden rounded-[var(--radius)]">
             <div className="grid lg:grid-cols-2">
@@ -439,9 +425,8 @@ export default function Home() {
 
                 <Reveal delay={160}>
                   <p className="mt-5 max-w-[32rem] text-[1.05rem] leading-[1.84] text-[var(--fg-dim)]">
-                    Generative film and media. Structural narrative cinema built
-                    without a crew — a creative OS where coherence is the director.
-                    The channel is live.
+                    Film, visual systems, experiments, and public artifacts. The Studio turns
+                    the same architecture into culture people can see before they can name it.
                   </p>
                 </Reveal>
 
@@ -495,15 +480,15 @@ export default function Home() {
         <Reveal delay={0}>
           <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">How we work</p>
+              <p className="label mb-4 text-[var(--fg-faint)]">Brand law</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem] lg:text-[2.5rem]">
-                Six rules.<br />One standard.
+                Taste is operational.
               </h2>
             </div>
             <div className="lg:col-span-7 lg:col-start-6 flex flex-col justify-end">
               <p className="text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] max-w-[38rem]">
-                These are the rules the work is checked against. Not a slogan, just the standard
-                that every page and product has to meet.
+                The design system is not decoration. It is the visible face of the operating
+                standard: precise, fast, restrained, expensive, and impossible to confuse.
               </p>
             </div>
           </div>
@@ -511,18 +496,18 @@ export default function Home() {
 
         <div className="grid gap-px border border-[var(--line)] rounded-[var(--radius)] overflow-hidden bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { name: "Coherence", line: "What you say and what you ship should match. That is the standard." },
-            { name: "Proof", line: "If it cannot be checked, it is not finished. The work stays auditable." },
-            { name: "Restraint", line: "Keep only what helps the user understand or use the product." },
-            { name: "Symmetry", line: "The system should feel balanced, legible, and intentional." },
-            { name: "First-principles", line: "Build from the rule, not from decoration or habit." },
-            { name: "Independence", line: "Founder-led, Helsinki-based, and not shaped by permission." },
+            { name: "Depth", line: "Every surface needs substance under it: research, product, proof, or craft." },
+            { name: "Speed", line: "Show live systems early. Momentum is part of the brand." },
+            { name: "Precision", line: "No vague claims. Say what exists, what works, and what is still forming." },
+            { name: "Restraint", line: "Fewer objects, stronger objects. One signal earns more than ten effects." },
+            { name: "Range", line: "AI, compute, medicine, media, and systems can share one operating grammar." },
+            { name: "Independence", line: "Founder-led, Helsinki-based, and built without waiting for permission." },
           ].map((v, i) => (
             <Reveal key={v.name} delay={i * 70} className="h-full">
               <div className="flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-9">
                 <div className="mb-6 flex items-center justify-between">
                   <span className="label text-[var(--fg-faint)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="axis-signal h-4" aria-hidden />
+                  <Glyph variant="node" size={16} strokeOpacity={0.25} />
                 </div>
                 <h3 className="text-[1.2rem] font-semibold tracking-[-0.02em] text-[var(--fg)]">
                   {v.name}
@@ -539,14 +524,14 @@ export default function Home() {
       {/* ── § 5 · FOUNDER TEASER ────────────────────────────────────────
           One architect. Restrained, editorial. Links to /about.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-40 sm:mt-52 lg:mt-64">
+      <section className="mt-36 sm:mt-44 lg:mt-56">
         <div className="rule mb-14" />
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
           {/* Left label column */}
           <Reveal delay={0} className="lg:col-span-3">
             <p className="label mb-4 text-[var(--fg-faint)]">Founder · Architect</p>
             <h2 className="text-[1.6rem] font-semibold tracking-[-0.025em] leading-[1.12] text-[var(--fg)] sm:text-[1.85rem]">
-              One mind.
+              Founder-led.<br />System-built.
             </h2>
           </Reveal>
 
@@ -565,10 +550,9 @@ export default function Home() {
             <Reveal delay={160}>
               <p className="max-w-[44rem] text-pretty text-[1.05rem] leading-[1.88] text-[var(--fg-dim)]">
                 {/* Trimmed to the essential arc */}
-                An independent systems architect and self-taught researcher. One question — what
-                makes any system hold its structure or collapse — pursued across software, formal
-                theory, and design. The answer converges to a single invariant:&nbsp;1&nbsp;=&nbsp;1.
-                Spektre Labs is where it became rigorous.
+                An independent systems architect and self-taught researcher building Spektre as a
+                multi-domain lab: research, code, AI, computation, media, and future ventures. The
+                work starts from hard problems and ends in systems people can run, inspect, and use.
               </p>
             </Reveal>
 
@@ -594,7 +578,7 @@ export default function Home() {
       {/* ── § 6 · CLOSING ───────────────────────────────────────────────
           Strong terse statement. Two CTAs. Glyph seal. Perfect symmetry.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="relative mt-40 sm:mt-52 lg:mt-64 overflow-hidden">
+      <section className="relative mt-44 overflow-hidden pb-28 sm:mt-56 sm:pb-36 lg:mt-72 lg:pb-48">
         <div className="rule mb-0" />
 
         {/* Glyph seal — centered absolute backdrop */}
@@ -611,15 +595,15 @@ export default function Home() {
           {/* Statement */}
           <Reveal delay={80}>
             <h2 className="metal-text mt-8 max-w-[28rem] text-balance text-[2.6rem] font-semibold tracking-[-0.045em] leading-[1.03] sm:text-[3.5rem] lg:text-[4.5rem]">
-              Open the live gate.
+              Bring the hard problem.
             </h2>
           </Reveal>
 
           {/* Sub-copy */}
           <Reveal delay={160}>
             <p className="mt-7 max-w-[30rem] text-pretty text-[1rem] leading-[1.86] text-[var(--fg-mute)]">
-              If the system does not do what it says, it should not ship. σ-gate checks that in
-              the browser, right now. No signup. No model. No network.
+              Spektre is built for problems that need research, architecture, product taste, and
+              working systems at the same time.
             </p>
           </Reveal>
 
@@ -639,7 +623,13 @@ export default function Home() {
                 href="/systems"
                 className="btn-metal rounded-[10px] px-8 py-3.5 text-[0.92rem] font-semibold tracking-tight"
               >
-                Run the gate
+                See live systems
+              </Link>
+              <Link
+                href="/universe"
+                className="rounded-[10px] border border-[var(--line-strong)] px-8 py-3.5 text-[0.92rem] font-medium tracking-tight text-[var(--fg-dim)] transition-colors duration-500 hover:border-[var(--metal-3)] hover:text-[var(--fg)]"
+              >
+                Explore domains
               </Link>
               <Link
                 href="/connect"
@@ -652,68 +642,6 @@ export default function Home() {
         </div>
 
         <div className="rule" />
-      </section>
-
-      {/* ── § 7 · FINAL CTA ─────────────────────────────────────────────
-          Centered, generous black, maximum restraint.
-      ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-40 sm:mt-52 lg:mt-64 pb-40 lg:pb-56">
-        <div className="flex flex-col items-center gap-0 text-center">
-          {/* Seal */}
-          <Reveal delay={0}>
-            <Glyph variant="seal" size={100} strokeOpacity={0.22} />
-          </Reveal>
-
-          <Reveal delay={80}>
-            <p className="label mt-10 text-[var(--fg-faint)]">Spektre&nbsp;Labs&nbsp;·&nbsp;Helsinki&nbsp;·&nbsp;MMXXVI</p>
-          </Reveal>
-
-          <Reveal delay={140}>
-            <h2 className="metal-text mt-6 max-w-[36rem] text-balance text-[2.4rem] font-semibold tracking-[-0.04em] leading-[1.04] sm:text-[3.2rem] lg:text-[4rem]">
-              Structure is the signal.
-            </h2>
-          </Reveal>
-
-          <Reveal delay={220}>
-            <p className="mt-6 max-w-[30rem] text-pretty text-[1rem] leading-[1.85] text-[var(--fg-mute)]">
-              One invariant. Five divisions. The work is open — the corpus, the protocol,
-              the gate. Start anywhere.
-            </p>
-          </Reveal>
-
-          <Reveal delay={300}>
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/artifacts"
-                className="btn-metal rounded-[10px] px-8 py-3.5 text-[0.92rem] font-semibold tracking-tight"
-              >
-                Open the work
-              </Link>
-              <Link
-                href="/research"
-                className="rounded-[10px] border border-[var(--line-strong)] px-8 py-3.5 text-[0.92rem] font-medium tracking-tight text-[var(--fg-dim)] transition-colors duration-500 hover:border-[var(--metal-3)] hover:text-[var(--fg)]"
-              >
-                Research
-              </Link>
-            </div>
-          </Reveal>
-
-          <Reveal delay={380}>
-            <div className="mt-16 flex flex-wrap items-center justify-center gap-6">
-              <EditorialLink href={LINKS.github} external>
-                GitHub
-              </EditorialLink>
-              <span className="h-px w-4 bg-[var(--line-strong)]" />
-              <EditorialLink href={LINKS.youtube} external>
-                YouTube
-              </EditorialLink>
-              <span className="h-px w-4 bg-[var(--line-strong)]" />
-              <EditorialLink href={LINKS.email}>
-                Contact
-              </EditorialLink>
-            </div>
-          </Reveal>
-        </div>
       </section>
     </div>
   );

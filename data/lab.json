@@ -1,7 +1,7 @@
 {
   "name": "Spektre Labs",
-  "tagline": "What you say should equal what you do. We measure the gap.",
-  "subtext": "Independent research lab in Helsinki. One idea: what a system says should match what it does. The research is open, and the product is σ-gate.",
+  "tagline": "Fundamental problems, built into working systems.",
+  "subtext": "Spektre is an independent lab and studio in Helsinki building research, software, AI systems, computation, media, and future domain ventures from one standard: make the hard problem concrete.",
   "location": "Helsinki",
   "author": "Lauri Elias Rainio",
   "email": "spektre.labs@proton.me",
@@ -29,22 +29,22 @@
       "title": "Author",
       "name": "Lauri Elias Rainio",
       "role": "Founder · Independent Researcher · Systems Architect",
-      "bio": "Lauri Elias Rainio is an independent systems architect and self-taught researcher. His work begins from a single question — what makes any system, whether code, a market, an institution, or a mind, hold its structure or collapse — and pursues it across software, formal theory, and design. He arrived at research the way he learned everything else: directly and obsessively, from first principles, building the engineering, machine learning, and formal methods behind the Spektre protocol himself. Spektre Labs is the consolidation of that work — one invariant, 1 = 1, traced from physics to cognition and made executable in code."
+      "bio": "Lauri Elias Rainio is an independent systems architect and self-taught researcher. His work begins from a single question — what makes any system, whether code, a market, an institution, or a mind, hold its structure or collapse — and pursues it across software, formal theory, and design. He arrived at research the way he learned everything else: directly and obsessively, from first principles, building the engineering, machine learning, and formal methods behind the Spektre protocol himself. Spektre Labs is the consolidation of that work into research, code, AI systems, computation, media, and future ventures."
     }
   },
   "home": {
     "hero": {
-      "eyebrow": "Independent Research Lab · Helsinki",
-      "headline": "Make it checkable.",
-      "axiom": "1 = 1",
-      "axiomGloss": "What a system promises should match what it delivers. σ is the gap between promise and result.",
-      "tagline": "What you say should equal what you do. We measure the gap.",
-      "sub": "Spektre Labs builds software that checks whether systems do what they claim. The research is open, and the live product is σ-gate.",
-      "primaryCta": { "label": "Open σ-gate", "href": "/systems" },
-      "secondaryCta": { "label": "Read the corpus", "href": "/research" },
+      "eyebrow": "Independent lab and studio · Helsinki",
+      "headline": "Hard problems, built into working systems.",
+      "axiom": "Declared equals realized",
+      "axiomGloss": "What a system promises should match what it delivers. Spektre turns that standard into tools, tests, and products.",
+      "tagline": "Fundamental problems, built into working systems.",
+      "sub": "Spektre turns unclear, high-stakes problems into research, software, AI systems, computation, media, and future ventures.",
+      "primaryCta": { "label": "Explore domains", "href": "/universe" },
+      "secondaryCta": { "label": "See live systems", "href": "/systems" },
       "description": [
-        "Spektre Labs builds software that checks whether systems do what they claim.",
-        "The work ships as open research and live tools, including σ-gate."
+        "Spektre turns foundational problems into working systems.",
+        "The work spans research, software, AI, computation, media, medicine, and complex systems."
       ]
     },
     "whatWeDo": {

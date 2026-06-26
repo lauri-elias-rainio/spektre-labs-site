@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
   seal swept along Y and bilaterally mirrored across X and Z — so every flip-test
   passes BY CONSTRUCTION. Symmetry is the load-bearing idea: the object reads
   identically flipped left=right, and the camera path is itself axis-locked, so
-  1 = 1 is literally rendered in geometry AND in motion.
+  The brand geometry is rendered in both form and motion.
 
   Symmetry-by-construction: one 45° wedge geometry is instanced 8× via
   makeRotationY around the Y axis (one geometry, one draw path) — there is no way
@@ -27,7 +27,7 @@ import { useEffect, useRef } from "react";
   dynamic. prefers-reduced-motion ⇒ a still, perfectly-centered monolith.
 
   STYLE_LAW: OLED true-black + ONE platinum metal axis + ONE cold signal (#cfe3ff).
-  Monochrome. One ornament (the env strip). Perfect symmetry = 1 = 1.
+  Monochrome. One ornament (the env strip). Symmetry, material, and restraint.
 */
 
 export default function SignalWebGPU() {
@@ -260,7 +260,7 @@ export default function SignalWebGPU() {
           color: 0x6a6a72,
           wireframe: true,
           transparent: true,
-          opacity: 0.1,
+          opacity: 0.035,
         }),
       );
       obeliskGroup.add(shell);
@@ -271,7 +271,7 @@ export default function SignalWebGPU() {
       const signalMat = new THREE.MeshBasicMaterial({
         color: SIGNAL,
         transparent: true,
-        opacity: 0.85,
+        opacity: 0.45,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
         side: THREE.DoubleSide,
@@ -341,7 +341,7 @@ export default function SignalWebGPU() {
           }
           const scenePass = pass(scene, camera);
           // bloom: threshold 1.0 (only the brightest platinum edge + signal blooms)
-          const bloomNode = bloomMod.bloom(scenePass, 0.45, 0.8, 1.0);
+          const bloomNode = bloomMod.bloom(scenePass, 0.26, 0.7, 1.05);
           // chromaticAberration: 0.0015 sub-pixel refraction
           const ca = caMod.chromaticAberration(
             scenePass.add(bloomNode),
@@ -360,7 +360,7 @@ export default function SignalWebGPU() {
       // ── interaction: AXIS-LOCKED tilt only. Pointer tips the object toward the
       //    cursor a MAX ±0.06 rad about X / Z (lerp 0.04). It can NEVER yaw off its
       //    symmetry axis, so the left=right flip-test holds at every single frame. ──
-      const TILT_MAX = 0.06;
+      const TILT_MAX = 0.035;
       let tiltTX = 0,
         tiltTZ = 0; // targets
       let tiltX = 0,
@@ -449,8 +449,8 @@ export default function SignalWebGPU() {
           return;
         }
 
-        // continuous y-rotation 0.10 rad/s — symmetric about the axis
-        obeliskGroup.rotation.y += 0.1 * dt;
+        // Continuous y-rotation, restrained enough to read as material.
+        obeliskGroup.rotation.y += 0.055 * dt;
 
         // axis-locked tilt — smoothed, clamped, X/Z only (never Y/yaw)
         tiltX += (tiltTX - tiltX) * 0.04;
@@ -464,7 +464,7 @@ export default function SignalWebGPU() {
         // scroll dollies the camera DOWN the obelisk's axis (axis-locked: Y & Z only)
         camera.position.y = -scrollProgress * 2.2; // descend
         camera.position.z = CAM_Z - scrollProgress * 1.4; // and slightly closer
-        camera.position.x = 0; // never leaves the axis — 1 = 1 in motion
+        camera.position.x = 0; // never leaves the axis
         camera.lookAt(0, camera.position.y * 0.5, 0);
 
         // keep the signal sliver billboarded but pinned dead-center on the axis.

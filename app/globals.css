@@ -8,13 +8,13 @@
   hairlines, grain, specular, depth.
 
   STYLE_LAW (hard, non-negotiable):
-   1. Perfect bilateral/radial SYMMETRY = 1=1.
+   1. Controlled symmetry and restraint. The interface should feel engineered, not decorated.
    2. OLED TRUE-BLACK + ONE platinum axis (#e8eaee→#565b65) + ONE cold signal (#cfe3ff). No other color.
    3. Material, never flat: hairlines, grain, specular, depth.
    4. Editorial discipline: ONE display size, ONE ornament, ONE signal per view.
    5. Mono-Abloh voice: mono uppercase metadata labels.
    6. Apple-grade motion: ease cubic-bezier(0.16,1,0.3,1); prefers-reduced-motion safe.
-   7. EI FEIKKI PASKAA: no fabricated metrics. σ-honest.
+   7. No fabricated metrics. Claims must be provable from live systems or source.
    8. One theme forever.
 
   This file is ADDITIVE. Every pre-existing token and class is preserved
@@ -67,8 +67,8 @@
 
   /* TYPOGRAPHY — ONE display size (rule 4). Kills the three magic
      breakpoint sizes; the hero h1 pulls from this single clamp token. */
-  --display: clamp(3.1rem, 8vw, 6.6rem);
-  --display-tracking: -0.04em;
+  --display: clamp(3.6rem, 8.8vw, 7.4rem);
+  --display-tracking: -0.045em;
 
   /* MOTION — a 3-value duration vocabulary. No ad-hoc durations anywhere.
      micro = hovers/taps · reveal = editorial entrances · transition = routes. */
@@ -272,6 +272,53 @@ code {
   letter-spacing: var(--display-tracking);
   line-height: 1;
   font-weight: 600;
+}
+
+.hero-monolith-fallback {
+  position: absolute;
+  z-index: 2;
+  inset: 9% 10% 9% auto;
+  width: min(31vw, 28rem);
+  min-width: 17rem;
+  transform: perspective(900px) rotateY(-18deg) rotateX(4deg);
+  transform-origin: center;
+  opacity: 0.76;
+  filter: drop-shadow(0 0 4rem rgba(207, 227, 255, 0.13));
+}
+
+.hero-monolith-fallback::before,
+.hero-monolith-fallback::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0, 80% 13%, 88% 50%, 80% 87%, 50% 100%, 20% 87%, 12% 50%, 20% 13%);
+}
+
+.hero-monolith-fallback::before {
+  background:
+    linear-gradient(90deg, transparent 0 43%, rgba(207, 227, 255, 0.78) 49%, rgba(255, 255, 255, 0.9) 50%, rgba(207, 227, 255, 0.62) 51%, transparent 57%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.92), rgba(185, 189, 198, 0.34) 28%, rgba(42, 45, 52, 0.18) 52%, rgba(244, 245, 247, 0.58) 70%, rgba(20, 22, 27, 0.12));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 3.4rem 0 5rem rgba(255, 255, 255, 0.08),
+    inset -4rem 0 5rem rgba(0, 0, 0, 0.78);
+}
+
+.hero-monolith-fallback::after {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(255, 255, 255, 0.08) 15px, transparent 16px),
+    linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.12) 50%, transparent);
+  mix-blend-mode: screen;
+  opacity: 0.28;
+}
+
+@media (max-width: 900px) {
+  .hero-monolith-fallback {
+    inset: 22% -16% 18% auto;
+    width: 15.5rem;
+    min-width: 0;
+    opacity: 0.26;
+  }
 }
 
 /* 3-CHANNEL HEADLINE ENTRY — opacity + blur(4→0) + translateY(12→0).

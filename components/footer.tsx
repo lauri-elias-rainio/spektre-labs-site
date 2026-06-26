@@ -5,7 +5,7 @@ import { Reveal } from "@/components/reveal";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
-/* Perfectly symmetric link grid — left = right, declared = realized */
+/* Balanced link grid for the brand footer. */
 const EXTERNAL_LINKS: Array<{ key: string; label: string; href: string; meta: string }> = [
   { key: "github",   label: "GitHub",   href: LINKS.github,   meta: "src" },
   { key: "youtube",  label: "YouTube",  href: LINKS.youtube,  meta: "studio" },
@@ -15,14 +15,13 @@ const EXTERNAL_LINKS: Array<{ key: string; label: string; href: string; meta: st
   { key: "email",    label: "Email",    href: LINKS.email,    meta: "direct" },
 ];
 
-/* Split into two symmetric columns — left=right */
 const LEFT_LINKS  = EXTERNAL_LINKS.slice(0, 3);
 const RIGHT_LINKS = EXTERNAL_LINKS.slice(3);
 
 export function Footer() {
   return (
     <footer className="border-t border-[var(--line)]">
-      {/* Glyph divider — the 1=1 ornament, perfectly centered */}
+      {/* Glyph divider. */}
       <div className="flex justify-center pt-14 sm:pt-20">
         <Reveal delay={0} y={12}>
           <Glyph variant="divider" size={200} strokeOpacity={0.35} />
@@ -30,7 +29,7 @@ export function Footer() {
       </div>
 
       <Container className="pb-16 pt-10 sm:pb-24 sm:pt-14">
-        {/* ── Seal + Wordmark — absolute center anchor ── */}
+        {/* ── Seal + Wordmark ── */}
         <Reveal delay={60} y={20}>
           <div className="mb-16 flex flex-col items-center gap-5 sm:mb-20">
             <Glyph variant="seal" size={72} strokeOpacity={0.28} />
@@ -42,13 +41,13 @@ export function Footer() {
                 className="label text-[0.55rem] tracking-[0.22em] text-[var(--fg-faint)]"
                 style={{ opacity: 0.42 }}
               >
-                1 = 1
+                HARD SYSTEMS
               </p>
             </div>
           </div>
         </Reveal>
 
-        {/* ── Symmetric link grid — 3 left · 3 right ── */}
+        {/* ── Link grid — 3 left · 3 right ── */}
         <Reveal delay={100} y={16}>
           <div className="grid grid-cols-2 gap-x-8 gap-y-0 sm:grid-cols-[1fr_auto_1fr] sm:gap-x-0">
             {/* Left column */}
@@ -75,7 +74,7 @@ export function Footer() {
               ))}
             </div>
 
-            {/* Center hairline rule — the symmetry axis */}
+            {/* Center hairline rule. */}
             <div className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center sm:gap-2">
               <div className="h-full w-px bg-gradient-to-b from-transparent via-[var(--line-strong)] to-transparent" />
               <Glyph variant="node" size={10} strokeOpacity={0.4} />
@@ -131,7 +130,7 @@ export function Footer() {
           </div>
         </Reveal>
 
-        {/* ── Bottom mark — year · axiom · systems architect ── */}
+        {/* ── Bottom mark — year · domains ── */}
         <Reveal delay={180} y={8}>
           <div className="mt-10 flex flex-col items-center gap-[0.4rem] sm:flex-row sm:justify-between">
             <p className="label text-[0.58rem] tracking-[0.24em] text-[var(--fg-faint)]"
@@ -142,7 +141,7 @@ export function Footer() {
               className="label text-[0.58rem] tracking-[0.24em] text-[var(--fg-faint)]"
               style={{ opacity: 0.4 }}
             >
-              Structural Invariance · AI Research · σ = 1
+              Research · Systems · Studio · Compute
             </p>
           </div>
         </Reveal>

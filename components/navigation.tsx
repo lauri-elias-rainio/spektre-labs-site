@@ -14,11 +14,11 @@ import lab from "@/data/lab.json";
 // Artifacts; Lab folds in Method + Manifesto + About. Studio/Games/Shoreworld
 // are reached from the home divisions + Universe, keeping the bar quiet.
 const navItems: Array<{ href: string; label: string }> = [
-  { href: "/systems", label: "σ-gate" },
+  { href: "/systems", label: "Gate" },
   { href: "/research", label: "Research" },
-  { href: "/universe", label: "Universe" },
-  { href: "/about", label: "Lab" },
-  { href: "/connect", label: "Connect" },
+  { href: "/universe", label: "World" },
+  { href: "/about", label: "About" },
+  { href: "/connect", label: "Contact" },
 ];
 
 export function Navigation({ className }: { className?: string }) {

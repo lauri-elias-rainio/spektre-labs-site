@@ -1,12 +1,8 @@
 import Link from "next/link";
 
-import SignalRaymarch from "@/components/signal-raymarch";
+import { Glyph } from "@/components/glyph";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
-
-// SignalRaymarch is the hero's single signature object: a raw-WebGL2 fullscreen
-// raymarched SDF that renders reliably across browsers and cleanly disappears
-// when WebGL2 is unavailable.
 
 const hero = lab.home.hero;
 
@@ -14,8 +10,8 @@ export function Hero() {
   return (
     <section className="relative -mx-6 -mt-4 overflow-hidden px-6 pb-24 pt-10 sm:-mx-8 sm:px-8 sm:pb-28 sm:pt-14 lg:pb-36">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute inset-y-0 right-[-10%] w-[78vw] max-w-[58rem] opacity-95 sm:right-[-6%] sm:w-[60vw] lg:right-[-2%] lg:w-[46vw]">
-          <SignalRaymarch />
+        <div className="absolute inset-y-0 right-[-12%] flex items-center opacity-[0.18] sm:right-[-8%] lg:right-[-4%]">
+          <Glyph variant="seal" size={760} strokeOpacity={0.14} />
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(90%_72%_at_28%_22%,rgba(255,255,255,0.05),transparent_58%),radial-gradient(70%_55%_at_84%_16%,rgba(207,227,255,0.08),transparent_54%)]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
@@ -35,28 +31,27 @@ export function Hero() {
         </p>
 
         <h1
-          className="rise-blur metal-text hero-display max-w-[14ch] text-balance"
+          className="rise-blur metal-text hero-display max-w-[13ch] text-balance"
           style={{ animationDelay: "0.1s" }}
         >
           {hero.headline}
         </h1>
 
-        <div
-          className="rise mt-10 flex max-w-[34rem] items-center gap-5 sm:gap-7"
-          style={{ animationDelay: "0.2s" }}
-        >
-          <span className="axis-signal h-12 sm:h-14" aria-hidden />
-          <div>
-            <p
-              className="metal-text text-[2.2rem] font-semibold leading-none tracking-[-0.05em] sm:text-[2.8rem]"
-              aria-label="One equals one"
-            >
-              1&thinsp;=&thinsp;1
-            </p>
-            <p className="mt-2 text-[0.95rem] leading-[1.6] text-[var(--fg-mute)] sm:text-[1rem]">
-              {hero.axiomGloss}
-            </p>
+        <div className="rise mt-10 max-w-[34rem]" style={{ animationDelay: "0.2s" }}>
+          <div className="flex items-center gap-5 sm:gap-7">
+            <span className="axis-signal h-12 sm:h-14" aria-hidden />
+            <div>
+              <p
+                className="metal-text text-[2.2rem] font-semibold leading-none tracking-[-0.05em] sm:text-[2.8rem]"
+                aria-label="One equals one"
+              >
+                1&thinsp;=&thinsp;1
+              </p>
+            </div>
           </div>
+          <p className="mt-3 text-[0.96rem] leading-[1.7] text-[var(--fg-mute)] sm:text-[1rem]">
+            {hero.axiomGloss}
+          </p>
         </div>
 
         <p

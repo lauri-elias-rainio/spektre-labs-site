@@ -34,47 +34,47 @@ const DIVISIONS: Division[] = [
   {
     index: "01",
     name: "Research",
-    sub: "The papers",
+    sub: "Open papers",
     status: "REAL" as const,
     description:
-      "The papers. We map why systems stay coherent or collapse — and find the same breaking point, K_crit ≈ 0.127, recurring from physics to AI. Open-source. Read the corpus.",
+      "Open papers on why systems stay coherent, where they fail, and what happens when correction stops working.",
     href: "/research",
   },
   {
     index: "02",
-    name: "Systems",
-    sub: "The theory, as code",
+    name: "Tools",
+    sub: "The live product",
     status: "REAL" as const,
     description:
-      "The theory, as code you can run. σ-gate checks AI output for leaked secrets, injection, and broken coherence — no model, no network, same answer every time, ~85 µs per call. Free core, live demo in your browser.",
+      "Production tools that check AI output before it ships. Deterministic, model-free, and built for real release flows.",
     href: "/systems",
   },
   {
     index: "03",
     name: "Studio",
-    sub: "The lab, on film",
+    sub: "Video and media",
     status: "EMERGING" as const,
     description:
-      "The lab, on film. We're turning the research into video — the channel is live and growing. Watch the work get made.",
+      "Short films and visual explainers that make the work easier to see. The channel is live.",
     href: LINKS.youtube,
     external: true,
   },
   {
     index: "04",
     name: "Games",
-    sub: "The same law, played",
+    sub: "Interactive systems",
     status: "VISION" as const,
     description:
-      "Worlds built on the same law. If a system must stay coherent to survive, a game is the cleanest place to prove it. Not built yet — the theory comes first.",
+      "Interactive systems and games built on the same standard. Not shipping yet.",
     href: null,
   },
   {
     index: "05",
     name: "Shoreworld",
-    sub: "The world · The IP",
+    sub: "The world",
     status: "VISION" as const,
     description:
-      "The world, and its story. One IP designed from the start as a proof of coherence — a place where 1 = 1 is the physics. Concept stage.",
+      "A story world built from the same rule. Concept stage.",
     href: null,
   },
 ] as const;
@@ -103,7 +103,7 @@ export default function Home() {
           Large symmetric data-statement. Glyph seal as quiet backdrop.
           Left = right. Declared = realized. σ = 1.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="relative mt-32 sm:mt-44 lg:mt-56 overflow-hidden">
+      <section className="relative mt-32 overflow-hidden sm:mt-44 lg:mt-56">
         {/* rule */}
         <div className="rule mb-0" />
 
@@ -115,7 +115,7 @@ export default function Home() {
         {/* Content — perfectly centered */}
         <div className="relative flex flex-col items-center px-6 py-24 text-center sm:py-32 lg:py-40">
           <Reveal delay={0}>
-            <p className="label mb-8 text-[var(--fg-faint)]">Axiom · Foundational Constant</p>
+          <p className="label mb-8 text-[var(--fg-faint)]">Core promise</p>
           </Reveal>
 
           {/* The statement */}
@@ -128,23 +128,10 @@ export default function Home() {
             </p>
           </Reveal>
 
-          {/* K_crit inline — mono metadata, hairline rule above */}
           <Reveal delay={160}>
-            <div className="mt-10 flex items-center gap-6 sm:gap-10">
-              <span className="h-px w-12 bg-[var(--line-strong)] sm:w-20" />
-              <span className="label text-[var(--fg-mute)] tracking-[0.28em]">
-                K<sub className="tracking-normal">crit</sub>&thinsp;≈&thinsp;0.127
-              </span>
-              <span className="h-px w-12 bg-[var(--line-strong)] sm:w-20" />
-            </div>
-          </Reveal>
-
-          {/* Descriptor */}
-          <Reveal delay={240}>
             <p className="mt-8 max-w-[38rem] text-pretty text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] sm:text-[1.1rem]">
-              What a system promises should match what it delivers. σ&nbsp;is the distance
-              between the two. When σ grows and nothing corrects it, systems collapse — at a
-              measured threshold, K<sub className="tracking-normal">crit</sub>&thinsp;≈&thinsp;0.127.
+              Declared and delivered should match. When they drift, the work gets harder to
+              trust and harder to ship.
             </p>
           </Reveal>
         </div>
@@ -160,9 +147,9 @@ export default function Home() {
         <Reveal delay={0}>
           <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="label mb-3 text-[var(--fg-faint)]">Proof · What runs today</p>
+              <p className="label mb-3 text-[var(--fg-faint)]">Live work</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
-                Theory pays in code.
+                What runs now.
               </h2>
             </div>
             <EditorialLink href={LINKS.github} external className="shrink-0 self-start sm:self-auto">
@@ -254,9 +241,9 @@ export default function Home() {
         <Reveal delay={0}>
           <div className="mb-14 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="label mb-3 text-[var(--fg-faint)]">Artifacts · Triptych</p>
+              <p className="label mb-3 text-[var(--fg-faint)]">Core stack</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
-                Three surfaces.<br className="hidden sm:inline" /> One invariant.
+                Three live things.<br className="hidden sm:inline" /> One standard.
               </h2>
             </div>
             <EditorialLink href="/artifacts" className="shrink-0 self-start sm:self-auto">
@@ -348,18 +335,18 @@ export default function Home() {
         <Reveal delay={0}>
           <div className="mb-16 grid gap-6 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">Universe · Trajectory</p>
+              <p className="label mb-4 text-[var(--fg-faint)]">Where it goes</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem] lg:text-[2.5rem]">
-                Five divisions.<br />One mind.
+                Five parts.<br />One standard.
               </h2>
             </div>
             <div className="lg:col-span-7 lg:col-start-6 flex flex-col justify-end">
               <p className="text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] max-w-[38rem]">
-                Spektre expands through a single structural arc: from formal research outward
-                into systems, media, and world-building. Every division inherits the invariant.
+                The lab starts with research and turns it into tools, media, play, and a world
+                of its own. Every branch keeps the same standard.
               </p>
               <EditorialLink href="/universe" className="mt-6 self-start">
-                Full overview&nbsp;→
+                See the map&nbsp;→
               </EditorialLink>
             </div>
           </div>
@@ -508,15 +495,15 @@ export default function Home() {
         <Reveal delay={0}>
           <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">Standard · Non-negotiable</p>
+              <p className="label mb-4 text-[var(--fg-faint)]">How we work</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem] lg:text-[2.5rem]">
-                Six values.<br />One bar.
+                Six rules.<br />One standard.
               </h2>
             </div>
             <div className="lg:col-span-7 lg:col-start-6 flex flex-col justify-end">
               <p className="text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] max-w-[38rem]">
-                Not a poster. The actual rules the work is checked against — the
-                same invariant, applied to how we build, not just what we claim.
+                These are the rules the work is checked against. Not a slogan, just the standard
+                that every page and product has to meet.
               </p>
             </div>
           </div>
@@ -524,12 +511,12 @@ export default function Home() {
 
         <div className="grid gap-px border border-[var(--line)] rounded-[var(--radius)] overflow-hidden bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { name: "Coherence", line: "1 = 1 — inner equals outer, the look equals the substance; σ is the gap and the gap is the work." },
-            { name: "Proof", line: "Nothing is real until realized and checkable. We publish receipts — including the honest zeros." },
-            { name: "Restraint", line: "Subtract until only the necessary remains. One theme, one signal, no second language, ever." },
-            { name: "Symmetry", line: "Perfect bilateral symmetry is 1 = 1 rendered. Geometry carries the meaning, decoration never does." },
-            { name: "First-principles", line: "One operator across every domain. We architect the substrate; we do not polish the old order." },
-            { name: "Sovereignty", line: "Independent, founder-authored, Helsinki. We answer to the axiom, not to permission." },
+            { name: "Coherence", line: "What you say and what you ship should match. That is the standard." },
+            { name: "Proof", line: "If it cannot be checked, it is not finished. The work stays auditable." },
+            { name: "Restraint", line: "Keep only what helps the user understand or use the product." },
+            { name: "Symmetry", line: "The system should feel balanced, legible, and intentional." },
+            { name: "First-principles", line: "Build from the rule, not from decoration or habit." },
+            { name: "Independence", line: "Founder-led, Helsinki-based, and not shaped by permission." },
           ].map((v, i) => (
             <Reveal key={v.name} delay={i * 70} className="h-full">
               <div className="flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-9">
@@ -618,22 +605,21 @@ export default function Home() {
         <div className="relative flex flex-col items-center px-6 py-28 text-center sm:py-36 lg:py-48">
           {/* Label */}
           <Reveal delay={0}>
-            <p className="label text-[var(--fg-faint)]">Gate · Access</p>
+            <p className="label text-[var(--fg-faint)]">Start here</p>
           </Reveal>
 
           {/* Statement */}
           <Reveal delay={80}>
             <h2 className="metal-text mt-8 max-w-[28rem] text-balance text-[2.6rem] font-semibold tracking-[-0.045em] leading-[1.03] sm:text-[3.5rem] lg:text-[4.5rem]">
-              The gate is open.
+              Open the live gate.
             </h2>
           </Reveal>
 
           {/* Sub-copy */}
           <Reveal delay={160}>
             <p className="mt-7 max-w-[30rem] text-pretty text-[1rem] leading-[1.86] text-[var(--fg-mute)]">
-              Coherence isn&rsquo;t an opinion — either a system holds 1&nbsp;=&nbsp;1 or it
-              doesn&rsquo;t. σ-gate is the proof, and it runs in your browser right now.
-              No signup. No model. No network.
+              If the system does not do what it says, it should not ship. σ-gate checks that in
+              the browser, right now. No signup. No model. No network.
             </p>
           </Reveal>
 
@@ -701,7 +687,7 @@ export default function Home() {
                 href="/artifacts"
                 className="btn-metal rounded-[10px] px-8 py-3.5 text-[0.92rem] font-semibold tracking-tight"
               >
-                Enter the Corpus
+                Open the work
               </Link>
               <Link
                 href="/research"

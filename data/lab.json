@@ -35,16 +35,16 @@
   "home": {
     "hero": {
       "eyebrow": "Independent Research Lab · Helsinki",
-      "headline": "Does it do what it says?",
+      "headline": "Measure coherence.",
       "axiom": "1 = 1",
-      "axiomGloss": "What a system promises should match what it delivers. σ is the distance between the two.",
+      "axiomGloss": "What a system promises should match what it delivers. σ is the gap between the two.",
       "tagline": "What you say should equal what you do. We measure the gap.",
-      "sub": "Spektre Labs studies why systems hold together — and why they break. We turned that study into running code: σ-gate, a free tool that checks whether an AI's output is safe and honest before it ships.",
-      "primaryCta": { "label": "See it run", "href": "/systems" },
+      "sub": "Spektre Labs studies why systems hold together — and why they fail. The research ships as open papers and production tools, including σ-gate, which checks whether AI output is coherent before it ships.",
+      "primaryCta": { "label": "Open σ-gate", "href": "/systems" },
       "secondaryCta": { "label": "Read the corpus", "href": "/research" },
       "description": [
-        "Spektre Labs studies why systems hold together — and why they break.",
-        "We turned that study into running code: tools that check whether an AI's output is actually safe and honest before it ships."
+        "Spektre Labs studies why systems hold together — and why they fail.",
+        "The work ships as open research and production tools, including σ-gate, which checks whether AI output is coherent before it ships."
       ]
     },
     "whatWeDo": {
@@ -138,4 +138,3 @@
     }
   }
 }
-

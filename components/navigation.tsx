@@ -13,6 +13,7 @@ import lab from "@/data/lab.json";
 // and contact. Product names stay one level deeper.
 const navItems: Array<{ href: string; label: string }> = [
   { href: "/systems", label: "Systems" },
+  { href: "/web4", label: "Web4" },
   { href: "/research", label: "Research" },
   { href: "/universe", label: "World" },
   { href: "/about", label: "About" },

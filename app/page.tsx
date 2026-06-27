@@ -98,6 +98,45 @@ export default function Home() {
     <div>
       <Hero />
 
+      <section className="mt-24 sm:mt-32 lg:mt-40">
+        <Reveal delay={0}>
+          <Link
+            href="/web4"
+            className="group block overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--bg-1)] transition-colors duration-500 hover:border-[var(--line-strong)] hover:bg-[var(--bg-2)]"
+          >
+            <div className="grid gap-px bg-[var(--line)] lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="bg-[var(--bg-1)] p-8 transition-colors duration-500 group-hover:bg-[var(--bg-2)] sm:p-10 lg:p-12">
+                <p className="label mb-5 text-[var(--signal)]">Web4 · Spektre browser</p>
+                <h2 className="text-[2rem] font-semibold leading-[1.04] tracking-[-0.04em] text-[var(--fg)] sm:text-[3rem] lg:text-[4rem]">
+                  The internet,<br />cleaned up.
+                </h2>
+                <p className="mt-7 max-w-[40rem] text-[1rem] leading-[1.82] text-[var(--fg-dim)]">
+                  Spektre is a cleaner, safer browser for the next internet: fewer
+                  distractions, clearer trust, one place to work, and AI that acts inside
+                  the page instead of floating beside it.
+                </p>
+              </div>
+              <div className="flex flex-col justify-between bg-[var(--bg-1)] p-8 transition-colors duration-500 group-hover:bg-[var(--bg-2)] sm:p-10 lg:p-12">
+                <div className="space-y-5">
+                  {[
+                    "Same sites. Less junk.",
+                    "No promise without logs, tests, demos, or pilots.",
+                    "Every story closes into download, upgrade, pilot, or proof work.",
+                  ].map((line) => (
+                    <p key={line} className="border-b border-[var(--line)] pb-5 text-[0.98rem] leading-[1.65] text-[var(--fg-dim)]">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+                <span className="label mt-10 text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                  Open Web4&nbsp;→
+                </span>
+              </div>
+            </div>
+          </Link>
+        </Reveal>
+      </section>
+
       <section className="mt-28 sm:mt-36 lg:mt-44">
         <div className="rule mb-12 sm:mb-14" />
 

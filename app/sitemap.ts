@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/artifacts", priority: 0.9, changeFrequency: "monthly" },
     { path: "/research", priority: 0.8, changeFrequency: "monthly" },
     { path: "/systems", priority: 0.8, changeFrequency: "monthly" },
+    { path: "/web4", priority: 0.9, changeFrequency: "monthly" },
     { path: "/studio", priority: 0.8, changeFrequency: "monthly" },
     { path: "/method", priority: 0.8, changeFrequency: "monthly" },
     { path: "/manifesto", priority: 0.7, changeFrequency: "yearly" },
@@ -41,4 +42,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route.priority,
   }));
 }
-

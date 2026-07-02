@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
+import ShoreworldEngine from "@/components/shoreworld-engine";
 import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
@@ -34,12 +35,32 @@ export default function ShoreworldPage() {
         <span className="label text-[var(--fg-faint)]">Vision · in development · not a shipped product</span>
       </Reveal>
 
-      {/* cinematic hero */}
+      {/* cinematic hero — LIVE. The world is not a render behind glass:
+          the procedural engine runs directly in the page, windowed,
+          high-fps (instanced WebGPU → WebGL2, adaptive resolution).
+          A generated still remains only as the engine's honest fallback. */}
       <Reveal delay={60} className="mt-10 sm:mt-12">
-        <figure className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/generated/shoreworld/hero.png" alt="Shoreworld — the Atlantean-cybernetic capital"
-               className="aspect-video w-full object-cover" loading="eager" />
+        <figure className="relative overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
+          <div className="relative aspect-video w-full sm:aspect-[21/9]">
+            <ShoreworldEngine windowed />
+          </div>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/85 via-black/30 to-transparent px-6 pb-4 pt-16 sm:px-8"
+          >
+            <div>
+              <p className="label text-[var(--signal)]">The Coherence Capital · Live</p>
+              <p className="mt-1 label text-[0.5rem] text-[var(--fg-faint)]">
+                Generated on your GPU · perfect symmetry · nothing pre-rendered
+              </p>
+            </div>
+            <span
+              className="metal-text text-[2.4rem] leading-none sm:text-[3rem]"
+              style={{ fontFamily: "var(--font-display), serif" }}
+            >
+              1=1
+            </span>
+          </div>
         </figure>
       </Reveal>
 

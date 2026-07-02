@@ -37,8 +37,12 @@ function mulberry32(seed: number) {
 
 export default function ShoreworldEngine({
   onReady,
+  windowed = false,
 }: {
   onReady?: (backend: Backend) => void;
+  /** true → fill the nearest relative parent instead of the viewport,
+      so the engine embeds directly into a page as a live plate. */
+  windowed?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [backend, setBackend] = useState<Backend>("webgpu");
@@ -429,12 +433,18 @@ export default function ShoreworldEngine({
     };
   }, [onReady]);
 
+  const layer = windowed
+    ? "absolute inset-0 h-full w-full"
+    : "fixed inset-0 z-0 h-dvh w-full";
+
   return (
     <>
-      <div ref={hostRef} className="fixed inset-0 z-0 h-dvh w-full" aria-hidden />
+      <div ref={hostRef} className={layer} aria-hidden />
       {/* honest fallback — ei feikki paskaa: if both backends fail, say so */}
       {backend === "error" && (
-        <div className="fixed inset-0 z-0 flex items-center justify-center bg-[var(--bg)]">
+        <div
+          className={`${windowed ? "absolute inset-0" : "fixed inset-0 z-0"} flex items-center justify-center bg-[var(--bg)]`}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/generated/shoreworld/city.png"
@@ -448,7 +458,9 @@ export default function ShoreworldEngine({
       )}
       {/* live backend telemetry — σ-honest, no fake numbers */}
       {backend !== "error" && (
-        <div className="pointer-events-none fixed bottom-5 right-5 z-20 text-right">
+        <div
+          className={`pointer-events-none ${windowed ? "absolute bottom-3 right-4" : "fixed bottom-5 right-5 z-20"} text-right`}
+        >
           <p
             className="label text-[0.56rem] tracking-[0.24em]"
             style={{ color: "var(--fg-faint)" }}

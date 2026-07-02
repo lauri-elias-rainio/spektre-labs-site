@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { Glyph } from "@/components/glyph";
 import { Reveal } from "@/components/reveal";
+import SignalRaymarch from "@/components/signal-raymarch";
 import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
@@ -95,8 +96,23 @@ const TIER_DOT_OPACITY: Record<Division["tier"], number> = {
 export default function UniversePage() {
   return (
     <div>
-      {/* ── Masthead ────────────────────────────────────────────────── */}
-      <div className="pt-20 pb-0 sm:pt-28 lg:pt-36">
+      {/* ── Masthead — a LIVE raymarched monolith glimmers behind the
+             title (raw WebGL2 SDF, computed on the visitor's GPU),
+             masked hard into OLED: texture with a pulse, not an embed. ── */}
+      <div className="relative -mx-6 overflow-hidden px-6 pt-20 pb-0 sm:-mx-10 sm:px-10 sm:pt-28 lg:-mx-14 lg:px-14 lg:pt-36">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+          <div className="absolute inset-y-0 right-0 w-full sm:w-[68%]">
+            <SignalRaymarch />
+          </div>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(80% 95% at 72% 32%, transparent 0%, #000 74%)",
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent" />
+        </div>
         <Reveal delay={0}>
           <p className="label mb-6" style={{ color: "var(--fg-faint)" }}>
             Spektre Labs · Universe

@@ -14,6 +14,7 @@ import lab from "@/data/lab.json";
 const navItems: Array<{ href: string; label: string }> = [
   { href: "/systems", label: "Systems" },
   { href: "/web4", label: "Web4" },
+  { href: "/studio", label: "Studio" },
   { href: "/research", label: "Research" },
   { href: "/universe", label: "World" },
   { href: "/about", label: "About" },

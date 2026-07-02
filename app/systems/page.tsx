@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { CanonVideo } from "@/components/canon-video";
 import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
 import { GuardDemo } from "@/components/guard-demo";
@@ -102,11 +103,31 @@ const DESIGN_PRINCIPLES = [
 export default function SystemsPage() {
   return (
     <div>
-      {/* ── Header ───────────────────────────────────────────────── */}
-      <PageHeader
-        title="σ-gate"
-        description="Deterministic trust gate for AI and agent output. 1 = 1, made executable."
-      />
+      {/* ── Header — the platinum lattice glimmers through the void
+             behind it (texture, not an embed): heavy radial mask into
+             OLED so only the header's halo reveals the circuitry. ───── */}
+      <div className="relative -mx-6 -mt-10 overflow-hidden px-6 pb-6 pt-10 sm:-mx-10 sm:px-10 sm:pt-14 lg:-mx-14 lg:px-14 lg:pt-16">
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+          <CanonVideo
+            src="/generated/systems-lattice.mp4"
+            poster="/generated/systems-lattice-poster.jpg"
+            label="Platinum circuit lattice, drifting — generated in-canon, graded monochrome."
+            className="h-full w-full object-cover opacity-[0.22]"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(85% 90% at 32% 20%, transparent 0%, #000 76%)",
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black to-transparent" />
+        </div>
+        <PageHeader
+          title="σ-gate"
+          description="Deterministic trust gate for AI and agent output. 1 = 1, made executable."
+        />
+      </div>
 
       {/* ── § 1 · AXIOM STATEMENT ───────────────────────────────── */}
       <section className="relative mt-24 overflow-hidden sm:mt-32 lg:mt-40">

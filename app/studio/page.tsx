@@ -96,60 +96,125 @@ export default function StudioPage() {
       </Reveal>
 
       {/* ── THE NODES — the agent organization, personified.
-             Mono fashion-editorial canon: chrome helmets (the face stays
-             private), tailored luxury, seamless grey. Generated in-canon on
-             Midjourney, graded to platinum monochrome. ─────────────────── */}
-      <Reveal delay={60} className="mt-14 sm:mt-16">
-        <div className="mb-6 flex items-baseline justify-between">
-          <p className="label text-[var(--signal)]">“The Nodes” · Editorial</p>
+             Fashion-lookbook composition, not boxed embeds: a lead motion
+             plate + editorial statement, then three stills — every plate
+             carries its own serif-numeral lockup over a scrim, grounded
+             into OLED. Chrome helmets: the face stays private (§9).
+             Generated in-canon on Midjourney, graded platinum-mono. ────── */}
+      <Reveal delay={60} className="mt-16 sm:mt-20">
+        <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+          <p className="label text-[var(--signal)]">“The Nodes” · Lookbook</p>
           <p className="label text-[var(--fg-faint)]">
-            The agent organization, personified
+            The agent organization, personified · generated in-canon
           </p>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2">
+
+        {/* Row 1 — lead motion plate + statement panel */}
+        <div className="grid gap-5 lg:grid-cols-12">
+          <figure className="relative overflow-hidden rounded-[var(--radius)] border border-[var(--line)] lg:col-span-7">
+            <CanonVideo
+              src="/generated/nodes/motion-01.mp4"
+              poster="/generated/nodes/motion-01-poster.jpg"
+              label="The Scouts — two helmeted figures in tailored monochrome, in motion. Generated in-canon."
+              className="aspect-square w-full object-cover"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/90 via-black/40 to-transparent px-6 pb-5 pt-24 sm:px-8 sm:pb-6"
+            >
+              <div>
+                <p className="label text-[var(--fg-dim)]">Scouts</p>
+                <p className="mt-1 label text-[0.5rem] text-[var(--fg-faint)]">
+                  Fan out · return with the frontier
+                </p>
+              </div>
+              <span
+                className="metal-text text-[3.4rem] leading-none sm:text-[4.2rem]"
+                style={{ fontFamily: "var(--font-display), serif" }}
+              >
+                01
+              </span>
+            </div>
+          </figure>
+
+          <div className="flex flex-col justify-between rounded-[var(--radius)] border border-[var(--line)] bg-[var(--bg-1)] p-8 sm:p-10 lg:col-span-5">
+            <p
+              className="text-pretty text-[1.5rem] leading-[1.28] text-[var(--fg)] sm:text-[1.9rem]"
+              style={{ fontFamily: "var(--font-display), serif" }}
+            >
+              The face stays private.
+              <br />
+              The work is the identity.
+            </p>
+            <div className="mt-10 space-y-0">
+              {[
+                ["Figures", "06 · one organization"],
+                ["Palette", "Platinum monochrome"],
+                ["Helmet", "Privacy, worn (STYLE_LAW §9)"],
+                ["Source", "Generated in-canon · graded"],
+              ].map(([k, v]) => (
+                <div
+                  key={k}
+                  className="flex items-baseline justify-between border-t border-[var(--line)] py-3"
+                >
+                  <span className="label text-[var(--fg-faint)]">{k}</span>
+                  <span className="label text-[var(--fg-mute)]" style={{ textTransform: "none" }}>
+                    {v}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Row 2 — three plates, serif numerals over scrims */}
+        <div className="mt-5 grid gap-5 sm:grid-cols-3">
           {[
             {
               src: "/generated/nodes/node-01.jpg",
-              n: "01",
-              cap: "Solver — builds and ships. Does not critique.",
-              wide: false,
+              n: "02",
+              role: "Solver",
+              cap: "Builds and ships · does not critique",
             },
             {
               src: "/generated/nodes/node-04.jpg",
-              n: "02",
-              cap: "Synthesizer — signal condensed from noise.",
-              wide: false,
-            },
-            {
-              src: "/generated/nodes/node-02.jpg",
               n: "03",
-              cap: "Scouts — fan out, return with the frontier.",
-              wide: false,
+              role: "Synthesizer",
+              cap: "Signal condensed from noise",
             },
             {
-              src: "/generated/nodes/node-03.jpg",
+              src: "/generated/nodes/node-06.jpg",
               n: "04",
-              cap: "Gates — two views of every claim before it ships.",
-              wide: false,
+              role: "Orchestrator",
+              cap: "One directive · many hands",
             },
           ].map((f) => (
             <figure
               key={f.src}
-              className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]"
+              className="relative overflow-hidden rounded-[var(--radius)] border border-[var(--line)]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={f.src}
-                alt={`The Nodes ${f.n} — ${f.cap} Mono fashion-editorial figure, generated in-canon.`}
-                className="aspect-square w-full object-cover"
+                alt={`The Nodes — ${f.role}. ${f.cap}. Mono fashion-editorial figure, generated in-canon.`}
+                className="aspect-[4/5] w-full object-cover"
                 loading="lazy"
               />
-              <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
-                <span>
-                  {f.n} · {f.cap}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/90 via-black/40 to-transparent px-5 pb-4 pt-20"
+              >
+                <div>
+                  <p className="label text-[var(--fg-dim)]">{f.role}</p>
+                  <p className="mt-1 label text-[0.5rem] text-[var(--fg-faint)]">{f.cap}</p>
+                </div>
+                <span
+                  className="metal-text text-[2.6rem] leading-none"
+                  style={{ fontFamily: "var(--font-display), serif" }}
+                >
+                  {f.n}
                 </span>
-                <span>Generated · in-canon</span>
-              </figcaption>
+              </div>
             </figure>
           ))}
         </div>

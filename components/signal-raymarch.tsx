@@ -379,6 +379,127 @@ void main(){
   outColor = vec4(max(col, 0.0), 1.0);
 }`;
 
+
+/*
+  FRAG_PRISM — THE SIGIL PRISM. The hero monolith whose silhouette is traced
+  1:1 from the approved CSS clip-path polygon (50% 0, 80% 13%, 88% 50%,
+  80% 87%, 50% 100%, mirrored) — a convex half-plane SDF, so every edge is
+  mathematically razor. The engine adds what CSS cannot: a specular band
+  that TRAVELS the brushed platinum, 45-degree chamfer facets that catch it,
+  a breathing signal centerline, and pointer parallax. No y-spin (a slab has
+  a thin side); the light moves, the monument does not.
+*/
+const FRAG_PRISM = /* glsl */ `#version 300 es
+precision highp float;
+out vec4 outColor;
+
+uniform vec2  u_res;
+uniform float u_time;
+uniform vec2  u_mouse;
+uniform float u_reduce;
+
+mat2 rot(float a){ float s=sin(a), c=cos(a); return mat2(c,-s,s,c); }
+float hash(vec2 p){ p = fract(p*vec2(123.34, 456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
+
+float sdSil(vec2 p){
+  p.x = abs(p.x);
+  float d = dot(p - vec2(0.0, 1.5),   normalize(vec2(0.390, 0.540)));
+  d = max(d, dot(p - vec2(0.54, 1.11), normalize(vec2(1.110, 0.140))));
+  d = max(d, dot(p - vec2(0.68, 0.0),  normalize(vec2(1.110,-0.140))));
+  d = max(d, dot(p - vec2(0.54,-1.11), normalize(vec2(0.390,-0.540))));
+  return d;
+}
+
+float map(vec3 p){
+  float w = sdSil(p.xy);
+  float dz = abs(p.z) - 0.20;
+  float d = max(w, dz);
+  d = max(d, (w + dz) * 0.7071 + 0.13);
+  return d;
+}
+
+vec3 calcNormal(vec3 p){
+  vec2 e = vec2(0.0008, 0.0);
+  return normalize(vec3(
+    map(p+e.xyy)-map(p-e.xyy),
+    map(p+e.yxy)-map(p-e.yxy),
+    map(p+e.yyx)-map(p-e.yyx)
+  ));
+}
+
+vec3 env(vec3 rd, float t){
+  float tt = clamp(rd.y*0.5 + 0.5, 0.0, 1.0);
+  vec3 base = mix(vec3(0.008,0.009,0.013), vec3(0.022,0.025,0.035), tt);
+  float bandY = 0.30 + 0.45 * sin(t * 0.14) * (1.0 - u_reduce);
+  float strip = smoothstep(0.20, 0.0, abs(rd.y - bandY)) * smoothstep(0.85, 0.0, abs(rd.x));
+  base += vec3(0.95,0.96,1.0) * strip * 1.25;
+  float sig = smoothstep(0.10, 0.0, abs(rd.y + 0.35)) * smoothstep(0.9, 0.0, abs(rd.x + 0.5));
+  base += vec3(0.51,0.69,1.0) * sig * 0.22;
+  return base;
+}
+
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5*u_res) / u_res.y;
+  uv.x -= 0.04;
+
+  vec3 ro = vec3(0.0, 0.0, 4.25);
+  vec3 rd = normalize(vec3(uv, -1.55));
+
+  float mx = u_mouse.x * 0.10 * (1.0 - u_reduce);
+  float my = u_mouse.y * 0.07 * (1.0 - u_reduce);
+  rd.xz *= rot(mx); ro.xz *= rot(mx);
+  rd.yz *= rot(my); ro.yz *= rot(my);
+
+  float t = 0.0;
+  float glow = 0.0;
+  bool hit = false;
+  vec3 p = ro;
+  for(int i=0;i<80;i++){
+    p = ro + rd*t;
+    float d = map(p);
+    glow += 0.008 / (0.008 + d*d*160.0);
+    if(d < 0.0007){ hit = true; break; }
+    if(t > 8.0) break;
+    t += d * 0.92;
+  }
+
+  vec3 col = vec3(0.0);
+  float alpha = 0.0;
+  if(hit){
+    vec3 n = calcNormal(p);
+    vec3 v = -rd;
+    vec3 keyDir = normalize(vec3(0.4, 0.75, 0.65));
+    float fres = pow(1.0 - max(dot(n, v), 0.0), 4.0);
+    float diff = max(dot(n, keyDir), 0.0);
+    float spec = pow(max(dot(reflect(-keyDir, n), v), 0.0), 110.0);
+
+    col  = vec3(0.72,0.74,0.80) * (0.016 + diff * 0.050);
+    col += env(reflect(rd, n), u_time) * (0.055 + fres * 1.85);
+    col += vec3(1.0,1.0,1.05) * spec * 1.35;
+    col += vec3(0.51,0.69,1.0) * pow(1.0 - max(dot(n, v), 0.0), 2.6) * 0.20;
+
+    col *= 0.94 + 0.06 * sin(p.y * 90.0);
+
+    float front = smoothstep(0.0, 0.35, n.z);
+    float axis = smoothstep(0.014, 0.0, abs(p.x)) * smoothstep(1.42, 1.30, abs(p.y));
+    float pulse = 0.91 + 0.09 * sin(u_time * 1.4959);
+    col += vec3(0.62,0.78,1.0) * axis * front * 1.1 * pulse;
+
+    alpha = 1.0;
+  }
+
+  // hairline halo only — the silhouette is carved by darkness, not glow
+  col += vec3(0.78,0.83,0.95) * glow * 0.030;
+  alpha = max(alpha, min(glow * 0.08, 0.22));
+
+  col = col / (col + vec3(0.85));
+  col = pow(col, vec3(0.92));
+  float g = hash(gl_FragCoord.xy + fract(u_time)*vec2(91.7, 47.3));
+  col += (g - 0.5) * 0.028 * alpha;
+
+  outColor = vec4(max(col, 0.0), alpha);
+}`;
+
 const VERT = /* glsl */ `#version 300 es
 precision highp float;
 void main(){
@@ -389,10 +510,14 @@ void main(){
 
 export default function SignalRaymarch({
   variant = "monolith",
+  onLive,
 }: {
   /** "monolith" — the 8-fold seal object (transparent overlay texture).
-      "shore" — THE SHORE: gate + black ocean + beam (opaque cinematic plate). */
-  variant?: "monolith" | "shore";
+      "shore" — THE SHORE: gate + black ocean + beam (opaque cinematic plate).
+      "prism" — THE SIGIL PRISM: the hero monolith, CSS-silhouette-exact. */
+  variant?: "monolith" | "shore" | "prism";
+  /** called once after the engine has drawn real frames. */
+  onLive?: () => void;
 } = {}) {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -429,7 +554,10 @@ export default function SignalRaymarch({
       return s;
     };
     const vs = compile(gl.VERTEX_SHADER, VERT);
-    const fs = compile(gl.FRAGMENT_SHADER, variant === "shore" ? FRAG_SHORE : FRAG);
+    const fs = compile(
+      gl.FRAGMENT_SHADER,
+      variant === "shore" ? FRAG_SHORE : variant === "prism" ? FRAG_PRISM : FRAG,
+    );
     if (!vs || !fs) {
       if (canvas.parentNode === mount) mount.removeChild(canvas);
       return;
@@ -493,6 +621,7 @@ export default function SignalRaymarch({
     const t0 = performance.now();
     let last = t0;
 
+    let framesDrawn = 0;
     const frame = () => {
       raf = 0;
       if (!visible || document.hidden) { running = false; return; }
@@ -507,6 +636,8 @@ export default function SignalRaymarch({
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      framesDrawn++;
+      if (framesDrawn === 3) onLive?.();
 
       if (reduce) { running = false; return; } // one frame is enough when still
       raf = requestAnimationFrame(frame);

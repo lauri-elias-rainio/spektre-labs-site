@@ -127,12 +127,12 @@ fn simulate(@builtin(global_invocation_id) gid : vec3u) {
   // ~14% of the field is wild — it never fully submits and remains the
   // living entropy veil the mark is carved out of.
   let wild = step(0.86, fract(seed * 11.9));
-  let lawScale = mix(1.0, 0.15, wild);
+  let lawScale = mix(1.0, 0.10, wild);
   let law = -g * (d / (d + 0.12)) * u.misc.x * lawScale;
 
   // entropy — fades once captured; a real residual keeps the line alive.
   let entropy = entropyField(p, t * 0.35, seed) * u.misc.y
-    * (0.22 + 0.78 * (1.0 - capture)) * (1.0 + 1.6 * wild);
+    * (0.22 + 0.78 * (1.0 - capture)) * (1.0 + 2.2 * wild);
 
   // pointer — injected disturbance, symmetric by the mirrored render.
   let toP = p - vec3f(u.pointer.x, u.pointer.y, 0.0);
@@ -455,17 +455,27 @@ export async function mountSigmaCollapse(
 
       // the law switches on after a beat of pure entropy — the collapse is the story.
       const ramp = Math.min(1, Math.max(0, (t - 0.4) / 2.2));
-      const law = 6.5 * ramp * ramp * (3 - 2 * ramp);
-      const entropy = 0.8 * (1 - 0.7 * ramp);
+      const rampS = ramp * ramp * (3 - 2 * ramp);
+
+      // entropy storms — every ~26 s the law yields for a breath, noise swallows
+      // the mark, then the field re-collapses. σ visibly rises and falls in the
+      // HUD: the law demonstrated as a cycle, not asserted as a still.
+      const settled = Math.min(1, Math.max(0, (t - 8) / 4));
+      const sp = ((t + 13) % 26) - 13;
+      const storm = Math.exp(-(sp * sp) / (2 * 1.4 * 1.4)) * settled;
+
+      const law = 6.5 * rampS * (1 - 0.78 * storm);
+      const entropy = 0.8 * (1 - 0.62 * rampS) * (1 + 3.2 * storm);
       pointer.strength *= 0.94; // decays; the field always re-collapses.
 
-      // camera: slow drift + restrained pointer parallax (Apple-grade).
+      // camera: slow oscillating precession — never reaches the degenerate
+      // edge-on view — + restrained pointer parallax (Apple-grade).
       const rect = canvas.getBoundingClientRect();
       const aspect = Math.max(0.1, rect.width / Math.max(1, rect.height));
       smX += (pointer.x / 4 - smX) * 0.04;
       smY += (pointer.y / 4 - smY) * 0.04;
-      const ry = t * 0.07 + smX * 0.22;
-      const rx = -0.16 - smY * 0.16;
+      const ry = 0.38 * Math.sin(t * 0.045) + smX * 0.22;
+      const rx = -0.16 + 0.09 * Math.sin(t * 0.03) - smY * 0.16;
       const vp = mul(perspective(FOV, aspect, 0.1, 100), view(rx, ry, CAM_DIST));
 
       // camera basis for billboarding (rows of the rotation part).

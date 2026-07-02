@@ -90,6 +90,26 @@ export default function SigmaExperience() {
         />
       </div>
 
+      {/* ── material layer — film grain + OLED vignette (never flat) ──── */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-[24]"
+        style={{
+          opacity: 0.05,
+          mixBlendMode: "overlay",
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>\")",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-[24]"
+        style={{
+          background:
+            "radial-gradient(70% 70% at 50% 50%, transparent 46%, rgba(0,0,0,0.62) 100%)",
+        }}
+      />
+
       {/* ── HUD — platinum hairline frame ─────────────────────────────── */}
       <div className="pointer-events-none fixed inset-0 z-30">
         <div className="absolute left-5 top-6 sm:left-8 sm:top-8">

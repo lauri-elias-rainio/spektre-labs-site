@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import HeroMonument from "@/components/hero-monument";
+import SignalWebGPU from "@/components/signal-webgpu";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
@@ -14,7 +14,7 @@ export function Hero() {
           className="absolute inset-y-[-8%] right-[-26%] h-[116%] w-[120vw] opacity-70 sm:right-[-18%] sm:w-[88vw] lg:right-0 lg:w-[56vw]"
           aria-hidden
         >
-          <HeroMonument />
+          <SignalWebGPU />
           <div className="hero-monolith-fallback" />
         </div>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.92)_28%,rgba(0,0,0,0.54)_58%,rgba(0,0,0,0.12)_100%)]" />

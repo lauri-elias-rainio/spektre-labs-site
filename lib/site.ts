@@ -3,18 +3,17 @@ import type { Metadata } from "next";
 import lab from "@/data/lab.json";
 
 function getSiteUrlString() {
-  const configuredUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    process.env.VERCEL_PROJECT_PRODUCTION_URL ??
-    process.env.VERCEL_URL;
-
-  if (!configuredUrl) {
-    return "https://spektrelabs.org";
+  // Canonical host is spektre.org — spektrelabs.org and both www hosts 308
+  // there. Canonical/OG/sitemap URLs must never point at a redirecting host.
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    const u = process.env.NEXT_PUBLIC_SITE_URL;
+    return u.startsWith("http") ? u : `https://${u}`;
   }
-
-  return configuredUrl.startsWith("http")
-    ? configuredUrl
-    : `https://${configuredUrl}`;
+  if (process.env.VERCEL_ENV === "production" || !process.env.VERCEL_URL) {
+    return "https://spektre.org";
+  }
+  const u = process.env.VERCEL_URL;
+  return u.startsWith("http") ? u : `https://${u}`;
 }
 
 export const siteUrl = new URL(getSiteUrlString());

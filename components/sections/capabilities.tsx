@@ -5,6 +5,7 @@
  * Perfect bilateral symmetry (1=1). Apple-grade restraint. σ-honest copy.
  * No fabricated metrics, customer counts, or revenue numbers.
  */
+import { Reveal } from "@/components/reveal";
 
 const CAPABILITIES = [
   {
@@ -41,33 +42,23 @@ const CAPABILITIES = [
     id: "stdlib",
     domain: "Durability engineering",
     name: "Transaction monitor",
-    copy: "WAL + saga + crash-recovery transaction monitor built on stdlib. Zero framework dependencies. Enterprise-grade durability without enterprise lock-in.",
+    copy: "WAL + saga + crash-recovery transaction monitor built on stdlib. Zero framework dependencies.",
   },
 ] as const;
 
 export function CapabilitiesSection() {
   return (
     <section className="spektre-stage relative -mx-6 overflow-hidden border-b border-white/10 px-6 py-24 sm:-mx-10 sm:px-10 sm:py-28 lg:-mx-14 lg:px-14 lg:py-36">
-      {/* material grain */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-        }}
-      />
-
-      <div className="relative z-10 mx-auto max-w-5xl">
+      <Reveal className="relative z-10 mx-auto max-w-5xl">
         {/* eyebrow */}
         <p className="spektre-label" style={{ color: "#cfe3ff" }}>
-          Capabilities
+          “Capabilities” · 03
         </p>
 
         {/* heading — centered bilateral axis */}
         <h2
-          className="spektre-metal-text mt-6 max-w-xl text-balance text-[2.4rem] font-semibold leading-[1.02] tracking-[-0.03em] sm:text-[3rem] lg:text-[3.6rem]"
-          style={{ fontFamily: "var(--font-display, 'Times New Roman', serif)" }}
+          className="spektre-metal-text mt-6 max-w-xl text-balance text-[2.6rem] leading-[1.02] tracking-[-0.02em] sm:text-[3.2rem] lg:text-[3.9rem]"
+          style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
         >
           Built. Tested.
           <br />
@@ -101,7 +92,7 @@ export function CapabilitiesSection() {
             </div>
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

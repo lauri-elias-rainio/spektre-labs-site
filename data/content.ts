@@ -17,7 +17,7 @@ export const guardCopy = {
   /** Top-of-page header */
   headline: "One call. Three threat surfaces. Zero model dependency.",
   subhead:
-    "σ-Guard runs deterministic pattern matching against leaked secrets, prompt injection, and PII in a single synchronous pass. Sub-millisecond. No quota. No API key required to operate.",
+    "σ-Guard runs deterministic pattern matching against leaked secrets, prompt injection, and PII in a single synchronous pass. Deterministic, in-process, no quota. No API key required to operate.",
 
   /** What it is — honest, no fake metrics */
   whatItIs: {
@@ -87,7 +87,7 @@ export const creationOsCopy = {
   principles: [
     {
       label: "Triage first",
-      body: "Multi-agent only when the task is genuinely parallelizable or specialization wins. Tight multi-hop reasoning runs solo — swarm overhead burns ~15× tokens for no gain.",
+      body: "Multi-agent only when the task is genuinely parallelizable or specialization wins. Tight multi-hop reasoning runs solo — swarm overhead multiplies token cost for no gain.",
     },
     {
       label: "Per-stage integrity gate",
@@ -119,7 +119,7 @@ export const whatThisIsCopy = {
     "Spektre Labs is one researcher and a fleet of computational agents, based in Helsinki.",
     "The work is structural: finding the invariants that govern coherence and collapse across physical systems, institutions, information architectures, and AI. Not modeling individual phenomena — identifying the conditions under which any system holds its form or breaks.",
     "Artifacts are published openly. The method is computational orchestration: formal hypothesis, computational exploration, iterative falsification, structural synthesis.",
-    "Nothing here is funded by external capital. There are no customers yet. The σ-audit on this copy returned zero fabricated claims.",
+    "Nothing here is funded by external capital. There are no customers yet. Every claim on this page is written to be checkable.",
   ],
 } as const;
 

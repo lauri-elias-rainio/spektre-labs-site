@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import { SigmaScene } from "@/components/hero/sigma-scene-component";
-import { SigmaMembrane } from "@/components/hero/sigma-membrane";
+import { SigmaCollapse } from "@/components/hero/sigma-collapse";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
@@ -22,17 +21,17 @@ const GHOST_BTN =
 export function Hero() {
   return (
     <section className="spektre-stage relative -mx-6 -mt-10 overflow-hidden border-b border-white/10 px-6 pb-24 pt-24 sm:-mx-10 sm:px-10 sm:pb-28 sm:pt-28 lg:-mx-14 lg:px-14 lg:pb-36 lg:pt-32">
-      {/* The Σ centerpiece — WebGPU → WebGL2 → poster, lazy + reduced-motion safe. */}
-      <SigmaMembrane />
+      {/* Σ-COLLAPSE — WebGPU compute → WebGL2 sculpture → poster; reduced-motion safe. */}
+      <SigmaCollapse />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
         <p className="spektre-label spektre-rise" style={{ animationDelay: "0ms" }}>
-          Spektre Labs · Research · {lab.location}
+          “Research Laboratory” · {lab.location} · 60.17°N 24.94°E
         </p>
 
         <h1
-          className="spektre-metal-text spektre-rise mt-8 text-balance text-[3.2rem] font-semibold leading-[0.95] tracking-[-0.03em] sm:text-[4.4rem] lg:text-[5.6rem]"
-          style={{ animationDelay: "80ms", fontFamily: "var(--font-display, 'Times New Roman', serif)" }}
+          className="spektre-metal-text spektre-rise mt-8 text-balance text-[3.4rem] leading-[0.98] tracking-[-0.02em] sm:text-[4.8rem] lg:text-[6rem]"
+          style={{ animationDelay: "80ms", fontFamily: "var(--font-display), 'Times New Roman', serif" }}
         >
           {lab.name}
         </h1>

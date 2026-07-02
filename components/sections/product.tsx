@@ -5,6 +5,7 @@
  * Perfect bilateral symmetry (1=1). Industrial dark-luxury. Apple-grade restraint.
  * σ-honest copy — no fabricated metrics, customer counts, or revenue numbers.
  */
+import { Reveal } from "@/components/reveal";
 
 const PILLARS = [
   {
@@ -25,33 +26,23 @@ const PILLARS = [
   {
     id: "unified",
     label: "Unified /v1/guard",
-    copy: "One call unifies all three dimensions. Sub-millisecond latency. No external dependencies at runtime.",
+    copy: "One call unifies all three dimensions. Deterministic result, no external dependencies at runtime.",
   },
 ] as const;
 
 export function ProductSection() {
   return (
     <section className="spektre-stage relative -mx-6 overflow-hidden border-b border-white/10 px-6 py-24 sm:-mx-10 sm:px-10 sm:py-28 lg:-mx-14 lg:px-14 lg:py-36">
-      {/* material grain — identical to hero stage, scoped */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-        }}
-      />
-
-      <div className="relative z-10 mx-auto max-w-5xl">
+      <Reveal className="relative z-10 mx-auto max-w-5xl">
         {/* eyebrow */}
         <p className="spektre-label" style={{ color: "#cfe3ff" }}>
-          Product · Trust Infrastructure
+          “Trust Infrastructure” · 01
         </p>
 
         {/* heading */}
         <h2
-          className="spektre-metal-text mt-6 max-w-2xl text-balance text-[2.4rem] font-semibold leading-[1.02] tracking-[-0.03em] sm:text-[3rem] lg:text-[3.6rem]"
-          style={{ fontFamily: "var(--font-display, 'Times New Roman', serif)" }}
+          className="spektre-metal-text mt-6 max-w-2xl text-balance text-[2.6rem] leading-[1.02] tracking-[-0.02em] sm:text-[3.2rem] lg:text-[3.9rem]"
+          style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
         >
           Deterministic trust layer.
           <br />
@@ -60,9 +51,9 @@ export function ProductSection() {
 
         {/* sub */}
         <p className="mt-6 max-w-[38rem] text-[1.06rem] leading-[1.8] text-[#b6bac1]">
-          σ-gate and /v1/guard give LLM pipelines a structural safety membrane: secret
-          scan × injection guard × PII compliance — unified, sub-millisecond, zero
-          external dependencies at runtime.
+          σ-gate and /v1/guard give LLM pipelines a structural safety membrane:
+          secret scan × injection guard × PII compliance — one deterministic call,
+          zero external dependencies at runtime.
         </p>
 
         {/* pillar grid — 2×2 symmetric */}
@@ -83,10 +74,13 @@ export function ProductSection() {
         </div>
 
         {/* closing axiom */}
-        <p className="spektre-label mt-12" style={{ color: "#4a4f58" }}>
-          σ = realized − declared · PASS when both sides converge
+        <p
+          className="spektre-label mt-12"
+          style={{ color: "#4a4f58", textTransform: "none" }}
+        >
+          σ = DECLARED − REALIZED · PASS WHEN BOTH SIDES CONVERGE
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }

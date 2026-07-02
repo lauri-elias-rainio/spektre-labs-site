@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* One theme, forever (STYLE_LAW §8): dark is class-driven and permanently on
+   (html.dark in layout.tsx) — the site never renders a light shell. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================
    SPEKTRE DESIGN SYSTEM — OLED-black × platinum × one signal
    STYLE_LAW: industrial dark-luxury minimalism × Atlantean
@@ -119,10 +123,10 @@
    2. CSS CUSTOM PROPERTIES  (runtime, used by components)
    ---------------------------------------------------------- */
 :root {
-  /* Legacy vars — keep for existing components */
-  --background: #ffffff;
-  --foreground: #171717;
-  --panel: rgba(255, 255, 255, 0.9);
+  /* OLED true-black spine — the only mode. */
+  --background: #000000;
+  --foreground: #edf0f4;
+  --panel: rgba(10, 10, 10, 0.92);
 
   /* Spektre palette — always available */
   --spk-black:      #000000;
@@ -142,9 +146,9 @@
   --spk-signal:     #cfe3ff;
   --spk-signal-dim: #6ba4d8;
 
-  /* Panel: light mode — glass surface */
-  --spk-panel-bg:   rgba(255, 255, 255, 0.92);
-  --spk-panel-border: rgba(23, 23, 23, 0.08);
+  /* Panel — OLED dark glass */
+  --spk-panel-bg:   rgba(10, 10, 10, 0.92);
+  --spk-panel-border: rgba(237, 240, 244, 0.07);
 
   /* Motion — available to JS/inline styles */
   --spk-ease:         cubic-bezier(0.16, 1, 0.3, 1);
@@ -159,18 +163,6 @@
   --spk-dur-enter:    640ms;
   --spk-dur-reveal:   900ms;
   --spk-dur-scene:    1200ms;
-}
-
-/* Dark mode — OLED true-black spine */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #edf0f4;
-    --panel: rgba(10, 10, 10, 0.92);
-
-    --spk-panel-bg:     rgba(10, 10, 10, 0.92);
-    --spk-panel-border: rgba(237, 240, 244, 0.07);
-  }
 }
 
 /* ----------------------------------------------------------
@@ -200,18 +192,6 @@ html {
 ::selection {
   background: rgba(207, 227, 255, 0.22);
   color: #fff;
-}
-
-@media (prefers-color-scheme: light) {
-  ::selection {
-    background: rgba(23, 23, 23, 0.12);
-    color: #000;
-  }
-  /* Solid 2px ring — #171717 on white = 18:1, exceeds WCAG AA */
-  :focus-visible {
-    outline: 2px solid #171717;
-    outline-offset: 3px;
-  }
 }
 
 a {

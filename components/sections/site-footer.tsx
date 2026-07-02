@@ -12,6 +12,7 @@ import lab from "@/data/lab.json";
 
 const NAV = [
   { label: "Artifacts", href: "/artifacts" },
+  { label: "Guard",     href: "/guard" },
   { label: "Research",  href: "/research" },
   { label: "Method",    href: "/method" },
   { label: "About",     href: "/about" },
@@ -25,27 +26,20 @@ const EXTERNAL = [
 export function SiteFooter() {
   return (
     <footer className="spektre-stage relative -mx-6 overflow-hidden border-t border-white/10 px-6 pb-14 pt-20 sm:-mx-10 sm:px-10 sm:pb-16 sm:pt-24 lg:-mx-14 lg:px-14 lg:pb-20 lg:pt-28">
-      {/* material grain */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-        }}
-      />
-
       <div className="relative z-10 mx-auto max-w-5xl">
         {/* wordmark row */}
         <div className="flex items-baseline justify-between">
           <span
-            className="spektre-metal-text text-[1.5rem] font-semibold tracking-[-0.03em] sm:text-[1.8rem]"
-            style={{ fontFamily: "var(--font-display, 'Times New Roman', serif)" }}
+            className="spektre-metal-text text-[1.5rem] tracking-[-0.02em] sm:text-[1.8rem]"
+            style={{ fontFamily: "var(--font-display), 'Times New Roman', serif" }}
           >
             Spektre Labs
           </span>
-          <p className="spektre-label hidden sm:block" style={{ color: "#cfe3ff" }}>
-            1 = 1 · σ
+          <p
+            className="spektre-label hidden sm:block"
+            style={{ color: "#cfe3ff", textTransform: "none" }}
+          >
+            1 = 1 · σ → 0
           </p>
         </div>
 
@@ -117,7 +111,7 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} Spektre Labs · Helsinki
           </p>
           <p className="spektre-label" style={{ color: "#4a4f58" }}>
-            Industrial dark-luxury × Atlantean cybernetics
+            Declared = Realized
           </p>
         </div>
       </div>

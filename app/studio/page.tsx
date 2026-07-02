@@ -95,6 +95,66 @@ export default function StudioPage() {
         </div>
       </Reveal>
 
+      {/* ── THE NODES — the agent organization, personified.
+             Mono fashion-editorial canon: chrome helmets (the face stays
+             private), tailored luxury, seamless grey. Generated in-canon on
+             Midjourney, graded to platinum monochrome. ─────────────────── */}
+      <Reveal delay={60} className="mt-14 sm:mt-16">
+        <div className="mb-6 flex items-baseline justify-between">
+          <p className="label text-[var(--signal)]">“The Nodes” · Editorial</p>
+          <p className="label text-[var(--fg-faint)]">
+            The agent organization, personified
+          </p>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2">
+          {[
+            {
+              src: "/generated/nodes/node-01.jpg",
+              n: "01",
+              cap: "Solver — builds and ships. Does not critique.",
+              wide: false,
+            },
+            {
+              src: "/generated/nodes/node-04.jpg",
+              n: "02",
+              cap: "Synthesizer — signal condensed from noise.",
+              wide: false,
+            },
+            {
+              src: "/generated/nodes/node-02.jpg",
+              n: "03",
+              cap: "Scouts — fan out, return with the frontier.",
+              wide: false,
+            },
+            {
+              src: "/generated/nodes/node-03.jpg",
+              n: "04",
+              cap: "Gates — two views of every claim before it ships.",
+              wide: false,
+            },
+          ].map((f) => (
+            <figure
+              key={f.src}
+              className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={f.src}
+                alt={`The Nodes ${f.n} — ${f.cap} Mono fashion-editorial figure, generated in-canon.`}
+                className="aspect-square w-full object-cover"
+                loading="lazy"
+              />
+              <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
+                <span>
+                  {f.n} · {f.cap}
+                </span>
+                <span>Generated · in-canon</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Reveal>
+
       {/* ── Opening statement — full editorial weight ───────────────── */}
       <Reveal delay={80} className="mt-14 sm:mt-16">
         <div className="max-w-[48rem]">

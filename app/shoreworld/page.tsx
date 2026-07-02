@@ -4,6 +4,7 @@ import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
 import ShoreworldEngine from "@/components/shoreworld-engine";
+import SignalRaymarch from "@/components/signal-raymarch";
 import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
@@ -110,6 +111,35 @@ export default function ShoreworldPage() {
           </div>
         </Reveal>
       </section>
+
+      {/* THE SHORE — the world's namesake, raymarched live: a colossal
+          double-ring gate in a black ocean, streak reflections, twin moons,
+          one volumetric signal beam. Raw WebGL2 SDF — every frame computed
+          on the visitor's GPU, nothing pre-rendered. */}
+      <Reveal delay={40} className="mt-16 sm:mt-20">
+        <figure className="relative overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
+          <div className="relative aspect-video w-full bg-black sm:aspect-[21/9]">
+            <SignalRaymarch variant="shore" />
+          </div>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/85 via-black/25 to-transparent px-6 pb-4 pt-16 sm:px-8"
+          >
+            <div>
+              <p className="label text-[var(--signal)]">The Shore · Live raymarch</p>
+              <p className="mt-1 label text-[0.5rem] text-[var(--fg-faint)]">
+                Signed-distance field · computed per-frame on your GPU
+              </p>
+            </div>
+            <span
+              className="metal-text text-[2.4rem] leading-none sm:text-[3rem]"
+              style={{ fontFamily: "var(--font-display), serif" }}
+            >
+              ⟐
+            </span>
+          </div>
+        </figure>
+      </Reveal>
 
       <div className="mt-16 flex justify-center sm:mt-20">
         <Glyph variant="divider" size={200} strokeOpacity={0.32} />

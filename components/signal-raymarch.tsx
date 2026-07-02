@@ -205,6 +205,180 @@ void main(){
   outColor = vec4(max(col, 0.0), a);
 }`;
 
+/*
+  FRAG_SHORE — THE SHORE. A colossal double-ring Atlantean gate standing in a
+  black ocean: analytic sea plane with anisotropic streak reflections, a
+  raymarched gate (octagonal-section rings + keystone, engraved grooves),
+  twin mirrored moons, and one volumetric signal beam through the gate axis.
+  Bilateral symmetry by construction (the scene is its own mirror across X).
+  Full cinematic grade in-shader: fresnel platinum, fog-to-void, filmic
+  tonemap, vignette, grain. Opaque — this variant is a plate, not an overlay.
+*/
+const FRAG_SHORE = /* glsl */ `#version 300 es
+precision highp float;
+out vec4 outColor;
+
+uniform vec2  u_res;
+uniform float u_time;
+uniform vec2  u_mouse;
+uniform float u_reduce;
+
+#define PI 3.14159265359
+
+mat2 rot(float a){ float s=sin(a), c=cos(a); return mat2(c,-s,s,c); }
+float hash(vec2 p){ p = fract(p*vec2(123.34, 456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
+float noise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  f = f*f*(3.0-2.0*f);
+  return mix(mix(hash(i), hash(i+vec2(1,0)), f.x),
+             mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y);
+}
+
+// ── THE GATE — double ring + keystone, engraved, centered on x=0 ──
+const float GATE_Y = 1.35;   // ring center height above the sea
+const float R1 = 3.2;        // outer ring
+const float R2 = 2.55;       // inner ring (the sigil echo)
+
+float sdRing(vec3 p, float R, vec2 sect, float rr){
+  vec2 q = vec2(length(p.xy) - R, p.z);
+  return length(max(abs(q) - sect, 0.0)) - rr;
+}
+float sdOcta(vec3 p, float s){ p = abs(p); return (p.x+p.y+p.z - s) * 0.57735027; }
+
+float map(vec3 p){
+  vec3 q = p - vec3(0.0, GATE_Y, 0.0);
+  // engraved grooves around the outer ring — 24 machined notches
+  float th = atan(q.y, q.x);
+  float groove = smoothstep(0.35, 1.0, abs(fract(th*24.0/(2.0*PI))*2.0 - 1.0)) * 0.016;
+  float d = sdRing(q, R1, vec2(0.16, 0.09), 0.045) + groove;
+  d = min(d, sdRing(q, R2, vec2(0.045, 0.03), 0.02));
+  // keystone — one octahedron at the crown
+  d = min(d, sdOcta(q - vec3(0.0, R1 + 0.28, 0.0), 0.30));
+  return d;
+}
+
+vec3 calcNormal(vec3 p){
+  vec2 e = vec2(0.0012, 0.0);
+  return normalize(vec3(
+    map(p+e.xyy)-map(p-e.xyy),
+    map(p+e.yxy)-map(p-e.yxy),
+    map(p+e.yyx)-map(p-e.yyx)
+  ));
+}
+
+// ── sky: near-black gradient + twin mirrored moons (bilateral by build) ──
+vec3 sky(vec3 rd){
+  float t = clamp(rd.y*0.5 + 0.5, 0.0, 1.0);
+  vec3 col = mix(vec3(0.004,0.005,0.008), vec3(0.016,0.018,0.026), pow(t, 1.6));
+  for(int i=0; i<2; i++){
+    vec3 md = normalize(vec3(i==0 ? 0.50 : -0.50, 0.21, -0.82));
+    float c = dot(rd, md);
+    col += vec3(0.86,0.89,0.97) * smoothstep(0.99985, 0.99995, c);        // disc
+    col += vec3(0.55,0.60,0.72) * pow(max(c, 0.0), 700.0) * 0.55;        // halo
+  }
+  return col;
+}
+
+// ── the one signal: a volumetric beam on the gate axis, breathing ──
+float beamGlow(vec3 ro, vec3 rd){
+  vec2 o = ro.xz, d = rd.xz;
+  float dd = max(dot(d,d), 1e-5);
+  float tl = clamp(-dot(o,d)/dd, 0.0, 60.0);
+  vec3 pc = ro + rd*tl;
+  float h = smoothstep(-0.3, 0.6, pc.y) * smoothstep(GATE_Y + R1 + 1.2, GATE_Y + R1*0.4, pc.y);
+  float breathe = 0.72 + 0.28*sin(u_time*0.5);
+  return h * breathe / (1.0 + dot(pc.xz, pc.xz) * 30.0);
+}
+
+// ── platinum gate shading (shared by primary + reflection rays) ──
+vec3 shadeGate(vec3 p, vec3 rd){
+  vec3 n = calcNormal(p);
+  vec3 v = -rd;
+  vec3 keyDir = normalize(vec3(0.0, 0.52, 0.85));    // moonlight over the camera
+  float fres = pow(1.0 - max(dot(n, v), 0.0), 4.0);
+  float diff = max(dot(n, keyDir), 0.0);
+  float spec = pow(max(dot(reflect(-keyDir, n), v), 0.0), 70.0);
+  vec3 col = vec3(0.72,0.74,0.80) * (0.09 + diff*0.52);
+  col += sky(reflect(rd, n)) * (0.7 + fres*2.0);
+  col += vec3(1.0,1.0,1.05) * spec * 1.5;
+  // cold rim carves the silhouette out of the void
+  float rim = pow(1.0 - max(dot(n, v), 0.0), 2.2);
+  col += vec3(0.51,0.69,1.0) * rim * 0.22;
+  // the signal kisses the gate's inner faces
+  float inner = smoothstep(0.5, 0.0, abs(length(p.xy - vec2(0.0, GATE_Y)) - R2));
+  col += vec3(0.51,0.69,1.0) * inner * 0.14;
+  return col;
+}
+
+bool march(vec3 ro, vec3 rd, int steps, out vec3 hp){
+  float t = 0.02;
+  for(int i=0;i<96;i++){
+    if(i>=steps) break;
+    vec3 p = ro + rd*t;
+    float d = map(p);
+    if(d < 0.0015){ hp = p; return true; }
+    if(t > 26.0) break;
+    t += d * 0.9;
+  }
+  hp = vec3(0.0);
+  return false;
+}
+
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5*u_res) / u_res.y;
+
+  // cinematic camera — slow dolly + restrained pointer tip; never yaws off axis
+  float tt = u_time * (1.0 - u_reduce);
+  vec3 ro = vec3(0.0, 1.15 + sin(tt*0.11)*0.05, 9.6 + sin(tt*0.05)*0.5);
+  vec3 rd = normalize(vec3(uv, -1.35));
+  float mx = u_mouse.x * 0.06 * (1.0 - u_reduce);
+  float my = u_mouse.y * 0.04 * (1.0 - u_reduce);
+  rd.xz *= rot(mx); rd.yz *= rot(my);
+
+  vec3 col;
+  vec3 hp;
+  if(march(ro, rd, 96, hp)){
+    col = shadeGate(hp, rd);
+    col *= mix(1.0, 0.5, clamp((length(hp - ro) - 8.0)/14.0, 0.0, 1.0)); // fog
+  } else if(rd.y < -0.015){
+    // ── the black sea — analytic plane, streaked platinum reflections ──
+    float tw = -(ro.y) / rd.y;
+    vec3 pw = ro + rd*tw;
+    // calm anisotropic wave normal: long vertical streaks (x perturbs, z barely)
+    float w1 = noise(pw.xz*vec2(1.6, 0.35) + vec2(0.0, tt*0.18));
+    float w2 = noise(pw.xz*vec2(3.4, 0.8) - vec2(tt*0.12, 0.0));
+    vec3 n = normalize(vec3((w1-0.5)*0.14 + (w2-0.5)*0.06, 1.0, (w2-0.5)*0.025));
+    vec3 rr = reflect(rd, n);
+    rr.y = abs(rr.y) + 0.001;
+    vec3 rcol;
+    vec3 hp2;
+    if(march(pw + rr*0.05, rr, 56, hp2)){
+      rcol = shadeGate(hp2, rr);
+    } else {
+      rcol = sky(rr);
+    }
+    rcol += vec3(0.51,0.69,1.0) * beamGlow(pw, rr) * 1.4;   // beam in the water
+    float F = 0.035 + 0.965*pow(1.0 - max(dot(-rd, n), 0.0), 5.0);
+    col = rcol * F * 1.35;
+    col *= mix(1.0, 0.0, clamp((tw - 6.0)/26.0, 0.0, 1.0)); // horizon → void
+  } else {
+    col = sky(rd);
+  }
+
+  // the volumetric signal beam on the primary ray
+  col += vec3(0.51,0.69,1.0) * beamGlow(ro, rd) * 2.1;
+
+  // vignette · filmic tonemap · grain — the house grade
+  float vig = smoothstep(1.45, 0.30, length(uv));
+  col *= mix(0.5, 1.0, vig);
+  col = col / (col + vec3(0.85));
+  col = pow(col, vec3(0.92));
+  float g = hash(gl_FragCoord.xy + fract(u_time)*vec2(91.7, 47.3));
+  col += (g - 0.5) * 0.032;
+
+  outColor = vec4(max(col, 0.0), 1.0);
+}`;
+
 const VERT = /* glsl */ `#version 300 es
 precision highp float;
 void main(){
@@ -213,7 +387,13 @@ void main(){
   gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
 }`;
 
-export default function SignalRaymarch() {
+export default function SignalRaymarch({
+  variant = "monolith",
+}: {
+  /** "monolith" — the 8-fold seal object (transparent overlay texture).
+      "shore" — THE SHORE: gate + black ocean + beam (opaque cinematic plate). */
+  variant?: "monolith" | "shore";
+} = {}) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -249,7 +429,7 @@ export default function SignalRaymarch() {
       return s;
     };
     const vs = compile(gl.VERTEX_SHADER, VERT);
-    const fs = compile(gl.FRAGMENT_SHADER, FRAG);
+    const fs = compile(gl.FRAGMENT_SHADER, variant === "shore" ? FRAG_SHORE : FRAG);
     if (!vs || !fs) {
       if (canvas.parentNode === mount) mount.removeChild(canvas);
       return;
@@ -351,7 +531,7 @@ export default function SignalRaymarch() {
       lose?.loseContext();
       if (canvas.parentNode === mount) mount.removeChild(canvas);
     };
-  }, []);
+  }, [variant]);
 
   return <div ref={mountRef} aria-hidden className="absolute inset-0 h-full w-full" />;
 }

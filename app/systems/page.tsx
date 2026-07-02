@@ -23,7 +23,7 @@ export const metadata: Metadata = createPageMetadata({
 const GUARD_DIMENSIONS = [
   { label: "Status", value: "REAL · SHIPPING", accent: true },
   { label: "Dependencies", value: "Zero" },
-  { label: "Latency (det.)", value: "~85 µs / call" },
+  { label: "Runtime", value: "deterministic · in-process" },
   { label: "Network", value: "None required" },
   { label: "Model", value: "None required" },
   { label: "License", value: "Open core" },

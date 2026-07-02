@@ -45,8 +45,8 @@ const DIVISIONS: Division[] = [
   {
     index: "02",
     name: "Systems",
-    substrate: "σ-gate · Creation OS",
-    line: "Coherence as executable tools. The theory proven and monetized in code.",
+    substrate: "σ-gate · open core",
+    line: "Coherence as executable tools. The theory, proven in code.",
     tier: "REAL",
     href: "/systems",
     img: "/generated/divisions/systems.png",

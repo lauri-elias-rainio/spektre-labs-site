@@ -58,7 +58,7 @@ export default function ShoreworldPage() {
               Enter the Coherence Capital
             </p>
             <p className="mt-2 max-w-[48ch] text-[0.92rem] leading-[1.7]" style={{ color: "var(--fg-mute)" }}>
-              The world generated live on your GPU — WebGPU, perfect symmetry, no lag. Not a render. The math, running.
+              The world generated live on your GPU — WebGPU, perfect symmetry, generated in real time on supported GPUs. Not a render. The math, running.
             </p>
           </div>
           <span

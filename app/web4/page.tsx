@@ -9,7 +9,7 @@ import { createPageMetadata } from "@/lib/site";
 export const metadata: Metadata = createPageMetadata({
   title: "Web4 · Spektre",
   description:
-    "Spektre is building a cleaner, safer browser for the next internet: less noise, clearer trust, useful AI action, and paid pilots for serious teams.",
+    "Spektre is building a cleaner browser for the next internet: less noise, visible trust, useful AI action. Early beta — pilots opening.",
   path: "/web4",
 });
 
@@ -30,7 +30,7 @@ const proofCards = [
     label: "Economic proof",
     title: "Useful work funds more useful work.",
     body:
-      "Downloads, Pro, paid pilots, creator support, and infrastructure partners turn adoption into the next shipped improvement.",
+      "The planned loop: downloads, a Pro tier, and paid pilots fund the next shipped improvement. Named as plan, not as revenue.",
   },
 ] as const;
 
@@ -74,10 +74,14 @@ const teamRows = [
 const resourceActions = [
   "Download beta",
   "See the proof",
-  "Upgrade to Pro",
-  "Start a paid pilot",
-  "Sponsor the next proof",
-  "Become a node operator",
+] as const;
+
+// Planned rails — listed honestly as not yet open (EI FEIKKI PASKAA).
+const plannedActions = [
+  "Pro tier",
+  "Paid pilots",
+  "Proof sponsorship",
+  "Node operators",
 ] as const;
 
 const standardRows = [
@@ -290,9 +294,9 @@ export default function Web4Page() {
                   Every useful step funds the next one.
                 </h2>
                 <p className="mt-7 max-w-[42rem] text-[1rem] leading-[1.85] text-[var(--fg-dim)]">
-                  The business cannot depend on selling attention. The loop is simpler:
-                  people use the browser, serious teams pay for pilots, power users upgrade,
-                  partners fund proof, and the next layer gets built.
+                  The business cannot depend on selling attention. The intended loop:
+                  people use the browser, teams pilot it, power users upgrade, and the
+                  next layer gets built. None of that is claimed as revenue yet.
                 </p>
               </div>
               <div className="bg-[var(--bg-1)] p-8 sm:p-10 lg:p-12">
@@ -301,6 +305,15 @@ export default function Web4Page() {
                     <div key={action} className="flex items-center justify-between border-b border-[var(--line)] py-3">
                       <span className="text-[0.96rem] text-[var(--fg-dim)]">{action}</span>
                       <span className="label text-[var(--fg-faint)]">→</span>
+                    </div>
+                  ))}
+                  <p className="label mt-4 text-[var(--fg-faint)]">
+                    Planned rails — not yet open
+                  </p>
+                  {plannedActions.map((action) => (
+                    <div key={action} className="flex items-center justify-between border-b border-[var(--line-soft)] py-3">
+                      <span className="text-[0.96rem] text-[var(--fg-faint)]">{action}</span>
+                      <span className="label text-[var(--fg-faint)]">…</span>
                     </div>
                   ))}
                 </div>

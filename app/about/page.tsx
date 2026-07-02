@@ -425,7 +425,7 @@ export default function AboutPage() {
               {
                 index: "02",
                 label: "Systems",
-                sub: "σ-gate · Creation OS",
+                sub: "σ-gate · open core",
                 status: "SHIPPING",
                 color: "var(--signal)",
               },

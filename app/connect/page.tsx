@@ -93,8 +93,8 @@ export default function ConnectPage() {
             className="text-pretty leading-[1.84] sm:text-[1.08rem]"
             style={{ color: "var(--fg-dim)" }}
           >
-            If you are extending the research, building on the tooling, or want to
-            cite the corpus — reach out directly. No intermediaries.
+            Extending the research, building on the tooling, citing the corpus —
+            write directly. No forms, no intermediaries.
           </p>
         </div>
       </Reveal>

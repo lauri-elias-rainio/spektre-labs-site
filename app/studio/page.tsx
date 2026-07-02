@@ -353,7 +353,7 @@ export default function StudioPage() {
             {
               href: "/artifacts",
               eyebrow: "Systems",
-              title: "σ-gate · Creation OS",
+              title: "σ-gate · open core",
               desc: "The runtime infrastructure: guardrail API and orchestration OS powering AI generation.",
               status: "Shipping",
             },

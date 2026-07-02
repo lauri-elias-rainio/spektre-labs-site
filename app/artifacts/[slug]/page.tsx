@@ -115,7 +115,7 @@ export default async function ArtifactPage({ params }: { params: Params }) {
                       "Deterministic secret-leak detection — zero model calls, zero network round-trip",
                       "Prompt-injection & jailbreak interception before AI output lands",
                       "Structural coherence (σ) scoring: declared vs. realized alignment",
-                      "Sub-100µs per call — drop-in for any agent or CI pipeline",
+                      "Microsecond-scale per call (benchmark in the repo) — drop-in for any agent or CI pipeline",
                       "Open core ships as a zero-dependency library; hosted σ API available",
                     ].map((item) => (
                       <li

@@ -107,7 +107,7 @@ export default function SigmaExperience() {
           </p>
         </div>
 
-        <div className="absolute right-5 top-6 text-right sm:right-8 sm:top-8">
+        <div className="absolute right-5 top-6 hidden text-right sm:right-8 sm:top-8 sm:block">
           <p
             className="label text-[0.5rem] tracking-[0.24em]"
             style={{ color: "var(--fg-faint)", textTransform: "none" }}

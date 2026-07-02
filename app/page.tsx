@@ -45,7 +45,7 @@ const DIVISIONS: Division[] = [
     sub: "Products and infrastructure",
     status: "REAL" as const,
     description:
-      "Software, protocols, trust gates, developer tools, and operational systems built from the research.",
+      "The research, made executable. Trust gates, protocols, and developer tools that ship.",
     href: "/systems",
   },
   {
@@ -64,7 +64,7 @@ const DIVISIONS: Division[] = [
     sub: "AI and orchestration",
     status: "EMERGING" as const,
     description:
-      "Agent systems, evaluation loops, memory, orchestration, and human-AI workflows that raise capability.",
+      "Agent systems, evaluation, memory, and orchestration. Intelligence measured the way everything here is: by what it realizes.",
     href: null,
   },
   {
@@ -73,7 +73,7 @@ const DIVISIONS: Division[] = [
     sub: "Markets and calculation",
     status: "EMERGING" as const,
     description:
-      "Numerical tools, market edges, simulation, routing, fees, optimization, and live computational services.",
+      "Live computation with a number attached — fees, routing, simulation, optimization. Call the endpoint; it answers.",
     href: null,
   },
   {
@@ -82,7 +82,7 @@ const DIVISIONS: Division[] = [
     sub: "Medicine and biology",
     status: "VISION" as const,
     description:
-      "A future track for applying the same problem-solving standard to medical, biological, and human systems.",
+      "A future track. The same standard, pointed at medical and biological systems — named as vision, not product.",
     href: null,
   },
 ] as const;
@@ -111,9 +111,8 @@ export default function Home() {
                   The internet,<br />cleaned up.
                 </h2>
                 <p className="mt-7 max-w-[40rem] text-[1rem] leading-[1.82] text-[var(--fg-dim)]">
-                  Spektre is a cleaner, safer browser for the next internet: fewer
-                  distractions, clearer trust, one place to work, and AI that acts inside
-                  the page instead of floating beside it.
+                  A cleaner browser in early beta: fewer interruptions, visible
+                  blocking, one place to work — and in-page AI in development.
                 </p>
               </div>
               <div className="flex flex-col justify-between bg-[var(--bg-1)] p-8 transition-colors duration-500 group-hover:bg-[var(--bg-2)] sm:p-10 lg:p-12">
@@ -121,7 +120,7 @@ export default function Home() {
                   {[
                     "Same sites. Less junk.",
                     "No promise without logs, tests, demos, or pilots.",
-                    "Every story closes into download, upgrade, pilot, or proof work.",
+                    "Every page ends in an action: download, pilot, or proof.",
                   ].map((line) => (
                     <p key={line} className="border-b border-[var(--line)] pb-5 text-[0.98rem] leading-[1.65] text-[var(--fg-dim)]">
                       {line}
@@ -148,8 +147,9 @@ export default function Home() {
               “Σ-COLLAPSE” · Live
             </span>
             <span className="text-[0.95rem] leading-[1.7] text-[var(--fg-dim)]">
-              A compute field of up to 262,144 particles collapses noise into
-              the sigil — σ measured on your GPU, in real time.
+              A compute field of up to 131,072 particles — each rendered with its
+              mirror — collapses noise into the sigil. σ measured on your GPU, in
+              real time.
             </span>
             <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
               Enter&nbsp;→
@@ -171,9 +171,9 @@ export default function Home() {
             </div>
             <div className="flex flex-col justify-end lg:col-span-7 lg:col-start-6">
               <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)]">
-                Spektre is the parent brand for Labs, Systems, Studio, Intelligence,
-                Compute, and future Health ventures. Each arena turns hard problems into
-                research, products, media, infrastructure, or new companies.
+                Labs, Systems, Studio, Intelligence, Compute — and Health, later.
+                Each arena runs the same operation: a hard problem in, a working
+                thing out.
               </p>
               <EditorialLink href="/universe" className="mt-6 self-start">
                 See the map&nbsp;→
@@ -267,7 +267,7 @@ export default function Home() {
           {[
             {
               name: "σ-gate",
-              meta: "AI trust gate · ~85 µs/call",
+              meta: "AI trust gate · deterministic, in-process",
               line: "A deterministic release gate for AI output: secrets, prompt injection, PII, and policy failures stopped before shipping.",
               href: "/systems",
               external: false,
@@ -282,7 +282,7 @@ export default function Home() {
             {
               name: "btc-edge",
               meta: "Compute edge · live mempool",
-              line: "A live computation service for Bitcoin fees: reads the mempool and returns the exact fee to pay during fee spikes.",
+              line: "A live computation service for Bitcoin fees: reads the mempool and returns a mempool-derived fee target for fee spikes.",
               href: "https://btc-edge-985332749804.europe-north1.run.app/btc/fees",
               external: true,
             },

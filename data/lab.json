@@ -1,7 +1,7 @@
 {
   "name": "Spektre Labs",
-  "tagline": "Fundamental problems, built into working systems.",
-  "subtext": "Spektre is an independent lab and studio in Helsinki building research, software, AI systems, computation, media, and future domain ventures from one standard: make the hard problem concrete.",
+  "tagline": "Hard problems. Working systems.",
+  "subtext": "An independent lab and studio in Helsinki. Research, software, AI systems, computation, and media — built to one standard: declared equals realized.",
   "location": "Helsinki",
   "author": "Lauri Elias Rainio",
   "email": "spektre.labs@proton.me",
@@ -9,11 +9,11 @@
   "github": "https://github.com/spektre-labs",
   "linkedin": "https://www.linkedin.com/in/lauri-elias-rainio-007547339/",
   "youtube": "https://www.youtube.com/@spektrelabs",
-  "zenodo": "https://zenodo.org",
+  "zenodo": "https://zenodo.org/search?q=%22Lauri%20Elias%20Rainio%22",
   "about": {
-    "description": "Spektre Labs is an independent research laboratory based in Helsinki.",
+    "description": "An independent research laboratory in Helsinki. One line, held everywhere: declared equals realized.",
     "overview": [
-      "Spektre Labs is an independent research laboratory based in Helsinki.",
+      "The lab holds one line — declared equals realized — and runs it from theory to code.",
       "The lab is dedicated to the discovery of structural invariants across complex systems. Its work focuses on identifying patterns that persist across domains and scales, from physical systems to cognition, artificial intelligence, and institutional dynamics.",
       "Everything published is open. The papers live in the Spektre Corpus; the working proof is σ-gate — a free, zero-dependency tool that enforces the same rule in AI output."
     ],
@@ -34,14 +34,20 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "Independent lab and studio · Helsinki",
-      "headline": "Hard problems, built into working systems.",
+      "eyebrow": "Independent lab · Helsinki · 1 = 1",
+      "headline": "Hard problems. Working systems.",
       "axiom": "Declared equals realized",
-      "axiomGloss": "What a system promises should match what it delivers. Spektre turns that standard into tools, tests, and products.",
-      "tagline": "Fundamental problems, built into working systems.",
-      "sub": "Spektre turns unclear, high-stakes problems into research, software, AI systems, computation, media, and future ventures.",
-      "primaryCta": { "label": "Explore domains", "href": "/universe" },
-      "secondaryCta": { "label": "See live systems", "href": "/systems" },
+      "axiomGloss": "What a system promises must equal what it delivers. Spektre builds the instruments that check.",
+      "tagline": "Hard problems. Working systems.",
+      "sub": "Spektre turns hard problems into research, software, AI systems, computation, and media. Every claim ships with something you can check.",
+      "primaryCta": {
+        "label": "Explore domains",
+        "href": "/universe"
+      },
+      "secondaryCta": {
+        "label": "See live systems",
+        "href": "/systems"
+      },
       "description": [
         "Spektre turns foundational problems into working systems.",
         "The work spans research, software, AI, computation, media, medicine, and complex systems."

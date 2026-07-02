@@ -41,7 +41,7 @@ export function Footer() {
                 className="label text-[0.55rem] tracking-[0.22em] text-[var(--fg-faint)]"
                 style={{ opacity: 0.42 }}
               >
-                HARD SYSTEMS
+                DECLARED = REALIZED
               </p>
             </div>
           </div>
@@ -141,7 +141,7 @@ export function Footer() {
               className="label text-[0.58rem] tracking-[0.24em] text-[var(--fg-faint)]"
               style={{ opacity: 0.4 }}
             >
-              Research · Systems · Studio · Compute
+              Labs · Systems · Studio · Intelligence · Compute · Health
             </p>
           </div>
         </Reveal>

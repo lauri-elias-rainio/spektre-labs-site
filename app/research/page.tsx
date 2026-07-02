@@ -275,8 +275,8 @@ export default function ResearchPage() {
               <div className="mt-6 grid grid-cols-3 gap-4 text-center">
                 {[
                   { state: "σ = 0", label: "COHERENT", note: "declared = realized" },
-                  { state: "σ &lt; 0", label: "DEFICIT", note: "shortfall" },
-                  { state: "σ &gt; 0", label: "EXCESS", note: "overclaim" },
+                  { state: "σ &lt; 0", label: "DEFICIT", note: "overclaim — realized falls short" },
+                  { state: "σ &gt; 0", label: "EXCESS", note: "under-declared — realized exceeds" },
                 ].map(({ state, label, note }) => (
                   <div key={label}>
                     <p

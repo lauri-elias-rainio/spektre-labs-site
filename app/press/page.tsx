@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CanonVideo } from "@/components/canon-video";
 import { Glyph } from "@/components/glyph";
 import { Reveal } from "@/components/reveal";
 import { LINKS } from "@/lib/links";
@@ -231,6 +232,54 @@ export default function PressPage() {
             </div>
           </div>
         </Reveal>
+      </div>
+
+      {/* ── Motion assets — loops captured from the LIVE engines.
+             σ-honest by construction: these are recordings of the real
+             experiences running on a GPU, not composited promos. ───────── */}
+      <div className="mt-20 sm:mt-24 lg:mt-28">
+        <Reveal delay={0}>
+          <p className="label mb-8 text-[var(--fg-faint)]">
+            Motion · captured from the live engines · free to publish
+          </p>
+        </Reveal>
+        <div className="grid gap-5 sm:grid-cols-2">
+          {[
+            {
+              src: "/press/sigma-loop.mp4",
+              poster: "/press/sigma-loop-poster.jpg",
+              cap: "Σ-COLLAPSE — noise collapses into the mark; σ measured live",
+              href: "/sigma",
+            },
+            {
+              src: "/press/shore-loop.mp4",
+              poster: "/press/shore-loop-poster.jpg",
+              cap: "The Coherence Capital — procedural world, generated per-frame",
+              href: "/shoreworld",
+            },
+          ].map((v) => (
+            <Reveal key={v.src} delay={60}>
+              <figure className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
+                <CanonVideo
+                  src={v.src}
+                  poster={v.poster}
+                  label={`${v.cap} — 10-second loop captured from the live engine.`}
+                  className="aspect-video w-full object-cover"
+                />
+                <figcaption className="flex items-center justify-between px-4 py-3">
+                  <span className="label text-[var(--fg-faint)]">{v.cap}</span>
+                  <a
+                    href={v.src}
+                    download
+                    className="label text-[var(--fg-mute)] transition-colors duration-300 hover:text-[var(--fg)]"
+                  >
+                    Download&nbsp;↓
+                  </a>
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
       </div>
 
       {/* ── Boilerplate ───────────────────────────────────────────────── */}

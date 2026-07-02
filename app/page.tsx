@@ -137,6 +137,27 @@ export default function Home() {
         </Reveal>
       </section>
 
+      {/* Σ-COLLAPSE — the live proof-of-law experience. One hairline row. */}
+      <section className="mt-6">
+        <Reveal delay={60}>
+          <Link
+            href="/sigma"
+            className="group flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b border-t border-[var(--line)] py-6 transition-colors duration-500 hover:border-[var(--line-strong)]"
+          >
+            <span className="label text-[var(--signal)]">
+              “Σ-COLLAPSE” · Live
+            </span>
+            <span className="text-[0.95rem] leading-[1.7] text-[var(--fg-dim)]">
+              A compute field of up to 262,144 particles collapses noise into
+              the sigil — σ measured on your GPU, in real time.
+            </span>
+            <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+              Enter&nbsp;→
+            </span>
+          </Link>
+        </Reveal>
+      </section>
+
       <section className="mt-28 sm:mt-36 lg:mt-44">
         <div className="rule mb-12 sm:mb-14" />
 

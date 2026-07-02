@@ -327,11 +327,20 @@ export default function SignalWebGPU() {
             renderer.dispose?.();
             return;
           }
-          void caMod; void fxaaMod;
           const scenePass = pass(scene, camera);
+          // bloom threshold 1.8 (was 1.05): platinum specular stays under it,
+          // only the toneMapped:false signal blooms → the silhouette never
+          // softens. The fxaa(ca(...)) tail is LOAD-BEARING beyond AA: it
+          // carries the linear→sRGB output transform in this chain — removing
+          // it displays raw linear (a washed-grey hero). Verified empirically.
           const bloomNode = bloomMod.bloom(scenePass, 0.18, 0.4, 1.8);
+          const ca = caMod.chromaticAberration(
+            scenePass.add(bloomNode),
+            0.0008,
+          );
+          const finalNode = fxaaMod.fxaa(ca);
           postProcessing = new webgpu.PostProcessing(renderer);
-          postProcessing.outputNode = scenePass.add(bloomNode);
+          postProcessing.outputNode = finalNode;
         } catch {
           postProcessing = null; // any node failure ⇒ silently fall back to raw render
         }

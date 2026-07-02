@@ -201,21 +201,19 @@ export default function SignalWebGPU() {
         const m = new webgpu.MeshPhysicalNodeMaterial();
         m.color = new THREE.Color(PLATINUM);
         m.metalness = 1.0;
-        m.roughness = 0.14; // tighter than the old 0.22 — mirror-polished
+        m.roughness = 0.16; // stable flat roughness — no stochastic shimmer
         m.clearcoat = 1.0;
         m.clearcoatRoughness = 0.05;
         m.anisotropy = 0.85;
         m.envMapIntensity = 1.5;
-        // low-amplitude vertical brushed grain: noise sampled along Y ONLY, so the
-        // grain follows the axis of symmetry and can NEVER break left=right.
+        // constant roughnessNode (the old per-fragment noise shimmered as the
+        // object rotated — world-space-unstable roughness reads as speckle).
         try {
-          const yCoord = positionLocal.y;
-          const grain = mx_noise_float(vec3(float(0.0), yCoord.mul(34.0), float(0.0)))
-            .mul(0.05); // amplitude ≈ 0.05 roughness modulation
-          m.roughnessNode = float(0.14).add(grain.abs());
+          m.roughnessNode = float(0.16);
         } catch {
-          /* grain optional — base roughness already premium */
+          /* base roughness already set */
         }
+        void positionLocal; void mx_noise_float; void vec3;
         material = m;
       } else {
         // WebGL2 path — raw PBR, no node graph. Still hyperreal, no postFX needed.
@@ -252,18 +250,8 @@ export default function SignalWebGPU() {
       obeliskGroup.add(obelisk);
       scene.add(obeliskGroup);
 
-      // ── faint concentric wire shell — the "structure" reading, perfectly axial ──
-      const shellGeo = new THREE.CylinderGeometry(0.96, 0.96, 3.0, 8, 24, true);
-      const shell = new THREE.Mesh(
-        shellGeo,
-        new THREE.MeshBasicMaterial({
-          color: 0x6a6a72,
-          wireframe: true,
-          transparent: true,
-          opacity: 0.035,
-        }),
-      );
-      obeliskGroup.add(shell);
+      // (ghost wire cylinder removed — a round wireframe over an octagonal
+      //  body was incoherent and cost an alpha pass.)
 
       // ── THE SIGNAL — a thin emissive sliver locked to the exact centerline.
       //    The only saturated pixel on the page; it lives ON the Y axis only. ──
@@ -339,19 +327,11 @@ export default function SignalWebGPU() {
             renderer.dispose?.();
             return;
           }
+          void caMod; void fxaaMod;
           const scenePass = pass(scene, camera);
-          // bloom: threshold 1.0 (only the brightest platinum edge + signal blooms)
-          const bloomNode = bloomMod.bloom(scenePass, 0.26, 0.7, 1.05);
-          // chromaticAberration: 0.0015 sub-pixel refraction
-          const ca = caMod.chromaticAberration(
-            scenePass.add(bloomNode),
-            0.0015,
-          );
-          // fxaa for clean mobile edges
-          const finalNode = fxaaMod.fxaa(ca);
-
+          const bloomNode = bloomMod.bloom(scenePass, 0.18, 0.4, 1.8);
           postProcessing = new webgpu.PostProcessing(renderer);
-          postProcessing.outputNode = finalNode;
+          postProcessing.outputNode = scenePass.add(bloomNode);
         } catch {
           postProcessing = null; // any node failure ⇒ silently fall back to raw render
         }
@@ -360,11 +340,13 @@ export default function SignalWebGPU() {
       // ── interaction: AXIS-LOCKED tilt only. Pointer tips the object toward the
       //    cursor a MAX ±0.06 rad about X / Z (lerp 0.04). It can NEVER yaw off its
       //    symmetry axis, so the left=right flip-test holds at every single frame. ──
-      const TILT_MAX = 0.035;
+      const TILT_MAX = 0.048;
       let tiltTX = 0,
         tiltTZ = 0; // targets
       let tiltX = 0,
         tiltZ = 0; // smoothed
+      let tiltVX = 0,
+        tiltVZ = 0; // spring velocities
       const onMove = (e: PointerEvent) => {
         if (reduceMotion) return;
         const r = mount.getBoundingClientRect();
@@ -452,9 +434,13 @@ export default function SignalWebGPU() {
         // Continuous y-rotation, restrained enough to read as material.
         obeliskGroup.rotation.y += 0.055 * dt;
 
-        // axis-locked tilt — smoothed, clamped, X/Z only (never Y/yaw)
-        tiltX += (tiltTX - tiltX) * 0.04;
-        tiltZ += (tiltTZ - tiltZ) * 0.04;
+        // axis-locked tilt — critically-damped spring: registers the cursor
+        // like a compass needle; lerp passed mouse jitter to the specular.
+        const K = 12, C = 7.5;
+        tiltVX += (K * (tiltTX - tiltX) - C * tiltVX) * dt;
+        tiltVZ += (K * (tiltTZ - tiltZ) - C * tiltVZ) * dt;
+        tiltX += tiltVX * dt;
+        tiltZ += tiltVZ * dt;
         obeliskGroup.rotation.x = tiltX;
         obeliskGroup.rotation.z = tiltZ;
 
@@ -508,9 +494,7 @@ export default function SignalWebGPU() {
         mount.removeEventListener("pointermove", onMove);
         io.disconnect();
         wedgeGeo.dispose();
-        shellGeo.dispose();
         signalGeo.dispose();
-        (shell.material as any)?.dispose?.();
         signalMat.dispose();
         material?.dispose?.();
         scene.environment?.dispose?.();

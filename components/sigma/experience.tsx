@@ -15,6 +15,7 @@
   a fake video of the thing.
 */
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -154,7 +155,7 @@ export default function SigmaExperience() {
         ) : null}
 
         {/* back */}
-        <a
+        <Link
           href="/"
           className="pointer-events-auto absolute bottom-5 left-5 no-underline sm:bottom-7 sm:left-8"
         >
@@ -164,7 +165,7 @@ export default function SigmaExperience() {
           >
             ← Spektre
           </span>
-        </a>
+        </Link>
       </div>
 
       {/* ── honest fallback — no WebGPU / reduced motion ──────────────── */}

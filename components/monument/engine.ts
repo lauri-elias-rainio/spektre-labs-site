@@ -33,13 +33,22 @@ export interface MonumentOptions {
   getActive: () => boolean;
 }
 
+/* ══ ART DIRECTION — tournament config (swapped per variant) ══ */
+const AD = {
+  camY: 8.6, camZ: 76.0, lookUp: 0.235,      // camera
+  fogT: 0.040,                                // atmosphere
+  beamK: 760.0, beamSweep: 0.40,              // the signal
+  seaAmp: 1.0, foamK: 1.0,                    // the storm
+  introBeamAt: 1.3, introSeaAt: 0.4,          // choreography (s)
+} as const;
+
 const RES_SCALE = 0.9; // internal render scale — CAS + EMA carry the crisp
 
 const WGSL_COMMON = /* wgsl */ `
 struct U {
   res     : vec4f, // w, h, aspect, dpr
   cam     : vec4f, // tiltX, tiltY, scroll, time
-  acc     : vec4f, // emaAlpha, frame, fade, reduced
+  acc     : vec4f, // emaAlpha, frame, fade, introT (<0 = reduced motion)
   beam    : vec4f, // lantern uv.x, uv.y, facing (beam→camera), unused
 }
 @group(0) @binding(0) var<uniform> u : U;
@@ -233,27 +242,27 @@ fn swComponent(pxz : vec2f, tt : f32,
 fn swGradH(pxz : vec2f, tt : f32) -> vec4f {
   var acc = vec4f(0.0);
   // dominant swell  lambda~26  A=1.30  ±11°
-  acc += swComponent(pxz, tt, 0.24166, 1.95, 1.5397,  0.19081, 0.98163);
-  acc += swComponent(pxz, tt, 0.24166, 1.95, 1.5397, -0.19081, 0.98163);
+  acc += swComponent(pxz, tt, 0.24166, 1.95 * ${AD.seaAmp}, 1.5397,  0.19081, 0.98163);
+  acc += swComponent(pxz, tt, 0.24166, 1.95 * ${AD.seaAmp}, 1.5397, -0.19081, 0.98163);
   // medium swell    lambda~14  A=0.72  ±22°
-  acc += swComponent(pxz, tt, 0.44880, 1.08, 2.0982,  0.37461, 0.92718);
-  acc += swComponent(pxz, tt, 0.44880, 1.08, 2.0982, -0.37461, 0.92718);
+  acc += swComponent(pxz, tt, 0.44880, 1.08 * ${AD.seaAmp}, 2.0982,  0.37461, 0.92718);
+  acc += swComponent(pxz, tt, 0.44880, 1.08 * ${AD.seaAmp}, 2.0982, -0.37461, 0.92718);
   // chop            lambda~7.5 A=0.38  ±38°
-  acc += swComponent(pxz, tt, 0.83776, 0.57, 2.8667,  0.61566, 0.78801);
-  acc += swComponent(pxz, tt, 0.83776, 0.57, 2.8667, -0.61566, 0.78801);
+  acc += swComponent(pxz, tt, 0.83776, 0.57 * ${AD.seaAmp}, 2.8667,  0.61566, 0.78801);
+  acc += swComponent(pxz, tt, 0.83776, 0.57 * ${AD.seaAmp}, 2.8667, -0.61566, 0.78801);
   // detail          lambda~3.6 A=0.12  ±58°
-  acc += swComponent(pxz, tt, 1.74533, 0.18, 4.1378,  0.84805, 0.52992);
-  acc += swComponent(pxz, tt, 1.74533, 0.18, 4.1378, -0.84805, 0.52992);
+  acc += swComponent(pxz, tt, 1.74533, 0.18 * ${AD.seaAmp}, 4.1378,  0.84805, 0.52992);
+  acc += swComponent(pxz, tt, 1.74533, 0.18 * ${AD.seaAmp}, 4.1378, -0.84805, 0.52992);
   return vec4f(acc.x, acc.y, acc.z, 1.0 - acc.w); // .w = Jacobian proxy
 }
 
 /* coarse height (swell pairs only) — feeds the secant march */
 fn swCoarseH(pxz : vec2f, tt : f32) -> f32 {
   var h = 0.0;
-  h += swComponent(pxz, tt, 0.24166, 1.95, 1.5397,  0.19081, 0.98163).x;
-  h += swComponent(pxz, tt, 0.24166, 1.95, 1.5397, -0.19081, 0.98163).x;
-  h += swComponent(pxz, tt, 0.44880, 1.08, 2.0982,  0.37461, 0.92718).x;
-  h += swComponent(pxz, tt, 0.44880, 1.08, 2.0982, -0.37461, 0.92718).x;
+  h += swComponent(pxz, tt, 0.24166, 1.95 * ${AD.seaAmp}, 1.5397,  0.19081, 0.98163).x;
+  h += swComponent(pxz, tt, 0.24166, 1.95 * ${AD.seaAmp}, 1.5397, -0.19081, 0.98163).x;
+  h += swComponent(pxz, tt, 0.44880, 1.08 * ${AD.seaAmp}, 2.0982,  0.37461, 0.92718).x;
+  h += swComponent(pxz, tt, 0.44880, 1.08 * ${AD.seaAmp}, 2.0982, -0.37461, 0.92718).x;
   return h;
 }
 
@@ -271,7 +280,7 @@ fn seaNormal(p : vec3f, t : f32, dist : f32) -> vec3f {
   return normalize(vec3f(mix(-gH.y, 0.0, blend), 1.0, mix(-gH.z, 0.0, blend)));
 }
 
-const SEA_HMAX : f32 = 6.5;
+const SEA_HMAX : f32 = ${6.5 * AD.seaAmp};
 
 fn seaMarch(ro : vec3f, rd : vec3f, tmax : f32, t : f32) -> f32 {
   if (rd.y >= -0.004) { return -1.0; }
@@ -310,7 +319,7 @@ fn sampleLight(xi : vec2f) -> vec3f {
 fn env(rd : vec3f) -> vec3f {
   var c = vec3f(0.0012, 0.0013, 0.0017);
   let up = smoothstep(0.86, 0.995, rd.y);
-  c += vec3f(0.55, 0.57, 0.64) * up * 0.008;
+  c += vec3f(0.55, 0.57 * ${AD.seaAmp}, 0.64) * up * 0.008;
   let e = normalize(vec3f(0.42, 0.115, -0.9));
   let m1 = vec3f(-e.x, e.y, e.z);
   let d1 = max(dot(rd, e), 0.0);
@@ -327,8 +336,21 @@ fn env(rd : vec3f) -> vec3f {
 /* ---- THE LANTERN — the sweeping beam, the ONE signal ----------------- */
 const LANTERN : vec3f = vec3f(0.0, 51.9, 0.0);
 
+/* intro envelope: dark → ignition flash → steady. reduced-motion = steady. */
+fn introBeam(introT : f32) -> f32 {
+  if (introT < 0.0) { return 1.0; }
+  let t0 = ${AD.introBeamAt};
+  let ign = smoothstep(t0, t0 + 0.18, introT);
+  let flash = 1.0 + 2.2 * exp(-(introT - t0 - 0.18) * (introT - t0 - 0.18) * 14.0) * step(t0, introT);
+  return ign * flash;
+}
+fn introSea(introT : f32) -> f32 {
+  if (introT < 0.0) { return 1.0; }
+  return smoothstep(${AD.introSeaAt}, ${AD.introSeaAt} + 1.6, introT);
+}
+
 fn beamDir(t : f32) -> vec3f {
-  let th = t * 0.40; // one sweep ≈ 16 s — lighthouse patience
+  let th = t * ${AD.beamSweep};
   return normalize(vec3f(cos(th), -0.055, sin(th)));
 }
 
@@ -355,11 +377,11 @@ fn beamScatter(ro : vec3f, rd : vec3f, tmaxv : f32, t : f32) -> f32 {
   let g = 0.5;
   let ph = (1.0 - g * g) / (4.0 * PI * pow(1.0 + g * g - 2.0 * g * mu, 1.5));
   // storm spray keeps the beam readable even where height-fog thins
-  return core * att * ph * (fogDensity(pr.y) + 0.009) * 760.0;
+  return core * att * ph * (fogDensity(pr.y) + 0.009) * ${AD.beamK};
 }
 
 /* ---- storm atmosphere — mist hugs the sea, the summit stays clear ---- */
-const FOG_T : f32 = 0.040;
+const FOG_T : f32 = ${AD.fogT};
 const FOG_KY : f32 = 0.10;
 fn fogDensity(y : f32) -> f32 {
   return FOG_T * exp(-max(y, 0.0) * FOG_KY);
@@ -494,7 +516,7 @@ fn shadeTower(h : Hit, v : vec3f, pix : vec2u, frame : u32, dimBase : u32, t : f
   if (band > 0.0) {
     let bd2    = beamDir(t);
     let facing = pow(max(dot(normalize(vec2f(h.p.x, h.p.z)), normalize(bd2.xz)), 0.0), 6.0);
-    c += SIGNAL * band * (0.05 + 1.0 * facing);
+    c += SIGNAL * band * (0.05 + 1.0 * facing) * introBeam(u.acc.w);
 
     let hAng    = atan2(h.p.z, h.p.x);
     let mullFac = abs(sin(hAng * 4.0));
@@ -520,8 +542,8 @@ fn fs(in : VOut) -> @location(0) vec4f {
   let sc = vec2f(ndc.x * u.res.z, -ndc.y);
 
   // low camera in the swell, gazing up — scroll pulls back: the scale reveal
-  let ro = vec3f(0.0, 8.6 + scroll * 1.6, 76.0 + scroll * 14.0);
-  let lookUp = 0.235 - scroll * 0.02 + u.cam.y * 0.026;
+  let ro = vec3f(0.0, ${AD.camY} + scroll * 1.6, ${AD.camZ} + scroll * 14.0);
+  let lookUp = ${AD.lookUp} - scroll * 0.02 + u.cam.y * 0.026;
   let yaw = u.cam.x * 0.038;
   let fl = 1.65;
   var rd = normalize(vec3f(sc.x, sc.y, -fl));
@@ -588,7 +610,7 @@ fn fs(in : VOut) -> @location(0) vec4f {
     let foamS = smoothstep(0.26, 0.74, slope);
     let foamH = smoothstep(1.9, 4.8, p.y);
     let brup = swVnoise2(p.xz * 0.45 + vec2f(0.0, time * 0.22));
-    let foam = clamp((foamH * 0.9 + foamS * 0.55 + foamJ * 0.3) * (0.28 + 0.72 * brup), 0.0, 1.0);
+    let foam = clamp((foamH * ${0.9 * AD.foamK} + foamS * ${0.55 * AD.foamK} + foamJ * ${0.3 * AD.foamK}) * (0.28 + 0.72 * brup), 0.0, 1.0);
     let fLamb = clamp(dot(n, lKey) * 0.62 + 0.09, 0.0, 1.0);
     let fCol = vec3f(0.13, 0.132, 0.142) * fLamb;
     c = mix(c, fCol, foam);
@@ -621,10 +643,10 @@ fn fs(in : VOut) -> @location(0) vec4f {
       let hv2 = normalize(Ld - rd);
       let gl = pow(max(dot(n, hv2), 0.0), 500.0) * (1.0 - foam);
       let fo = foam * max(dot(n, Ld), 0.0) * 0.5;
-      c += SIGNAL * (gl * 1.6 + fo) * irr;
+      c += SIGNAL * (gl * 1.6 + fo) * irr * introBeam(u.acc.w);
     }
 
-    col = c * transmittance(ro, rd, tw);
+    col = c * transmittance(ro, rd, tw) * (0.25 + 0.75 * introSea(u.acc.w));
   } else {
     col = env(rd);
   }
@@ -632,7 +654,7 @@ fn fs(in : VOut) -> @location(0) vec4f {
   // the beam through the storm air — THE signal
   var vtb = 240.0;
   if (seaFirst) { vtb = tw; } else if (tc > 0.0) { vtb = tc; }
-  col += SIGNAL * beamScatter(ro, rd, vtb, time);
+  col += SIGNAL * beamScatter(ro, rd, vtb, time) * introBeam(u.acc.w);
 
   // framebuffer-aligned uv — vertex uv is vertically flipped vs texel rows
   let suv = in.pos.xy / u.res.xy;
@@ -835,6 +857,7 @@ export async function createMonument(
 
   let disposed = false;
   let frame = 0;
+  const startTime = performance.now();
   let liveFrames = 0;
   let fade = 0;
   let last = performance.now();
@@ -886,17 +909,18 @@ export async function createMonument(
 
     uniData.set([w, h, w / h, dpr], 0);
     uniData.set([tx, ty, scroll, t], 4);
-    uniData.set([alpha, frame, fade, reduceMotion ? 1 : 0], 8);
+    const introT = (now - startTime) / 1000;
+    uniData.set([alpha, frame, fade, reduceMotion ? -1 : introT], 8);
 
     // project the lantern into screen uv + how squarely the beam faces us
     // (mirrors the WGSL camera exactly — keep in sync)
     {
-      const roY = 8.6 + scroll * 1.6, roZ = 76.0 + scroll * 14.0;
-      const lookUp = 0.235 - scroll * 0.02 + ty * 0.026;
+      const roY = AD.camY + scroll * 1.6, roZ = AD.camZ + scroll * 14.0;
+      const lookUp = AD.lookUp - scroll * 0.02 + ty * 0.026;
       const yaw = tx * 0.038;
       const fl = 1.65;
       // world → camera: inverse yaw, then inverse pitch
-      let dx = 0 - 0, dy = 51.9 - roY, dz = 0 - roZ;
+      const dx = 0, dy = 51.9 - roY, dz = 0 - roZ;
       const cyw = Math.cos(-yaw), syw = Math.sin(-yaw);
       const x1 = dx * cyw + dz * syw, z1 = -dx * syw + dz * cyw;
       const cpt = Math.cos(-lookUp), spt = Math.sin(-lookUp);

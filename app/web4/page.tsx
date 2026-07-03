@@ -1,240 +1,230 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { EditorialLink } from "@/components/editorial-link";
+import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
 import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Web4 · Spektre",
+  title: "Web4 · Spektre Browser",
   description:
-    "Spektre is building a cleaner browser for the next internet: less noise, visible trust, useful AI action. Early beta — pilots opening.",
+    "Spektre is a cleaner browser for the next internet: fewer interruptions, visible trust, one place to work. Early beta, macOS, open source.",
   path: "/web4",
 });
 
-const proofCards = [
-  {
-    label: "Felt proof",
-    title: "Same sites. Less junk.",
-    body:
-      "A normal page opens with fewer interruptions, less tracking pressure, and a clearer signal for what the browser handled.",
-  },
-  {
-    label: "Technical proof",
-    title: "Claims must be checkable.",
-    body:
-      "Serious promises need evidence: logs, benchmarks, screenshots, test runs, recovery drills, or pilot results.",
-  },
-  {
-    label: "Economic proof",
-    title: "Useful work funds more useful work.",
-    body:
-      "The planned loop: downloads, a Pro tier, and paid pilots fund the next shipped improvement. Named as plan, not as revenue.",
-  },
-] as const;
+const DMG_URL =
+  "https://github.com/spektre-labs/spektre/releases/download/v0.1.0/Spektre.dmg";
 
-const browserBlocks = [
-  ["Cleaner pages", "The useful page stays. Ads, trackers, popups, and clutter get handled before they own attention."],
-  ["One place to type", "Open a site, search, ask the page, summarize, find, and run common browser actions from one line."],
-  ["Trust you can see", "The browser shows what it blocked, what it knows, and what is still unknown without fake certainty."],
-  ["Your working memory", "Sessions, preferences, recovery, and future sync are designed around the person using the browser."],
-  ["Useful AI action", "AI becomes a browser capability: read the page, explain it, fill simple workflows, and leave a trace."],
-  ["Stronger network", "Over time the browser can help verify, cache, route, and strengthen the internet instead of only consuming it."],
-] as const;
-
-const teamRows = [
+const FEATURES = [
   {
-    team: "Brand",
-    owns: "The shift from noisy internet to cleaner work.",
-    output: "One sentence, one visual standard, one proof-backed promise.",
+    index: "01",
+    name: "Cleaner pages",
+    body: "Ads, trackers, popups, and clutter are handled before they own the page. The useful content stays.",
+    status: "Live",
   },
   {
-    team: "Marketing",
-    owns: "The translation for normal people.",
-    output: "Demo first: same page, less junk, visible trust, one command line.",
+    index: "02",
+    name: "One command line",
+    body: "Open a site, search, ask the page, summarize, or run a browser action — from one input. No mode switch.",
+    status: "Live",
   },
   {
-    team: "Sales",
-    owns: "The resource close.",
-    output: "Beta, Pro, paid pilot, proof sponsorship, node operator, creator program.",
+    index: "03",
+    name: "Visible trust",
+    body: "The browser shows what it blocked, what it knows, and what is still unknown. No false certainty.",
+    status: "Live",
   },
   {
-    team: "Design",
-    owns: "99++ ease.",
-    output: "No glossary at the door. The user feels Web4 before learning the name.",
+    index: "04",
+    name: "Working memory",
+    body: "Sessions, preferences, and recovery designed around the person using the browser, not the site.",
+    status: "Live",
   },
   {
-    team: "Proof",
-    owns: "Claim discipline.",
-    output: "No public power claim without a test, artifact, status, and expiry.",
+    index: "05",
+    name: "In-page AI",
+    body: "AI as a browser capability: read, explain, fill. Acts inside the page and leaves a trace.",
+    status: "In development",
   },
-] as const;
-
-const resourceActions = [
-  "Download beta",
-  "See the proof",
-] as const;
-
-// Planned rails — listed honestly as not yet open (EI FEIKKI PASKAA).
-const plannedActions = [
-  "Pro tier",
-  "Paid pilots",
-  "Proof sponsorship",
-  "Node operators",
-] as const;
-
-const standardRows = [
-  ["Idea", "A clearer model for the next internet."],
-  ["Instrument", "A browser people can actually use."],
-  ["Proof", "Evidence before the promise gets stronger."],
-  ["Design", "The value is visible in the first ten seconds."],
-  ["Business", "Useful work funds the next shipped layer."],
-  ["Evolution", "Every release teaches the system what to build next."],
-] as const;
+  {
+    index: "06",
+    name: "Stronger network",
+    body: "Verify, cache, route — the browser helps the internet instead of only consuming it.",
+    status: "Planned",
+  },
+];
 
 export default function Web4Page() {
   return (
     <div>
+      {/* ── Page header ──────────────────────────────────────────── */}
       <PageHeader
         title="The internet, cleaned up."
-        description="Spektre is a cleaner, safer browser for the next internet: fewer distractions, clearer trust, one place to work, and AI that acts inside the page instead of floating beside it."
+        description="A browser in early beta. Fewer interruptions, visible blocking, one place to work."
       />
 
+      {/* ── Download block — the product CTA ─────────────────────── */}
       <section className="mt-20 sm:mt-28 lg:mt-36">
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-14">
-          <Reveal className="lg:col-span-7" delay={0}>
-            <div className="surface p-8 sm:p-10 lg:p-12">
-              <p className="label mb-6 text-[var(--signal)]">Public translation</p>
-              <h2 className="text-[2rem] font-semibold leading-[1.02] tracking-[-0.04em] text-[var(--fg)] sm:text-[3rem] lg:text-[4rem]">
-                Same web.<br />Better browser.
-              </h2>
-              <p className="mt-8 max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
-                This does not start with a new vocabulary. It starts with a page that
-                feels calmer, a browser that shows what it handled, and one input for
-                opening, searching, asking, and acting.
-              </p>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link
-                  href="/systems"
-                  className="btn-metal rounded-full px-5 py-3 text-[0.78rem] font-medium"
-                >
-                  See systems
-                </Link>
-                <EditorialLink href="/connect" className="self-center">
-                  Start a pilot&nbsp;→
-                </EditorialLink>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal className="lg:col-span-5" delay={100}>
-            <div className="grid h-full gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)]">
-              {[
-                ["Old internet", "Too much noise, tracking, account lock-in, hidden decisions, and AI tools disconnected from the page."],
-                ["Web4", "The next internet standard: clearer trust, safer action, portable work, and less dependence on hidden middlemen."],
-                ["Spektre", "The browser that makes that change feel normal: open, search, ask, verify, act."],
-              ].map(([title, body]) => (
-                <div key={title} className="bg-[var(--bg-1)] p-7 sm:p-8">
-                  <p className="label mb-4 text-[var(--fg-faint)]">{title}</p>
-                  <p className="text-[0.98rem] leading-[1.75] text-[var(--fg-dim)]">{body}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="mt-28 sm:mt-36 lg:mt-44">
-        <div className="rule mb-12" />
-        <Reveal>
-          <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">The standard</p>
-              <h2 className="text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--fg)] sm:text-[2.4rem]">
-                Ahead of time, usable now.
-              </h2>
-            </div>
-            <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] lg:col-span-7 lg:col-start-6">
-              The bar is not a clever theory or a polished page. The bar is a system
-              that combines new thinking, a usable product, public proof, refined
-              design, commercial fuel, and continuous improvement.
-            </p>
-          </div>
-        </Reveal>
-
-        <div className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-3">
-          {standardRows.map(([title, body], index) => (
-            <Reveal key={title} delay={index * 45} className="h-full">
-              <div className="bg-[var(--bg-1)] p-7 sm:p-8">
-                <p className="label mb-5 text-[var(--signal)]">{title}</p>
-                <p className="text-[0.96rem] leading-[1.75] text-[var(--fg-dim)]">{body}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-28 sm:mt-36 lg:mt-44">
-        <div className="rule mb-12" />
-        <Reveal>
-          <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">Browser paradigm</p>
-              <h2 className="text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--fg)] sm:text-[2.4rem]">
-                Built for normal browsing first.
-              </h2>
-            </div>
-            <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] lg:col-span-7 lg:col-start-6">
-              The bar is high: sites still need to load, logins still need to work, work
-              apps still need to behave. The next layer only matters if the basic browser
-              is easier, cleaner, and more useful than what people already use.
-            </p>
-          </div>
-        </Reveal>
-
-        <div className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-3">
-          {browserBlocks.map(([title, body], index) => (
-            <Reveal key={title} delay={index * 55} className="h-full">
-              <div className="flex h-full flex-col bg-[var(--bg-1)] p-7 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-8">
-                <span className="label mb-8 text-[var(--fg-faint)] tabular-nums">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="text-[1.2rem] font-semibold tracking-[-0.02em] text-[var(--fg)]">
-                  {title}
-                </h3>
-                <p className="mt-4 text-[0.94rem] leading-[1.78] text-[var(--fg-dim)]">
-                  {body}
+        <Reveal delay={0}>
+          <div className="surface overflow-hidden">
+            <div className="grid gap-px bg-[var(--line)] lg:grid-cols-[1.1fr_0.9fr]">
+              {/* Left — thesis */}
+              <div className="bg-[var(--bg-1)] p-8 sm:p-10 lg:p-12">
+                <p className="label mb-6 text-[var(--signal)]">
+                  Spektre Browser · Web4
+                </p>
+                <h2 className="metal-text text-[2.4rem] font-semibold leading-[1.03] tracking-[-0.042em] sm:text-[3.2rem] lg:text-[4rem]">
+                  Same web.<br />Better browser.
+                </h2>
+                <p className="mt-8 max-w-[36rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
+                  This does not start with a new vocabulary. A page opens calmer.
+                  The browser shows what it handled. One input replaces five
+                  scattered controls.
                 </p>
               </div>
+
+              {/* Right — download + honest disclosure */}
+              <div className="flex flex-col justify-between bg-[var(--bg-1)] p-8 sm:p-10 lg:p-12">
+                <div>
+                  <p className="label mb-5 text-[var(--fg-faint)]">
+                    Download · macOS
+                  </p>
+                  <a
+                    href={DMG_URL}
+                    className="btn-metal inline-flex rounded-[10px] px-7 py-3.5 text-[0.92rem] font-semibold tracking-tight no-underline"
+                  >
+                    Spektre.dmg&nbsp;↓
+                  </a>
+                </div>
+
+                <div className="mt-10 border-t border-[var(--line)] pt-8">
+                  <p className="label mb-4 text-[var(--signal)]">
+                    Early beta · v0.1.0
+                  </p>
+                  <div className="space-y-2.5">
+                    {[
+                      "macOS only at this stage.",
+                      "Unsigned build — first-open shows a Gatekeeper warning.",
+                      "Right-click → Open to bypass. Expected behavior, not a bug.",
+                      "The warning is real. So is the browser.",
+                    ].map((line) => (
+                      <p
+                        key={line}
+                        className="text-[0.88rem] leading-[1.72] text-[var(--fg-mute)]"
+                      >
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                  <EditorialLink
+                    href="https://github.com/spektre-labs/spektre"
+                    external
+                    className="mt-7 inline-flex text-[var(--fg-faint)]"
+                  >
+                    Source on GitHub&nbsp;↗
+                  </EditorialLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* ── Feature spec table ─────────────────────────────────────── */}
+      <section className="mt-28 sm:mt-36 lg:mt-44">
+        <div className="rule mb-12" />
+        <Reveal>
+          <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-4">
+              <p className="label mb-4 text-[var(--fg-faint)]">
+                Specification
+              </p>
+              <h2 className="text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--fg)] sm:text-[2.4rem]">
+                What it does.
+              </h2>
+            </div>
+            <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] lg:col-span-7 lg:col-start-6">
+              Six capabilities in order. Items labeled &ldquo;In development&rdquo; or
+              &ldquo;Planned&rdquo; are named as such — not as shipped.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="border-t border-[var(--line)]">
+          {FEATURES.map((feature, i) => (
+            <Reveal key={feature.name} delay={i * 55}>
+              <div className="grid gap-4 border-b border-[var(--line)] py-7 sm:grid-cols-12 sm:gap-6 sm:py-8">
+                <div className="sm:col-span-1">
+                  <span className="label tabular-nums text-[var(--fg-faint)]">
+                    {feature.index}
+                  </span>
+                </div>
+                <div className="sm:col-span-3">
+                  <p className="text-[1rem] font-semibold tracking-[-0.02em] text-[var(--fg)]">
+                    {feature.name}
+                  </p>
+                </div>
+                <div className="sm:col-span-6">
+                  <p className="text-[0.96rem] leading-[1.78] text-[var(--fg-dim)]">
+                    {feature.body}
+                  </p>
+                </div>
+                <div className="sm:col-span-2 sm:text-right">
+                  <span
+                    className="label"
+                    style={{
+                      color:
+                        feature.status === "Live"
+                          ? "var(--signal)"
+                          : feature.status === "In development"
+                          ? "var(--fg-mute)"
+                          : "var(--fg-faint)",
+                    }}
+                  >
+                    {feature.status}
+                  </span>
+                </div>
+              </div>
             </Reveal>
           ))}
         </div>
       </section>
 
+      {/* ── Proof posture ──────────────────────────────────────────── */}
       <section className="mt-28 sm:mt-36 lg:mt-44">
         <div className="rule mb-12" />
         <Reveal>
-          <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="label mb-4 text-[var(--fg-faint)]">Proof ladder</p>
-              <h2 className="text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--fg)] sm:text-[2.4rem]">
-                No promise without proof.
-              </h2>
-            </div>
-            <p className="max-w-[31rem] text-[0.98rem] leading-[1.75] text-[var(--fg-mute)]">
-              The site, sales deck, and product must say only what the browser can show,
-              test, or prove in a pilot.
-            </p>
+          <div className="mb-12">
+            <p className="label mb-4 text-[var(--fg-faint)]">Proof posture</p>
+            <h2 className="text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--fg)] sm:text-[2.4rem]">
+              No promise without proof.
+            </h2>
           </div>
         </Reveal>
 
-        <div className="grid gap-5 lg:grid-cols-3">
-          {proofCards.map((card, index) => (
-            <Reveal key={card.title} delay={index * 80} className="h-full">
-              <div className="surface surface-hover h-full p-7 sm:p-8">
+        <div className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)] lg:grid-cols-3">
+          {[
+            {
+              label: "What exists",
+              title: "A downloadable beta.",
+              body: "A macOS build you can run today. The install works. The Gatekeeper warning is real, expected, and documented above.",
+            },
+            {
+              label: "What is measured",
+              title: "Claims need evidence.",
+              body: "Every capability is either live in v0.1.0, in development, or named as planned. The site will not say more than that.",
+            },
+            {
+              label: "What comes next",
+              title: "Useful work funds the next layer.",
+              body: "Downloads to pilots to Pro tier. Each step is a plan, not revenue. When one closes, it will say closed.",
+            },
+          ].map((card, i) => (
+            <Reveal key={card.title} delay={i * 80} className="h-full">
+              <div className="h-full bg-[var(--bg-1)] p-8 sm:p-10">
                 <p className="label mb-6 text-[var(--signal)]">{card.label}</p>
-                <h3 className="text-[1.35rem] font-semibold leading-[1.12] tracking-[-0.025em] text-[var(--fg)]">
+                <h3 className="text-[1.3rem] font-semibold leading-[1.12] tracking-[-0.025em] text-[var(--fg)]">
                   {card.title}
                 </h3>
                 <p className="mt-5 text-[0.96rem] leading-[1.78] text-[var(--fg-dim)]">
@@ -246,82 +236,32 @@ export default function Web4Page() {
         </div>
       </section>
 
+      {/* ── Final CTA ──────────────────────────────────────────────── */}
       <section className="mt-28 sm:mt-36 lg:mt-44">
-        <div className="rule mb-12" />
         <Reveal>
-          <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">Team responsibility</p>
-              <h2 className="text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--fg)] sm:text-[2.4rem]">
-                Teams turn the idea into adoption.
-              </h2>
-            </div>
-            <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] lg:col-span-7 lg:col-start-6">
-              The deep architecture stays behind the product. Marketing, sales, brand,
-              design, proof, and resource teams make it understandable, desirable,
-              testable, and fundable.
+          <div className="flex flex-col items-center gap-5 py-16 text-center">
+            <Glyph variant="node" size={22} strokeOpacity={0.4} />
+            <h2 className="metal-text mt-2 text-[2rem] font-semibold leading-[1.04] tracking-[-0.04em] sm:text-[2.8rem]">
+              Start with a download.
+            </h2>
+            <p className="max-w-[32rem] text-[0.98rem] leading-[1.8] text-[var(--fg-mute)]">
+              Free and open source. A pilot, a Pro tier, and node operator
+              roles come next — named as plans, not products.
             </p>
-          </div>
-        </Reveal>
-
-        <div className="space-y-0">
-          {teamRows.map((row, index) => (
-            <Reveal key={row.team} delay={index * 55}>
-              <div className="grid gap-4 border-t border-[var(--line)] py-7 sm:grid-cols-12 sm:gap-8 sm:py-8">
-                <div className="sm:col-span-3">
-                  <p className="label text-[var(--signal)]">{row.team}</p>
-                </div>
-                <div className="sm:col-span-4">
-                  <p className="text-[1rem] leading-[1.65] text-[var(--fg)]">{row.owns}</p>
-                </div>
-                <div className="sm:col-span-5">
-                  <p className="text-[0.95rem] leading-[1.75] text-[var(--fg-dim)]">{row.output}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <div className="rule" />
-      </section>
-
-      <section className="mt-28 sm:mt-36 lg:mt-44">
-        <Reveal>
-          <div className="surface overflow-hidden">
-            <div className="grid gap-px bg-[var(--line)] lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="bg-[var(--bg-1)] p-8 sm:p-10 lg:p-12">
-                <p className="label mb-5 text-[var(--signal)]">Resource loop</p>
-                <h2 className="text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--fg)] sm:text-[2.6rem]">
-                  Every useful step funds the next one.
-                </h2>
-                <p className="mt-7 max-w-[42rem] text-[1rem] leading-[1.85] text-[var(--fg-dim)]">
-                  The business cannot depend on selling attention. The intended loop:
-                  people use the browser, teams pilot it, power users upgrade, and the
-                  next layer gets built. None of that is claimed as revenue yet.
-                </p>
-              </div>
-              <div className="bg-[var(--bg-1)] p-8 sm:p-10 lg:p-12">
-                <div className="grid gap-3">
-                  {resourceActions.map((action) => (
-                    <div key={action} className="flex items-center justify-between border-b border-[var(--line)] py-3">
-                      <span className="text-[0.96rem] text-[var(--fg-dim)]">{action}</span>
-                      <span className="label text-[var(--fg-faint)]">→</span>
-                    </div>
-                  ))}
-                  <p className="label mt-4 text-[var(--fg-faint)]">
-                    Planned rails — not yet open
-                  </p>
-                  {plannedActions.map((action) => (
-                    <div key={action} className="flex items-center justify-between border-b border-[var(--line-soft)] py-3">
-                      <span className="text-[0.96rem] text-[var(--fg-faint)]">{action}</span>
-                      <span className="label text-[var(--fg-faint)]">…</span>
-                    </div>
-                  ))}
-                </div>
-                <EditorialLink href="/connect" className="mt-8 inline-flex">
-                  Build with Spektre&nbsp;→
-                </EditorialLink>
-              </div>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+              <a
+                href={DMG_URL}
+                className="btn-metal rounded-[10px] px-8 py-3.5 text-[0.92rem] font-semibold tracking-tight no-underline"
+              >
+                Download Spektre.dmg
+              </a>
+              <EditorialLink href="/connect" className="self-center">
+                Start a pilot&nbsp;→
+              </EditorialLink>
             </div>
+            <p className="label mt-4 text-[var(--fg-faint)]">
+              macOS · v0.1.0 · Early beta
+            </p>
           </div>
         </Reveal>
       </section>

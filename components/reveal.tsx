@@ -28,8 +28,8 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
-      return;
+      const raf = requestAnimationFrame(() => setShown(true));
+      return () => cancelAnimationFrame(raf);
     }
     const io = new IntersectionObserver(
       (entries) => {

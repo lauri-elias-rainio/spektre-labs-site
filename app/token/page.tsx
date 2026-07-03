@@ -93,19 +93,149 @@ export default function TokenPage() {
           </h1>
         </Reveal>
         <Reveal delay={160}>
-          <p className="mt-7 max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
-            SPEKTRE is a fixed-supply token where every unit is matched by one
-            satoshi of Bitcoin at a public address. Most “backed” tokens ask you
-            to trust an auditor&apos;s snapshot. This one hands you the tools: your
-            browser queries the chains directly, right here, in about a minute.
+          <p className="mt-7 max-w-[40rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
+            Fixed supply. One satoshi per unit. Public address. Your browser
+            reads both chains directly — no auditor PDF, no snapshot, no
+            middleman.
           </p>
         </Reveal>
       </div>
 
-      {/* ── Live verification ── */}
+      {/* ── Live verification — the hero of this page ── */}
       <section className="mt-16 sm:mt-20">
         <Reveal delay={0}>
           <ReserveProof />
+        </Reveal>
+      </section>
+
+      {/* ── Anatomy of the proof ── */}
+      <section className="mt-24 sm:mt-32">
+        <Reveal delay={0}>
+          <div className="mb-10">
+            <p className="label mb-3 text-[var(--fg-faint)]">Architecture · How the backing works</p>
+            <h2 className="text-[1.6rem] font-semibold tracking-[-0.03em] text-[var(--fg)] sm:text-[2rem]">
+              Anatomy of the proof.
+            </h2>
+          </div>
+        </Reveal>
+        <Reveal delay={80}>
+          {/* Symmetric proof diagram — pure HTML/CSS, hairlines, no images */}
+          <div
+            aria-label="Proof architecture: Bitcoin reserve connected 1-to-1 to SPEKTRE token supply on Solana"
+            className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]"
+          >
+            <div className="grid grid-cols-[1fr_auto_1fr]">
+
+              {/* Left node — Bitcoin chain */}
+              <div className="bg-[var(--bg-1)] p-6 sm:p-8">
+                <p className="label text-[var(--fg-faint)]">Bitcoin chain</p>
+                <p className="metal-text mt-4 font-mono text-[1.6rem] font-semibold leading-none tabular-nums">
+                  31,000
+                </p>
+                <p className="label mt-1.5 text-[var(--fg-mute)]">satoshis</p>
+                <div
+                  aria-hidden="true"
+                  className="my-6 h-px"
+                  style={{
+                    background: "linear-gradient(90deg, var(--line-strong), transparent)",
+                  }}
+                />
+                <p className="label mb-2.5 text-[var(--fg-faint)]">Verified by</p>
+                <p className="label text-[var(--fg-dim)]">mempool.space</p>
+                <p className="label mt-1 text-[var(--fg-dim)]">blockstream.info</p>
+                <div className="mt-6">
+                  <p className="label mb-1.5 text-[var(--fg-faint)]">Address</p>
+                  <p className="font-mono text-[0.66rem] leading-snug text-[var(--fg-mute)]">
+                    bc1qea8h···lgde9
+                  </p>
+                </div>
+              </div>
+
+              {/* Center bridge — the 1:1 axis, the page's one signal accent */}
+              <div
+                className="flex shrink-0 flex-col items-center justify-center self-stretch px-4 sm:px-6"
+                style={{
+                  borderLeft: "1px solid var(--line)",
+                  borderRight: "1px solid var(--line)",
+                }}
+              >
+                <div
+                  aria-hidden="true"
+                  className="w-px flex-1"
+                  style={{
+                    background: "linear-gradient(180deg, transparent, var(--line-strong))",
+                    minHeight: "2rem",
+                  }}
+                />
+                <div className="py-5 text-center">
+                  <p
+                    className="label tracking-[0.22em]"
+                    style={{ color: "var(--signal)" }}
+                  >
+                    1 : 1
+                  </p>
+                  <p className="label mt-1.5 whitespace-nowrap text-[var(--fg-faint)]">
+                    sat · unit
+                  </p>
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="w-px flex-1"
+                  style={{
+                    background: "linear-gradient(180deg, var(--line-strong), transparent)",
+                    minHeight: "2rem",
+                  }}
+                />
+              </div>
+
+              {/* Right node — Solana chain (bilateral mirror) */}
+              <div className="bg-[var(--bg-1)] p-6 text-right sm:p-8">
+                <p className="label text-[var(--fg-faint)]">Solana chain</p>
+                <p className="metal-text mt-4 font-mono text-[1.6rem] font-semibold leading-none tabular-nums">
+                  31,000
+                </p>
+                <p className="label mt-1.5 text-[var(--fg-mute)]">SPEKTRE</p>
+                <div
+                  aria-hidden="true"
+                  className="my-6 h-px"
+                  style={{
+                    background: "linear-gradient(270deg, var(--line-strong), transparent)",
+                  }}
+                />
+                <p className="label mb-2.5 text-[var(--fg-faint)]">Verified by</p>
+                <p className="label text-[var(--fg-dim)]">getTokenSupply</p>
+                <p className="label mt-1 text-[var(--fg-dim)]">Solana RPC</p>
+                <div className="mt-6">
+                  <p className="label mb-1.5 text-[var(--fg-faint)]">Mint</p>
+                  <p className="font-mono text-[0.66rem] leading-snug text-[var(--fg-mute)]">
+                    AaRuU···opAv
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom taxonomy bar */}
+            <div
+              className="grid grid-cols-[1fr_auto_1fr]"
+              style={{ borderTop: "1px solid var(--line-soft)" }}
+            >
+              <div className="px-6 py-3 sm:px-8">
+                <p className="label text-[var(--fg-faint)]">Chain A · Bitcoin</p>
+              </div>
+              <div
+                className="shrink-0 px-4 py-3 text-center sm:px-6"
+                style={{
+                  borderLeft: "1px solid var(--line-soft)",
+                  borderRight: "1px solid var(--line-soft)",
+                }}
+              >
+                <p className="label text-[var(--fg-faint)]">Bridge</p>
+              </div>
+              <div className="px-6 py-3 text-right sm:px-8">
+                <p className="label text-[var(--fg-faint)]">Chain B · Solana</p>
+              </div>
+            </div>
+          </div>
         </Reveal>
       </section>
 
@@ -176,8 +306,8 @@ export default function TokenPage() {
               <p className="label text-[var(--fg-faint)]">The method · Use it on any token</p>
               <Glyph variant="node" size={20} strokeOpacity={0.35} />
             </div>
-            <h2 className="max-w-[24ch] text-[1.5rem] font-semibold tracking-[-0.03em] leading-[1.15] text-[var(--fg)] sm:text-[1.9rem]">
-              How to verify any “backed” token — in four steps.
+            <h2 className="max-w-[24ch] text-[1.5rem] font-semibold leading-[1.15] tracking-[-0.03em] text-[var(--fg)] sm:text-[1.9rem]">
+              How to verify any backed token. Four steps.
             </h2>
             <ol className="mt-8 grid gap-6 sm:grid-cols-2">
               {[

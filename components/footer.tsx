@@ -39,7 +39,7 @@ export function Footer() {
               </p>
               <p
                 className="label text-[0.55rem] tracking-[0.22em] text-[var(--fg-faint)]"
-                style={{ opacity: 0.42 }}
+                style={{ opacity: 0.52 }}
               >
                 DECLARED = REALIZED
               </p>
@@ -107,26 +107,24 @@ export function Footer() {
           </div>
         </Reveal>
 
-        {/* ── Location + ORCID — identity metadata row ── */}
+        {/* ── Coordinate stamp — closing brand moment ── */}
         <Reveal delay={140} y={12}>
-          <div className="mt-14 flex flex-col items-center gap-2 border-t border-[var(--line-soft)] pt-8 sm:mt-16">
+          <div className="mt-14 flex flex-col items-center gap-[0.55rem] border-t border-[var(--line-soft)] pt-8 sm:mt-16">
             <p className="label text-[0.62rem] tracking-[0.28em] text-[var(--fg-faint)]">
               {lab.author}
             </p>
-            <div className="flex items-center gap-4">
-              <span className="label text-[0.58rem] tracking-[0.22em] text-[var(--fg-faint)]"
-                    style={{ opacity: 0.5 }}>
-                {lab.location}
-              </span>
-              <span
-                className="h-[3px] w-[3px] rounded-full bg-[var(--line-strong)]"
-                aria-hidden
-              />
-              <span className="label text-[0.58rem] tracking-[0.22em] text-[var(--fg-faint)]"
-                    style={{ opacity: 0.5 }}>
-                ORCID {lab.orcid}
-              </span>
-            </div>
+            <p
+              className="label text-center text-[0.56rem] tracking-[0.22em] text-[var(--fg-faint)]"
+              style={{ opacity: 0.45 }}
+            >
+              60.17°N · 24.94°E · HELSINKI · EST. MMXXVI · σ DECLARED=REALIZED
+            </p>
+            <p
+              className="label text-[0.53rem] tracking-[0.22em] text-[var(--fg-faint)]"
+              style={{ opacity: 0.35 }}
+            >
+              ORCID {lab.orcid}
+            </p>
           </div>
         </Reveal>
 

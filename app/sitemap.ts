@@ -29,6 +29,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/shoreworld/experience", priority: 0.7, changeFrequency: "monthly" },
     { path: "/games", priority: 0.6, changeFrequency: "monthly" },
     { path: "/llms.txt", priority: 0.4, changeFrequency: "monthly" },
+    /* research field notes */
+    { path: "/research/verify-backed-token", priority: 0.7, changeFrequency: "yearly" },
+    { path: "/research/fail-safe-beats-fail-open", priority: 0.7, changeFrequency: "yearly" },
+    { path: "/research/agent-grading-homework", priority: 0.7, changeFrequency: "yearly" },
   ];
 
   const artifactRoutes = getArtifacts().map((artifact) => ({

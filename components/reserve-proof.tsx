@@ -1,11 +1,11 @@
 "use client";
 
 /*
-  ReserveProof — live, in-browser proof-of-reserve check.
+  ReserveProof — the definitive proof-of-reserve artifact.
 
   The reader's own browser queries two independent Bitcoin indexers and the
   Solana network directly. Nothing passes through Spektre servers, so there is
-  nothing to take on trust: the numbers on screen come from the chains.
+  nothing to take on trust: every number on screen comes straight from the chains.
 */
 
 import { useState } from "react";
@@ -22,6 +22,7 @@ type CheckState =
       blockstreamSats: number | null;
       supply: number | null;
       errors: string[];
+      timestamp: string;
     };
 
 async function fetchIndexerSats(base: string): Promise<number> {
@@ -61,6 +62,31 @@ async function fetchSupply(): Promise<number> {
   throw new Error(`Solana RPC → ${lastErr}`);
 }
 
+/* ── Copy-to-clipboard affordance ── */
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API unavailable in this context — fail silently.
+    }
+  };
+  return (
+    <button
+      onClick={copy}
+      aria-label={copied ? "Copied" : "Copy to clipboard"}
+      className="label shrink-0 text-[var(--fg-faint)] hover:text-[var(--fg-mute)]"
+      style={{ transition: "color 200ms var(--ease)" }}
+    >
+      {copied ? "COPIED" : "COPY"}
+    </button>
+  );
+}
+
+/* ── Main component ── */
 export function ReserveProof() {
   const [state, setState] = useState<CheckState>({ phase: "idle" });
 
@@ -80,27 +106,17 @@ export function ReserveProof() {
       grab(() => fetchIndexerSats("https://blockstream.info")),
       grab(fetchSupply),
     ]);
-    setState({ phase: "done", mempoolSats, blockstreamSats, supply, errors });
+    const d = new Date();
+    const timestamp = `${d.toISOString().slice(0, 10)} ${d.toISOString().slice(11, 19)} UTC`;
+    setState({ phase: "done", mempoolSats, blockstreamSats, supply, errors, timestamp });
   };
 
   const rows =
     state.phase === "done"
       ? [
-          {
-            label: "Bitcoin reserve · mempool.space",
-            value: state.mempoolSats,
-            unit: "sats",
-          },
-          {
-            label: "Bitcoin reserve · blockstream.info",
-            value: state.blockstreamSats,
-            unit: "sats",
-          },
-          {
-            label: "Token supply · Solana mainnet",
-            value: state.supply,
-            unit: "SPEKTRE",
-          },
+          { label: "BTC reserve", source: "mempool.space", value: state.mempoolSats, unit: "sats" },
+          { label: "BTC reserve", source: "blockstream.info", value: state.blockstreamSats, unit: "sats" },
+          { label: "Token supply", source: "Solana mainnet", value: state.supply, unit: "SPEKTRE" },
         ]
       : [];
 
@@ -110,14 +126,14 @@ export function ReserveProof() {
     if (mempoolSats == null || blockstreamSats == null || supply == null)
       return {
         pass: false,
-        line: "Could not reach every source from this browser — open the links below and check by hand.",
+        line: "Could not reach every source from this browser — open the manual links below and check by hand.",
       };
     const agree = mempoolSats === blockstreamSats;
     const covered = mempoolSats >= supply;
     if (agree && covered)
       return {
         pass: true,
-        line: `Both indexers agree on ${mempoolSats.toLocaleString()} sats, and reserve ≥ supply. The balance claim holds.`,
+        line: `Both indexers agree: ${mempoolSats.toLocaleString()} sats. Reserve covers supply. The balance claim holds.`,
       };
     return {
       pass: false,
@@ -129,57 +145,113 @@ export function ReserveProof() {
 
   return (
     <div className="surface overflow-hidden rounded-[var(--radius)]">
+
+      {/* ── Header ── */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--line)] p-6 sm:p-8">
         <div>
-          <p className="label text-[var(--fg-faint)]">Live check · Your browser → the chains</p>
-          <p className="mt-2 text-[0.95rem] leading-[1.7] text-[var(--fg-dim)]">
+          <p className="label text-[var(--fg-faint)]">Reserve proof · live query · no proxy</p>
+          <p className="mt-2 max-w-[38rem] text-[0.95rem] leading-[1.7] text-[var(--fg-dim)]">
             Your browser queries two independent Bitcoin indexers and Solana
-            directly. No Spektre server sits in between.
+            directly. No Spektre server sits between you and the chains.
           </p>
         </div>
         <button
           onClick={run}
           disabled={state.phase === "running"}
-          className="btn-metal rounded-[10px] px-6 py-3 text-[0.9rem] font-semibold tracking-tight disabled:opacity-60"
+          className="btn-metal shrink-0 rounded-[10px] px-6 py-3 text-[0.9rem] font-semibold tracking-tight disabled:opacity-60"
         >
           {state.phase === "running" ? "Checking…" : "Verify now"}
         </button>
       </div>
 
+      {/* ── Addresses — always visible, always copyable ── */}
+      <div className="grid gap-px border-b border-[var(--line)] bg-[var(--line)] sm:grid-cols-2">
+        <div className="bg-[var(--bg-1)] px-6 py-4 sm:px-8">
+          <p className="label mb-2 text-[var(--fg-faint)]">BTC reserve address</p>
+          <div className="flex items-center gap-3">
+            <span className="min-w-0 break-all font-mono text-[0.74rem] leading-snug text-[var(--fg-dim)]">
+              {RESERVE_ADDRESS}
+            </span>
+            <CopyButton value={RESERVE_ADDRESS} />
+          </div>
+        </div>
+        <div className="bg-[var(--bg-1)] px-6 py-4 sm:px-8">
+          <p className="label mb-2 text-[var(--fg-faint)]">Solana mint</p>
+          <div className="flex items-center gap-3">
+            <span className="min-w-0 break-all font-mono text-[0.74rem] leading-snug text-[var(--fg-dim)]">
+              {MINT}
+            </span>
+            <CopyButton value={MINT} />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Results / idle ── */}
       {state.phase === "done" ? (
         <div>
+
+          {/* Timestamp coordinate */}
+          <div className="border-b border-[var(--line-soft)] px-6 py-3 sm:px-8">
+            <p className="label text-[var(--fg-faint)]">Queried · {state.timestamp}</p>
+          </div>
+
+          {/* Mono data table */}
           {rows.map((row) => (
             <div
-              key={row.label}
-              className="flex items-baseline justify-between gap-6 border-b border-[var(--line-soft)] px-6 py-4 sm:px-8"
+              key={row.source}
+              className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 border-b border-[var(--line-soft)] px-6 py-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:px-8"
             >
-              <span className="label">{row.label}</span>
-              <span className="font-mono text-[1rem] tabular-nums text-[var(--fg)]">
-                {row.value == null ? "unreachable" : `${row.value.toLocaleString()} ${row.unit}`}
+              <span className="label text-[var(--fg-mute)]">{row.label}</span>
+              <span className="label hidden text-[var(--fg-faint)] sm:block">{row.source}</span>
+              <span className="font-mono text-[0.95rem] tabular-nums text-[var(--fg)]">
+                {row.value == null ? (
+                  <span className="text-[var(--fg-faint)]">unreachable</span>
+                ) : (
+                  `${row.value.toLocaleString()} ${row.unit}`
+                )}
               </span>
             </div>
           ))}
-          <div className="flex items-baseline gap-4 px-6 py-5 sm:px-8">
-            <span
-              className={`label ${verdict?.pass ? "text-[var(--signal)]" : "text-[var(--fg)]"}`}
+
+          {/* Verdict — the signal moment */}
+          {verdict?.pass ? (
+            <div
+              className="flex items-start gap-6 px-6 py-6 sm:px-8"
+              style={{
+                borderTop: "1px solid var(--line-soft)",
+                borderLeft: "2px solid var(--signal)",
+                boxShadow: "-6px 0 24px -8px var(--signal-glow)",
+              }}
             >
-              {verdict?.pass ? "PASS" : "CHECK FAILED"}
-            </span>
-            <span className="text-[0.92rem] leading-[1.7] text-[var(--fg-dim)]">
-              {verdict?.line}
-            </span>
-          </div>
-          {state.errors.length > 0 ? (
+              <span
+                className="label shrink-0 tracking-[0.28em]"
+                style={{ color: "var(--signal)" }}
+              >
+                σ — PASS
+              </span>
+              <span className="text-[0.92rem] leading-[1.7] text-[var(--fg-dim)]">
+                {verdict.line}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-start gap-6 border-t border-[var(--line-soft)] px-6 py-6 sm:px-8">
+              <span className="label shrink-0 text-[var(--fg-mute)]">FAIL</span>
+              <span className="text-[0.92rem] leading-[1.7] text-[var(--fg-dim)]">
+                {verdict?.line}
+              </span>
+            </div>
+          )}
+
+          {state.errors.length > 0 && (
             <p className="border-t border-[var(--line-soft)] px-6 py-4 font-mono text-[0.75rem] text-[var(--fg-faint)] sm:px-8">
               {state.errors.join(" · ")}
             </p>
-          ) : null}
+          )}
         </div>
       ) : (
         <div className="px-6 py-5 sm:px-8">
           <p className="text-[0.92rem] leading-[1.75] text-[var(--fg-mute)]">
-            Or check by hand — the same three sources, in any browser, no
-            account:{" "}
+            Or verify by hand — three sources, any browser, no account:{" "}
             <a
               className="underline decoration-[var(--line-strong)] underline-offset-4 hover:text-[var(--fg)]"
               href={`https://mempool.space/address/${RESERVE_ADDRESS}`}

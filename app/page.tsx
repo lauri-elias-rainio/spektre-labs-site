@@ -89,7 +89,7 @@ const DIVISIONS: Division[] = [
 ] as const;
 
 const STATUS_STYLES: Record<"REAL" | "EMERGING" | "VISION", string> = {
-  REAL: "text-[var(--signal)]",
+  REAL: "text-[var(--fg)]",
   EMERGING: "text-[var(--fg-dim)]",
   VISION: "text-[var(--fg-faint)]",
 };
@@ -116,16 +116,15 @@ export default function Home() {
                   The internet,<br />cleaned up.
                 </h2>
                 <p className="mt-7 max-w-[40rem] text-[1rem] leading-[1.82] text-[var(--fg-dim)]">
-                  A cleaner browser in early beta: fewer interruptions, visible
-                  blocking, one place to work — and in-page AI in development.
+                  Early beta. Fewer interruptions, visible blocking, one workspace — AI in-page next.
                 </p>
               </div>
               <div className="flex flex-col justify-between bg-[var(--bg-1)] p-8 transition-colors duration-500 group-hover:bg-[var(--bg-2)] sm:p-10 lg:p-12">
                 <div className="space-y-5">
                   {[
                     "Same sites. Less junk.",
-                    "No promise without logs, tests, demos, or pilots.",
-                    "Every page ends in an action: download, pilot, or proof.",
+                    "No promise without proof.",
+                    "Every page ends in action.",
                   ].map((line) => (
                     <p key={line} className="border-b border-[var(--line)] pb-5 text-[0.98rem] leading-[1.65] text-[var(--fg-dim)]">
                       {line}
@@ -152,9 +151,7 @@ export default function Home() {
               “Σ-COLLAPSE” · Live
             </span>
             <span className="text-[0.95rem] leading-[1.7] text-[var(--fg-dim)]">
-              A compute field of up to 131,072 particles — each rendered with its
-              mirror — collapses noise into the sigil. σ measured on your GPU, in
-              real time.
+              131,072 particles, each mirrored. Noise collapses into the sigil. σ measured on your GPU.
             </span>
             <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
               Enter&nbsp;→
@@ -163,7 +160,7 @@ export default function Home() {
         </Reveal>
       </section>
 
-      <section data-descent-stage="octad" className="mt-28 sm:mt-36 lg:mt-44">
+      <section data-descent-stage="octad" className="mt-32 sm:mt-40 lg:mt-52">
         <div className="rule mb-12 sm:mb-14" />
 
         <Reveal delay={0}>
@@ -176,9 +173,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col justify-end lg:col-span-7 lg:col-start-6">
               <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)]">
-                Labs, Systems, Studio, Intelligence, Compute — and Health, later.
-                Each arena runs the same operation: a hard problem in, a working
-                thing out.
+                Labs, Systems, Studio, Intelligence, Compute — and Health, later. Same operation everywhere: hard problem in, working thing out.
               </p>
               <EditorialLink href="/universe" className="mt-6 self-start">
                 See the map&nbsp;→
@@ -190,10 +185,10 @@ export default function Home() {
         <div className="space-y-0">
           {DIVISIONS.map((div, i) => (
             <Reveal key={div.index} delay={i * 70}>
-              <div className="group relative border-t border-[var(--line)] py-9 transition-colors duration-500 hover:border-[var(--line-strong)] sm:py-11 lg:py-12">
+              <div className="group relative border-t border-[var(--line)] py-9 transition-colors duration-300 hover:border-[var(--line-strong)] sm:py-11 lg:py-12">
                 <div className="grid gap-6 lg:grid-cols-12 lg:gap-14">
                   <div className="flex items-baseline gap-5 lg:col-span-4">
-                    <span className="label shrink-0 tabular-nums text-[var(--fg-faint)]">
+                    <span className="label shrink-0 tabular-nums text-[var(--fg-faint)] transition-colors duration-300 group-hover:text-[var(--signal)]">
                       {div.index}
                     </span>
                     <div>
@@ -249,7 +244,7 @@ export default function Home() {
           The σ-honesty answer to "is any of this real?": three endpoints
           that respond right now, plus the open source. Nothing floats.
       ─────────────────────────────────────────────────────────────── */}
-      <section data-descent-stage="constellation" className="mt-32 sm:mt-40 lg:mt-48">
+      <section data-descent-stage="constellation" className="mt-32 sm:mt-40 lg:mt-52">
         <Reveal delay={0}>
           <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -258,8 +253,7 @@ export default function Home() {
                 What runs today.
               </h2>
               <p className="mt-4 max-w-[34rem] text-[0.98rem] leading-[1.75] text-[var(--fg-mute)]">
-                Examples from Systems and Compute. They prove the build standard; they are
-                not the full scope of Spektre.
+                Samples from Systems and Compute. The build standard, visible.
               </p>
             </div>
             <EditorialLink href={LINKS.github} external className="shrink-0 self-start sm:self-auto">
@@ -302,7 +296,10 @@ export default function Home() {
               >
                 <div className="mb-6 flex items-center justify-between gap-4">
                   <span className="flex items-center gap-2.5">
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
+                    <span className="relative inline-flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--signal)] opacity-50" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
+                    </span>
                     <span className="label text-[var(--signal)]">Live</span>
                   </span>
                   <span className="label text-[var(--fg-faint)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
@@ -342,7 +339,7 @@ export default function Home() {
           The knowledge layer: open papers, protocol specs, and findings
           written so a normal technical reader gets the value in one pass.
       ─────────────────────────────────────────────────────────────── */}
-      <section data-descent-stage="lattice" className="mt-32 sm:mt-40 lg:mt-48">
+      <section data-descent-stage="lattice" className="mt-32 sm:mt-40 lg:mt-52">
         <Reveal delay={0}>
           <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -351,9 +348,7 @@ export default function Home() {
                 Knowledge you can check.
               </h2>
               <p className="mt-4 max-w-[36rem] text-[0.98rem] leading-[1.75] text-[var(--fg-mute)]">
-                Open research papers, protocol specifications, and findings from
-                running real systems — written in plain language, published with
-                sources you can verify yourself.
+                Open papers, protocol specs, findings from live systems. Written plain. Sources you can check.
               </p>
             </div>
             <EditorialLink href="/research" className="shrink-0 self-start sm:self-auto">
@@ -416,13 +411,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-28 px-0 sm:mt-36 lg:mt-44">
+      <section className="mt-32 sm:mt-40 lg:mt-52">
         <Reveal delay={0}>
-          <div className="mb-14 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="label mb-3 text-[var(--fg-faint)]">Translation layer</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
-                Theory becomes things people can use.
+                Theory, made executable.
               </h2>
             </div>
             <EditorialLink href="/connect" className="shrink-0 self-start sm:self-auto">
@@ -485,7 +480,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-36 sm:mt-44 lg:mt-56">
+      <section className="mt-40 sm:mt-52 lg:mt-64">
         <div className="rule mb-14" />
 
         <Reveal delay={0}>
@@ -498,9 +493,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col justify-end lg:col-span-7 lg:col-start-6">
               <p className="max-w-[42rem] text-[1.02rem] leading-[1.85] text-[var(--fg-mute)]">
-                The standard is simple: find the real problem, reduce it to structure,
-                build the system, and prove it in use. Theory stays behind the product
-                until someone needs the deep layer.
+                Find the real problem. Reduce to structure. Build. Prove in use. Theory surfaces when you need it.
               </p>
             </div>
           </div>
@@ -552,7 +545,7 @@ export default function Home() {
       {/* ── § 4 · STUDIO TEASER ─────────────────────────────────────────
           Film · YouTube channel active · structured as editorial spread.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-36 sm:mt-44 lg:mt-56">
+      <section className="mt-40 sm:mt-52 lg:mt-64">
         <Reveal delay={0}>
           <div className="surface overflow-hidden rounded-[var(--radius)]">
             <div className="grid lg:grid-cols-2">
@@ -568,8 +561,7 @@ export default function Home() {
 
                 <Reveal delay={160}>
                   <p className="mt-5 max-w-[32rem] text-[1.05rem] leading-[1.84] text-[var(--fg-dim)]">
-                    Film, visual systems, experiments, and public artifacts. The Studio turns
-                    the same architecture into culture people can see before they can name it.
+                    Film, visual systems, public artifacts. The architecture becomes culture.
                   </p>
                 </Reveal>
 
@@ -619,9 +611,9 @@ export default function Home() {
           terse σ-honest line each. The operating bar, rendered.
       ─────────────────────────────────────────────────────────────── */}
       <section className="mt-40 sm:mt-52 lg:mt-64">
-        <div className="rule mb-14 sm:mb-18" />
+        <div className="rule mb-14" />
         <Reveal delay={0}>
-          <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:gap-14">
+          <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-4">
               <p className="label mb-4 text-[var(--fg-faint)]">Brand law</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem] lg:text-[2.5rem]">
@@ -630,8 +622,7 @@ export default function Home() {
             </div>
             <div className="lg:col-span-7 lg:col-start-6 flex flex-col justify-end">
               <p className="text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] max-w-[38rem]">
-                The design system is not decoration. It is the visible face of the operating
-                standard: precise, fast, restrained, expensive, and impossible to confuse.
+                Not decoration. The visible face of the operating standard: precise, restrained, and impossible to confuse.
               </p>
             </div>
           </div>
@@ -667,7 +658,7 @@ export default function Home() {
       {/* ── § 5 · FOUNDER TEASER ────────────────────────────────────────
           One architect. Restrained, editorial. Links to /about.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-36 sm:mt-44 lg:mt-56">
+      <section className="mt-40 sm:mt-52 lg:mt-64">
         <div className="rule mb-14" />
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
           {/* Left label column */}
@@ -692,10 +683,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={160}>
               <p className="max-w-[44rem] text-pretty text-[1.05rem] leading-[1.88] text-[var(--fg-dim)]">
-                {/* Trimmed to the essential arc */}
-                An independent systems architect and self-taught researcher building Spektre as a
-                multi-domain lab: research, code, AI, computation, media, and future ventures. The
-                work starts from hard problems and ends in systems people can run, inspect, and use.
+                Systems architect. Building Spektre as a multi-domain lab: research, code, AI, compute, media. Hard problems in; systems you can run and inspect, out.
               </p>
             </Reveal>
 
@@ -750,8 +738,7 @@ export default function Home() {
           {/* Sub-copy */}
           <Reveal delay={160}>
             <p className="mt-7 max-w-[30rem] text-pretty text-[1rem] leading-[1.86] text-[var(--fg-mute)]">
-              Spektre is built for problems that need research, architecture, product taste, and
-              working systems at the same time.
+              For problems that need research, architecture, and working systems at once.
             </p>
           </Reveal>
 
@@ -792,12 +779,18 @@ export default function Home() {
         <div className="rule" />
 
         {/* the closing axiom — centered, symmetric, on void */}
-        <div className="mt-20 flex flex-col items-center gap-4 text-center">
-          <p className="metal-text text-[2rem] font-semibold tracking-[-0.03em] sm:text-[2.6rem]">
-            1&nbsp;=&nbsp;1
-          </p>
-          <p className="label text-[var(--fg-faint)]">Declared equals realized</p>
-        </div>
+        <Reveal delay={0}>
+          <div className="mt-20 flex flex-col items-center gap-5 text-center">
+            <div className="flex items-center gap-8 sm:gap-12">
+              <span className="h-px w-10 bg-[var(--line-strong)] sm:w-16" />
+              <p className="metal-text text-[2rem] font-semibold tracking-[-0.03em] sm:text-[2.6rem]">
+                1&nbsp;=&nbsp;1
+              </p>
+              <span className="h-px w-10 bg-[var(--line-strong)] sm:w-16" />
+            </div>
+            <p className="label text-[var(--fg-faint)]">Declared equals realized</p>
+          </div>
+        </Reveal>
       </section>
       </div>
     </div>

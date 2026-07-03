@@ -1,0 +1,232 @@
+[
+  {
+    "slug": "verify-backed-token",
+    "eyebrow": "FIELD NOTE · 001",
+    "title": "How to verify a 'backed' token in 60 seconds",
+    "date": "2026-07-03",
+    "readingTime": 4,
+    "sigmaStatus": "verified",
+    "summary": "The four-step method for independently confirming a token's reserve claim — without trusting the issuer.",
+    "body": [
+      {
+        "type": "p",
+        "text": "The word 'backed' appears on nearly every new token's landing page. It implies a reserve — some asset held elsewhere that gives the token its floor value. Most projects expect you to take this on trust: read the PDF, believe the pie chart, wait for the annual audit. None of that is a proof. Here is a four-step method that takes under a minute and requires trusting nothing except the public blockchains themselves."
+      },
+      {
+        "type": "h2",
+        "text": "Step 1. Check the reserve address on two independent block explorers."
+      },
+      {
+        "type": "p",
+        "text": "The reserve is an address on a public blockchain — Bitcoin in most cases. Every block explorer indexes that address independently, from separate servers running separate code. Load the reserve address on mempool.space, then again on blockstream.info. If both report the same balance, you have a confirmed number. If they disagree, something is wrong: the address was entered incorrectly, one explorer is lagging, or the data was manipulated. Do not accept a single-source balance. Two independent explorers returning the same figure is the minimum acceptable evidence."
+      },
+      {
+        "type": "h2",
+        "text": "Step 2. Read the token supply from the chain, not from the project's website."
+      },
+      {
+        "type": "p",
+        "text": "Every Solana token exposes its total supply through a read-only RPC call addressed to the token's mint account. The chain maintains this number directly — it cannot be falsified without invalidating the chain's own state. Any block explorer that lists the token will display this figure. Write it down. Do not accept a supply number from the project's website; what they publish there is under their control. The chain is not."
+      },
+      {
+        "type": "h2",
+        "text": "Step 3. Confirm the reserve equals or exceeds the supply — continuously, not on audit day."
+      },
+      {
+        "type": "p",
+        "text": "An annual audit tells you the situation on one specific day. What you want is a structural relationship: the reserve balance must equal or exceed the token supply at every moment, not just when an auditor happens to look. On-chain verification makes this possible. Both numbers are public, both update in real time, and anyone can check the ratio at any second without asking permission. A project that publishes a reserve address and a token mint address is making a claim the market can continuously verify. That is a meaningfully stronger commitment than an audit PDF with an expiry date."
+      },
+      {
+        "type": "h2",
+        "text": "Step 4. Demand a signed message from the controlling key."
+      },
+      {
+        "type": "p",
+        "text": "Steps 1 through 3 prove that a balance exists at a particular address. They do not prove the project controls the private key for that address. A project could list any address — one they do not own — and the on-chain data would look identical. The final step is a BIP-322 signed message: a short message cryptographically signed by the private key of the reserve address, verifiable by anyone against the public address. Until that message has been published and independently checked, the balance is proven and the ownership is a claim. Those are different things and must be labeled accordingly."
+      },
+      {
+        "type": "h2",
+        "text": "What this process catches."
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Borrowed reserves: funds moved into the address just before a screenshot, then moved out.",
+          "Uncontrolled addresses: a reserve address the project cannot actually sign from.",
+          "Day-of-audit manipulation: a balance that inflates temporarily during an audit window.",
+          "Supply underreporting: misrepresenting the total number of tokens in circulation."
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "A working example."
+      },
+      {
+        "type": "p",
+        "text": "The SPEKTRE token page at spektre.org/token runs steps 1 through 3 live in your browser. Your own browser queries mempool.space, blockstream.info, and the Solana network directly — this page cannot alter those responses. Step 4 is listed explicitly as not yet proven: the BIP-322 signed message establishing key control has not been published. That gap is stated plainly rather than omitted. A proof is only a proof when it is complete; labeling what is incomplete is how you tell the two apart."
+      }
+    ],
+    "references": [
+      {
+        "label": "Live example",
+        "href": "/token",
+        "note": "SPEKTRE token — reserve verification running in-browser"
+      },
+      {
+        "label": "BIP-322 specification",
+        "href": "https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki",
+        "note": "Generic Signed Message Format for Bitcoin"
+      }
+    ]
+  },
+  {
+    "slug": "fail-safe-beats-fail-open",
+    "eyebrow": "FIELD NOTE · 002",
+    "title": "Fail-safe beats fail-open: the one design rule for AI output gates",
+    "date": "2026-07-03",
+    "readingTime": 4,
+    "sigmaStatus": "verified",
+    "summary": "If the checker breaks, nothing passes. Deterministic pre-checks before any model judge — the structural rule every AI output gate should enforce.",
+    "body": [
+      {
+        "type": "p",
+        "text": "When a safety check on AI output fails — times out, throws an exception, encounters input it was not designed for — most production pipelines pass the output through anyway. The logic is that false positives should not block legitimate users. This reasoning inverts the purpose of a gate. A check that passes output when it cannot evaluate it is not a check. It is a pass-through with extra latency."
+      },
+      {
+        "type": "h2",
+        "text": "Fail-safe versus fail-open."
+      },
+      {
+        "type": "p",
+        "text": "Fail-safe means: when uncertain, default to the protected state. A circuit breaker trips to disconnected when the load is ambiguous. A fire door closes when the sensor goes offline. The safe state is defined before any failure occurs, and failure causes automatic reversion to it. Fail-open means: when uncertain, allow. In AI pipelines, this is usually the default because availability metrics reward it. An output that reaches a user looks like a success; a blocked output that should have passed looks like a failure. The metric selects for the wrong behavior."
+      },
+      {
+        "type": "h2",
+        "text": "Why AI output gates fail open under production conditions."
+      },
+      {
+        "type": "p",
+        "text": "The typical architecture: a model generates output, a safety checker runs asynchronously, and if the checker does not respond within a deadline the output passes. Under normal load, the checker responds in time and no one notices the architecture. Under a traffic spike, a third-party API outage, a model serving error, or a carefully crafted input designed to cause a timeout, the checker is the first component to drop. The bypass is not a theoretical attack — it is the normal behavior of a fail-open system under any meaningful stress."
+      },
+      {
+        "type": "h2",
+        "text": "Deterministic pre-checks as the first layer."
+      },
+      {
+        "type": "p",
+        "text": "The fix requires separating two categories of check: what can be evaluated deterministically and what requires a model judgment. Secret detection, prompt injection patterns, and known PII formats are pattern-matching problems. They do not require a model. They can be evaluated in the same process that received the input, with no network call, returning the same verdict every time for the same input. Run these first. If any check fires — or if the check itself fails for any reason, including a code bug — block. Do not fall through to the next layer."
+      },
+      {
+        "type": "p",
+        "text": "A model judge adds coverage for cases that pattern-matching misses: subtle coherence failures, nuanced harm, domain-specific violations. It is a valuable second layer. But its role is to handle what the first layer cannot handle, not to substitute for it. When the model judge fails or returns a low-confidence result, the deterministic layer has already cleared the output for the categories it covers. The layers are independent — model failures cannot bypass deterministic checks."
+      },
+      {
+        "type": "h2",
+        "text": "What the sigma-gate open core implements."
+      },
+      {
+        "type": "p",
+        "text": "The sigma-gate library (github.com/spektre-labs/sigma-gate) applies this architecture as a zero-dependency open-source package. It runs secret detection, injection interception, and PII screening as a single synchronous call with no external dependencies — the same deterministic logic that runs in your browser on the product page. If any check fires, the call returns a block with a reason code. The model judge, if your pipeline includes one, runs after the gate clears. The layers are not fused, which means model-layer failure cannot compromise the deterministic layer's coverage."
+      },
+      {
+        "type": "h2",
+        "text": "The operational trade-off, stated plainly."
+      },
+      {
+        "type": "p",
+        "text": "A fail-safe gate blocks more during incidents. When the gate itself encounters an internal error, it blocks rather than passes. That means some legitimate outputs will be delayed or blocked during system failures. The correct response is to log the error, alert on it, and retry the check — not to lower the protection threshold. A delayed output is recoverable; an unchecked output that reached a user is not."
+      }
+    ],
+    "references": [
+      {
+        "label": "sigma-gate",
+        "href": "https://github.com/spektre-labs/sigma-gate",
+        "note": "Open-source deterministic AI output gate — secret, injection, PII detection"
+      },
+      {
+        "label": "Live guard demo",
+        "href": "/artifacts/sigma-gate",
+        "note": "Run the detector against example inputs in-browser"
+      }
+    ]
+  },
+  {
+    "slug": "agent-grading-homework",
+    "eyebrow": "FIELD NOTE · 003",
+    "title": "An AI agent should never grade its own homework",
+    "date": "2026-07-03",
+    "readingTime": 4,
+    "sigmaStatus": "verified",
+    "summary": "The champion-challenger ratchet: nothing counts as improvement unless it beats the incumbent under independent measurement. Ties keep the champion. Every challenge is logged.",
+    "body": [
+      {
+        "type": "p",
+        "text": "An AI system that generates output and then evaluates whether that output is good has a structural conflict of interest: it is grading its own homework. The system that produced the answer has a strong tendency to rate the answer favorably. This is not a flaw unique to AI — it appears in any self-referential evaluation system, from peer review submitted to authors to software tests written by the developer who built the feature. The industrial solution, developed in quality control before most current AI systems existed, is the champion-challenger design."
+      },
+      {
+        "type": "h2",
+        "text": "The ratchet structure."
+      },
+      {
+        "type": "p",
+        "text": "At any point in time, one version of a system is the champion — the current production model, pipeline, prompt, or output set that defines the baseline performance. Every proposed change is a challenger. A challenger replaces the champion only if it demonstrably outperforms the champion on a defined metric, measured by an independent evaluator. If the challenger ties, the champion wins. If the challenger loses, it is discarded. The gate moves in one direction: forward or stopped, never backward."
+      },
+      {
+        "type": "h2",
+        "text": "Why ties go to the champion."
+      },
+      {
+        "type": "p",
+        "text": "The conservative default — ties keep the champion — has a precise justification. Any measurement has noise. A tied result means the new version could be marginally better or marginally worse; within measurement noise, you cannot distinguish. Deploying a change you cannot confirm is an improvement introduces cost: unknown risk, additional system complexity, and an expanded version history to maintain. The champion already works. The challenger must earn its replacement. Tied evidence is insufficient justification for a change."
+      },
+      {
+        "type": "h2",
+        "text": "Why the evaluator must be separate from the generator."
+      },
+      {
+        "type": "p",
+        "text": "If the same model generates output A and then evaluates whether A is better than the previous version, a systematic bias enters the measurement. A model fine-tuned to produce helpful outputs will also tend to judge its own outputs as helpful. A detection model that generates a borderline response will tend, when asked 'is this safe?', to clear it — because the evaluation question activates different context than the detection task did. Generation and evaluation are two different tasks. They must run in two different inference contexts with no shared state."
+      },
+      {
+        "type": "p",
+        "text": "This is not about distrust of a specific model. It is about a structural property of self-referential evaluation: it cannot accurately measure what it is itself producing. Independent evaluation is the only source of information that is structurally uncontaminated by the generator's priors. The gap between a system's self-assessment and its actual performance under independent measurement is precisely the kind of gap that sigma — the distance between what is declared and what actually happened — is defined to capture."
+      },
+      {
+        "type": "h2",
+        "text": "What the challenge log is for."
+      },
+      {
+        "type": "p",
+        "text": "Every challenge must be logged: the challenger's configuration, the metric used, the measured result, and the decision applied. This is not overhead. It is the only way to audit whether the ratchet is working. Without a log, you cannot determine whether performance regressions were caught before they reached production, whether the evaluation metric drifted over time, or whether the evaluator somehow shared state with the generator. The log is the external check on the entire process. Remove it and you are back to self-evaluation."
+      },
+      {
+        "type": "h2",
+        "text": "Applied to the Spektre research program."
+      },
+      {
+        "type": "p",
+        "text": "The iterative falsification step in the Spektre research method applies the same structure. A candidate formalization is tested against the incumbent by running it through a separate domain where it either holds or breaks. The pass condition is not 'the author finds it convincing' — it is 'the structure survives independent stress-testing in a domain that did not generate it.' The separation of generation and evaluation is what distinguishes a result from an opinion."
+      },
+      {
+        "type": "h2",
+        "text": "The minimum viable implementation."
+      },
+      {
+        "type": "p",
+        "text": "You do not need specialized infrastructure to implement this. The minimum is: (1) write down the current champion's measured performance on a specific metric before changing anything, (2) run the challenger on the same metric without the challenger's author conducting the evaluation, (3) record the result, (4) apply the rule. The discipline is the constraint, not the tooling. Tooling makes this faster at scale; the constraint makes it valid at any scale."
+      }
+    ],
+    "references": [
+      {
+        "label": "Research method",
+        "href": "/method",
+        "note": "Iterative falsification — the research-level implementation"
+      },
+      {
+        "label": "sigma-gate",
+        "href": "https://github.com/spektre-labs/sigma-gate",
+        "note": "The operational layer — coherence measured, not self-reported"
+      }
+    ]
+  }
+]

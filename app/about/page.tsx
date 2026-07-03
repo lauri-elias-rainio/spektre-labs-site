@@ -133,47 +133,18 @@ export default function AboutPage() {
             </blockquote>
           </Reveal>
 
-          {/* Narrative grid — two columns on lg */}
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-            {/* Column A — origin */}
-            <div>
-              <Reveal delay={60}>
-                <p className="label mb-5 text-[var(--fg-faint)]">The path</p>
-              </Reveal>
-              <ProseBlock className="text-[var(--fg-dim)]">
-                <Reveal as="p" delay={100}>
-                  No lab credential. No institutional ladder. An autodidact systems
-                  architect who came up building and selling real commercial systems,
-                  then taught himself into AI and formal research because the questions
-                  would not leave.
-                </Reveal>
-                <Reveal as="p" delay={160}>
-                  That outsider path is not a weakness. It is the origin of the whole
-                  thing: someone with no permission to start, who started anyway, and
-                  held himself to a higher bar than the institutions would have required.
-                </Reveal>
-              </ProseBlock>
-            </div>
-
-            {/* Column B — the invariant */}
-            <div>
-              <Reveal delay={60}>
-                <p className="label mb-5 text-[var(--fg-faint)]">The structure</p>
-              </Reveal>
-              <ProseBlock className="text-[var(--fg-dim)]">
-                <Reveal as="p" delay={100}>
-                  What he kept seeing — in code, in markets, in institutions, in a
-                  person&apos;s word — was one structure under everything: a gap between
-                  what is declared and what is realized. Everyone had normalized the gap.
-                  He named it.
-                </Reveal>
-                <Reveal as="p" delay={160}>
-                  σ = realized − declared. And he found the one law that, if it held,
-                  would close it: <span className="metal-text font-semibold">1&thinsp;=&thinsp;1</span>.
-                </Reveal>
-              </ProseBlock>
-            </div>
-          </div>
+          {/* Single declarative arc */}
+          <Reveal delay={60}>
+            <p className="max-w-[44rem] text-[0.98rem] leading-[1.9] text-[var(--fg-dim)]">
+              No credential, no institutional ladder. An autodidact systems
+              architect who came up building real commercial systems — then went
+              straight into formal research because the questions would not leave.
+              What he kept seeing, in code, in markets, in a person&apos;s word,
+              was one structure: a gap between declared and realized. He named
+              it&nbsp;<span className="metal-text font-semibold">σ</span>, found
+              the law that closes it, and built Spektre to hold that line.
+            </p>
+          </Reveal>
 
           {/* Full-stack narrative bar */}
           <Reveal delay={200}>
@@ -317,26 +288,6 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* ── Research Output ──────────────────────────────────────────── */}
-      <Section title={lab.about.researchOutput.title} eyebrow="Output">
-        <div className="max-w-[44rem]">
-          <ProseBlock className="text-[var(--fg-dim)]">
-            {lab.about.researchOutput.paragraphs.map((paragraph, i) => (
-              <Reveal key={paragraph} as="p" delay={i * 80}>
-                {paragraph}
-              </Reveal>
-            ))}
-          </ProseBlock>
-
-          {/* Open-access signal */}
-          <Reveal delay={200}>
-            <div className="mt-9 flex items-center gap-4">
-              <span className="h-px w-8 bg-[var(--line-strong)]" />
-              <span className="label text-[var(--signal)]">Open Access</span>
-            </div>
-          </Reveal>
-        </div>
-      </Section>
 
       {/* ── Author — paradigm founder block ──────────────────────────── */}
       <Section title={lab.about.authorSection.title} eyebrow="Author">
@@ -392,8 +343,9 @@ export default function AboutPage() {
                 <MetadataList
                   items={[
                     { label: "Name", value: lab.about.authorSection.name },
-                    { label: "Role", value: lab.about.authorSection.role },
                     { label: "Location", value: lab.location },
+                    { label: "Est.", value: "2023" },
+                    { label: "ORCID", value: "0009-0006-0903-8541" },
                   ]}
                 />
               </div>

@@ -76,10 +76,11 @@ export default function Descent() {
       const seal =
         (fA === SEAL_STAGE ? 1 - blend : 0) + (fB === SEAL_STAGE ? blend : 0);
       // exposure choreography: the MONUMENT owns the hero (field dark there),
-      // ambient tissue through the text sections, full light at the seal.
+      // quiet tissue through the text sections, and the seal moment stays
+      // BENEATH the closing typography — presence, never competition.
       const rise = Math.min(1, Math.max(0, (pos - 0.35) / 0.45));
       const sealNear = Math.min(1, Math.max(0, (pos - 3.3) / 0.7));
-      const exposure = 0.24 * rise + 0.76 * sealNear;
+      const exposure = 0.15 * rise + 0.33 * sealNear;
       return { fA, fB, blend, seal, exposure };
     };
 

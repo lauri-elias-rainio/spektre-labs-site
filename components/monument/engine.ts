@@ -190,12 +190,46 @@ fn env(rd : vec3f) -> vec3f {
   let d1 = max(dot(rd, e), 0.0);
   let d2 = max(dot(rd, m1), 0.0);
   let disc = smoothstep(0.99988, 0.99997, d1) + smoothstep(0.99988, 0.99997, d2);
-  let halo = pow(d1, 900.0) + pow(d2, 900.0);
-  c += vec3f(0.82, 0.86, 0.95) * (disc * 1.6 + halo * 0.35);
+  let halo = pow(d1, 3200.0) + pow(d2, 3200.0);
+  c += vec3f(0.82, 0.86, 0.95) * (disc * 1.6 + halo * 0.18);
   let dy = rd.y - 0.10;
   let band = exp(-30.0 * dy * dy) * 0.0016;
   c += vec3f(0.74, 0.80, 0.96) * band;
   return c;
+}
+
+/* ---- THE LANTERN — the lighthouse beam, the ONE signal --------------- */
+const LANTERN : vec3f = vec3f(0.0, 54.0, 0.0);
+
+fn beamDir(t : f32) -> vec3f {
+  let th = t * 0.40; // one sweep ≈ 16 s — lighthouse patience
+  return normalize(vec3f(cos(th), -0.045, sin(th)));
+}
+
+/* analytic pencil scatter: closest approach between the view ray and the
+   beam line (the shoreworld zero-step trick) — god-ray for free */
+fn beamScatter(ro : vec3f, rd : vec3f, tmaxv : f32, t : f32) -> f32 {
+  let bd = beamDir(t);
+  let w0 = ro - LANTERN;
+  let b = dot(rd, bd);
+  let d0 = dot(rd, w0);
+  let e0 = dot(bd, w0);
+  let denom = 1.0 - b * b;
+  if (abs(denom) < 1e-4) { return 0.0; }
+  let sray = (b * e0 - d0) / denom;
+  let sbeam = (e0 - b * d0) / denom;
+  if (sray < 0.5 || sray > tmaxv || sbeam < 3.0 || sbeam > 150.0) { return 0.0; }
+  let pr = ro + rd * sray;
+  let pb = LANTERN + bd * sbeam;
+  let r = length(pr - pb);
+  let R = 0.55 + sbeam * 0.022;             // cone spread
+  let q = exp(-(r * r) / (R * R));
+  let core = q * q; // squared — no gamma-lifted tail
+  let att = 1.0 / (1.0 + sbeam * sbeam * 0.0016);
+  let mu = dot(rd, bd);
+  let g = 0.5;
+  let ph = (1.0 - g * g) / (4.0 * PI * pow(1.0 + g * g - 2.0 * g * mu, 1.5));
+  return core * att * ph * fogDensity(pr.y) * 620.0;
 }
 
 /* ---- atmosphere — aerial perspective to TRUE BLACK ------------------ */
@@ -278,14 +312,21 @@ fn vs(@builtin(vertex_index) vi : u32) -> VOut {
 
 const SIGNAL : vec3f = vec3f(0.812, 0.890, 1.0);
 
+/* the sea state — mirrored pairs + axis waves toward the viewer */
+const WDIR = array<vec2f, 6>(
+  vec2f(0.0, 1.0), vec2f(0.383, 0.924), vec2f(-0.383, 0.924),
+  vec2f(0.6, 0.8), vec2f(-0.6, 0.8), vec2f(0.0, 1.0));
+const WLEN = array<f32, 6>(23.0, 11.0, 11.0, 4.7, 4.7, 2.2);
+const WAMP = array<f32, 6>(0.115, 0.06, 0.06, 0.021, 0.021, 0.0075);
+
 fn shadePoint(h : Hit, v : vec3f, pix : vec2u, frame : u32, dimBase : u32, t : f32) -> vec3f {
   var f0 = vec3f(0.86, 0.84, 0.80);
   var ax = 0.14; var ay = 0.38;
   if (h.kind == 1u) { f0 = vec3f(0.030, 0.031, 0.034); ax = 0.04; ay = 0.10; }
 
   var c = vec3f(0.0);
-  c += min(direct(h, v, rand2(pix, frame, dimBase), f0, ax, ay), vec3f(12.0));
-  c += min(direct(h, v, rand2(pix, frame, dimBase + 1u), f0, ax, ay), vec3f(12.0));
+  c += min(direct(h, v, rand2(pix, frame, dimBase), f0, ax, ay), vec3f(5.0));
+  c += min(direct(h, v, rand2(pix, frame, dimBase + 1u), f0, ax, ay), vec3f(5.0));
   c *= 0.5;
 
   let NoV = max(dot(h.n, v), 0.0);
@@ -296,7 +337,16 @@ fn shadePoint(h : Hit, v : vec3f, pix : vec2u, frame : u32, dimBase : u32, t : f
 
   if (h.kind == 0u) {
     c *= 1.0 - glyphMask(h.p) * 0.45;
-    c += SIGNAL * slitGlow(h.p, t) * 0.5;
+    // the axis pulse — quiet platinum now; the beam owns the signal
+    c += vec3f(0.88, 0.90, 0.94) * slitGlow(h.p, t) * 0.22;
+    // the lantern aperture — a ring of light under the crown, brightest
+    // where it faces the beam
+    let band = smoothstep(2.0, 0.7, abs(h.p.y - 54.0));
+    if (band > 0.0) {
+      let bd2 = beamDir(t);
+      let facing = pow(max(dot(normalize(vec2f(h.p.x, h.p.z)), normalize(bd2.xz)), 0.0), 6.0);
+      c += SIGNAL * band * (0.04 + 0.9 * facing);
+    }
   }
   return c;
 }
@@ -351,13 +401,23 @@ fn fs(in : VOut) -> @location(0) vec4f {
   } else if (ts < 240.0) {
     // the mirror-sea — anisotropic ripple: long streaks toward the viewer
     let p = ro + rd * ts;
-    let wt = time * 0.35;
-    let nx = 0.028 * sin(p.x * 0.9 + wt) + 0.016 * sin(p.x * 2.3 - wt * 1.7)
-           + 0.010 * sin((p.x + p.z) * 1.4 + wt * 0.8);
-    let nz = 0.006 * sin(p.z * 0.7 + wt * 0.6);
-    let n = normalize(vec3f(-nx, 1.0, -nz));
+    // Gerstner — the exact trochoidal wave solution, deep-water dispersion
+    // w = sqrt(g·k); wave pairs mirrored across x = 0 keep the symmetry law
+    var gnx = 0.0; var gnz = 0.0; var gny = 1.0;
+    for (var wi = 0u; wi < 6u; wi++) {
+      let wd = WDIR[wi];
+      let k = 6.28318531 / WLEN[wi];
+      let om = sqrt(9.81 * k);
+      let phw = k * dot(wd, p.xz) - om * time + f32(wi) * 1.7;
+      let cw = cos(phw) * WAMP[wi] * k;
+      gnx -= wd.x * cw;
+      gnz -= wd.y * cw;
+      gny -= 0.62 * WAMP[wi] * k * sin(phw);
+    }
+    let det = 1.0 / (1.0 + ts * 0.012);     // distant sea calms — no shimmer
+    let n = normalize(vec3f(gnx * det, gny, gnz * det));
     var h : Hit; h.p = p; h.n = n; h.kind = 1u;
-    col = shadePoint(h, -rd, pix, frame, 2u, time) * 0.35;
+    col = shadePoint(h, -rd, pix, frame, 2u, time) * 0.27;
 
     // the reflection — the colossus mirrored in the black sea
     let rdir = reflect(rd, n);
@@ -371,6 +431,18 @@ fn fs(in : VOut) -> @location(0) vec4f {
     } else { rc = env(rdir); }
     let F = 0.035 + 0.965 * pow(1.0 - max(-rd.y, 0.0), 5.0); // wet Schlick
     col += rc * F;
+
+    // the lantern's glitter path — the beam sweeping the swell
+    let bd = beamDir(time);
+    let dl = normalize(p - LANTERN);
+    let gate = pow(max(dot(dl, bd), 0.0), 500.0);
+    if (gate > 0.001) {
+      let Lv = LANTERN - p;
+      let Ld = normalize(Lv);
+      let hv2 = normalize(Ld - rd);
+      let gl = pow(max(dot(n, hv2), 0.0), 700.0);
+      col += SIGNAL * gl * gate * 90.0 / (1.0 + dot(Lv, Lv) * 0.0012);
+    }
     col *= transmittance(ro, rd, ts);
   } else {
     col = env(rd);
@@ -401,6 +473,10 @@ fn fs(in : VOut) -> @location(0) vec4f {
     scat += dens * beam * ph * distAtt * transmittance(ro, rd, st);
   }
   col += L_EMIT * (scat * 0.25) * vt * vec3f(0.92, 0.94, 1.0) * 18.0;
+
+  // the lighthouse beam — analytic pencil through the fog, THE signal
+  let vtb = min(select(240.0, t, t > 0.0), ts);
+  col += SIGNAL * beamScatter(ro, rd, vtb, time);
 
   let prev = textureSampleLevel(prevTex, smp, in.uv, 0.0).rgb;
   let outc = mix(prev, col, u.acc.x);

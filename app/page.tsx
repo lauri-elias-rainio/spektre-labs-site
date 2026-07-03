@@ -722,6 +722,11 @@ export default function Home() {
           Strong terse statement. Two CTAs. Glyph seal. Perfect symmetry.
       ─────────────────────────────────────────────────────────────── */}
       <section data-descent-stage="seal" className="relative mt-44 overflow-hidden pb-28 sm:mt-56 sm:pb-36 lg:mt-72 lg:pb-48">
+        {/* legibility shield — the field stays a glow at the edges, the words own the center */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(72%_62%_at_50%_46%,rgba(0,0,0,0.82),rgba(0,0,0,0.3)_62%,transparent)]"
+          aria-hidden
+        />
         <div className="rule mb-0" />
 
         {/* Glyph seal — centered absolute backdrop */}

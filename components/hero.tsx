@@ -22,7 +22,8 @@ export function Hero() {
       <div className="absolute inset-0 z-0">
         <MonumentHero />
         {/* legibility shield: the text band floor — pure black, hard guarantee */}
-        <div className="absolute inset-x-0 bottom-0 h-[32svh] bg-gradient-to-t from-black via-[rgba(0,0,0,0.86)] to-transparent" />
+        {/* light shield — the storm stays visible beneath the words */}
+        <div className="absolute inset-x-0 bottom-0 h-[34svh] bg-gradient-to-t from-[rgba(0,0,0,0.88)] via-[rgba(0,0,0,0.5)] to-transparent" />
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent" />
       </div>
 

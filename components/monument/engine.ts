@@ -33,13 +33,14 @@ export interface MonumentOptions {
   getActive: () => boolean;
 }
 
-const RES_SCALE = 0.62; // internal render scale — CSS upscales, EMA sharpens
+const RES_SCALE = 0.78; // internal render scale — CSS upscales, EMA sharpens
 
 const WGSL_COMMON = /* wgsl */ `
 struct U {
   res     : vec4f, // w, h, aspect, dpr
   cam     : vec4f, // tiltX, tiltY, scroll, time
   acc     : vec4f, // emaAlpha, frame, fade, reduced
+  beam    : vec4f, // lantern uv.x, uv.y, facing (beam→camera), unused
 }
 @group(0) @binding(0) var<uniform> u : U;
 
@@ -84,7 +85,7 @@ fn tower(pin : vec3f) -> f32 {
   let ang = atan2(pin.z, pin.x);
 
   // the tapered shaft — a real lighthouse profile, Rolex-fluted
-  let taper = 2.9 - 0.030 * pin.y;
+  let taper = 3.5 - 0.036 * pin.y;
   let flute = 0.045 * abs(sin(ang * 12.0));
   var d = rr - (taper - flute);
   d = max(d, pin.y - 49.5);
@@ -95,7 +96,7 @@ fn tower(pin : vec3f) -> f32 {
 
   // the bezel — precision band at the equator (watch-grade)
   let teeth = 0.04 * abs(sin(ang * 36.0));
-  let bez = max(abs(rr - (2.9 - 0.030 * 18.0 + 0.26)) + teeth - 0.2, abs(pin.y - 18.0) - 0.9);
+  let bez = max(abs(rr - (3.5 - 0.036 * 18.0 + 0.26)) + teeth - 0.2, abs(pin.y - 18.0) - 0.9);
   d = min(d, bez);
 
   // the gallery — two discs the keeper would walk
@@ -149,14 +150,21 @@ fn march(ro : vec3f, rd : vec3f, tmax : f32) -> f32 {
 }
 
 fn shadowRay(ro : vec3f, rd : vec3f, tmax : f32) -> f32 {
+  // Aaltonen-improved penumbra (iq rmshadows) — banding-free soft shadow
+  var res = 1.0;
+  var ph = 1e10;
   var t = 0.10;
   for (var i = 0; i < 22; i++) {
-    let d = scene(ro + rd * t);
-    if (d < 0.012) { return 0.0; }
-    t += max(d, 0.14);
+    let h = scene(ro + rd * t);
+    if (h < 0.008) { return 0.0; }
+    let y = h * h / (2.0 * ph);
+    let d = sqrt(h * h - y * y);
+    res = min(res, d / (0.12 * max(t - y, 0.001)));
+    ph = h;
+    t += max(h, 0.14);
     if (t > tmax) { break; }
   }
-  return 1.0;
+  return clamp(res, 0.0, 1.0);
 }
 
 fn ao(p : vec3f, n : vec3f) -> f32 {
@@ -193,7 +201,7 @@ fn seaOctave(uv0 : vec2f, choppy : f32) -> f32 {
 }
 const OCTM = mat2x2f(1.6, 1.2, -1.2, 1.6);
 
-fn seaH(pxz0 : vec2f, t : f32) -> f32 {
+fn seaHN(pxz0 : vec2f, t : f32, oct : i32) -> f32 {
   // |x| — the storm itself obeys the symmetry law by construction
   var uv = vec2f(abs(pxz0.x), pxz0.y) * 0.135;
   uv.x *= 0.75;
@@ -202,7 +210,7 @@ fn seaH(pxz0 : vec2f, t : f32) -> f32 {
   var choppy = 4.2;
   var h = 0.0;
   let ts = t * 0.9;
-  for (var i = 0; i < 4; i++) {
+  for (var i = 0; i < oct; i++) {
     var dsea = seaOctave((uv + ts) * freq, choppy);
     dsea += seaOctave((uv - ts) * freq, choppy);
     h += dsea * amp;
@@ -213,6 +221,8 @@ fn seaH(pxz0 : vec2f, t : f32) -> f32 {
   }
   return h;
 }
+fn seaH(pxz0 : vec2f, t : f32) -> f32 { return seaHN(pxz0, t, 3); }   // march: coarse
+fn seaHD(pxz0 : vec2f, t : f32) -> f32 { return seaHN(pxz0, t, 6); }  // shade: detail
 const SEA_HMAX : f32 = 3.1;
 
 fn seaMarch(ro : vec3f, rd : vec3f, tmax : f32, t : f32) -> f32 {
@@ -237,10 +247,10 @@ fn seaMarch(ro : vec3f, rd : vec3f, tmax : f32, t : f32) -> f32 {
 }
 
 fn seaNormal(p : vec3f, t : f32, dist : f32) -> vec3f {
-  let e = max(0.012, dist * 0.0022);
-  let h0 = seaH(p.xz, t);
-  let hx = seaH(p.xz + vec2f(e, 0.0), t);
-  let hz = seaH(p.xz + vec2f(0.0, e), t);
+  let e = max(0.008, dist * 0.0016); // derivative step tracks pixel footprint
+  let h0 = seaHD(p.xz, t);
+  let hx = seaHD(p.xz + vec2f(e, 0.0), t);
+  let hz = seaHD(p.xz + vec2f(0.0, e), t);
   return normalize(vec3f(h0 - hx, e, h0 - hz));
 }
 
@@ -307,7 +317,7 @@ fn beamScatter(ro : vec3f, rd : vec3f, tmaxv : f32, t : f32) -> f32 {
 }
 
 /* ---- storm atmosphere — mist hugs the sea, the summit stays clear ---- */
-const FOG_T : f32 = 0.055;
+const FOG_T : f32 = 0.040;
 const FOG_KY : f32 = 0.10;
 fn fogDensity(y : f32) -> f32 {
   return FOG_T * exp(-max(y, 0.0) * FOG_KY);
@@ -349,7 +359,7 @@ fn direct(h : Hit, v : vec3f, xi : vec2f, f0 : vec3f, ax : f32, ay : f32) -> vec
   let NoL = dot(h.n, l);
   if (NoL <= 0.0) { return vec3f(0.0); }
   let vis = shadowRay(h.p + h.n * 0.03, l, sqrt(dist2));
-  if (vis <= 0.0) { return vec3f(0.0); }
+  if (vis <= 0.001) { return vec3f(0.0); }
 
   let cosL = max(l.y, 0.0);
   let area = 4.0 * L_HALF.x * L_HALF.y;
@@ -365,7 +375,7 @@ fn direct(h : Hit, v : vec3f, xi : vec2f, f0 : vec3f, ax : f32, ay : f32) -> vec
   let D = d_ggx_aniso(NoH, dot(tang, hv), dot(bit, hv), ax, ay);
   let Vs = v_smith(NoV, NoL);
   let F = f_schlick3(f0, max(dot(hv, v), 0.0));
-  return (D * Vs * F) * L_EMIT * NoL * pdfInv;
+  return (D * Vs * F) * L_EMIT * NoL * pdfInv * vis;
 }
 `;
 
@@ -405,7 +415,9 @@ fn shadeTower(h : Hit, v : vec3f, pix : vec2u, frame : u32, dimBase : u32, t : f
   let NoV = max(dot(h.n, v), 0.0);
   let F = f_schlick3(f0, NoV);
   let occ = ao(h.p, h.n);
-  c += env(reflect(-v, h.n)) * F * occ * 0.6;
+  c += env(reflect(-v, h.n)) * F * occ * 1.8;
+  // a whisper of frontal fill — the tower reads as form, not a void seam
+  c += f0 * 0.0045 * max(dot(h.n, normalize(vec3f(0.0, 0.35, 1.0))), 0.0) * occ;
   c *= occ;
 
   c *= 1.0 - glyphMask(h.p) * 0.45;
@@ -432,8 +444,8 @@ fn fs(in : VOut) -> @location(0) vec4f {
   let sc = vec2f(ndc.x * u.res.z, -ndc.y);
 
   // low camera in the swell, gazing up — scroll pulls back: the scale reveal
-  let ro = vec3f(0.0, 4.6 + scroll * 2.0, 46.0 + scroll * 18.0);
-  let lookUp = 0.165 - scroll * 0.03 + u.cam.y * 0.026;
+  let ro = vec3f(0.0, 6.2 + scroll * 1.6, 76.0 + scroll * 14.0);
+  let lookUp = 0.252 - scroll * 0.02 + u.cam.y * 0.026;
   let yaw = u.cam.x * 0.038;
   let fl = 1.65;
   var rd = normalize(vec3f(sc.x, sc.y, -fl));
@@ -473,20 +485,27 @@ fn fs(in : VOut) -> @location(0) vec4f {
     let p = ro + rd * tw;
     let n = seaNormal(p, time, tw);
 
-    // base water — near-black, alive through shape
+    // base water — near-black body, alive through shape
     let NoV = max(dot(n, -rd), 0.0);
     let Fw = 0.028 + 0.972 * pow(1.0 - NoV, 5.0); // wet Schlick
-    var c = vec3f(0.011, 0.012, 0.015) * (0.35 + 0.65 * n.y); // deep water
+    var c = vec3f(0.024, 0.026, 0.032) * (0.35 + 0.65 * n.y);
+
+    // backlit crest subsurface — the key light lives behind the swell;
+    // tall water transmits it (Seascape height glow x fresnel transmit)
+    let crestH = smoothstep(0.7, 2.8, p.y);
+    let toKey = normalize(vec3f(0.0, L_Y, L_Z) - p);
+    let transmit = pow(max(dot(rd, toKey), 0.0), 2.0) * 0.5 + 0.5;
+    c += vec3f(0.030, 0.032, 0.040) * crestH * transmit * (0.35 + 0.65 * (1.0 - NoV));
 
     // whitecaps — crest height + steepness, broken by noise (the storm)
-    let crest = smoothstep(1.5, 2.6, p.y);
-    let steep = smoothstep(0.30, 0.62, 1.0 - n.y);
+    let crest = smoothstep(1.15, 2.4, p.y);
+    let steep = smoothstep(0.24, 0.55, 1.0 - n.y);
     let breakup = 0.35 + 0.65 * clamp(vnoise(p.xz * 0.9 + vec2f(0.0, time * 0.5)) * 0.5 + 0.5, 0.0, 1.0);
     let foam = clamp(crest * 1.1 + steep * 0.75, 0.0, 1.0) * breakup;
 
     // foam is lit matter: key light lambert (unshadowed approx) + lantern
     let lKey = normalize(vec3f(0.0, L_Y, L_Z) - p);
-    let foamLit = max(dot(n, lKey), 0.0) * 0.30 + 0.022;
+    let foamLit = max(dot(n, lKey), 0.0) * 0.38 + 0.05;
     c = mix(c, vec3f(0.72, 0.73, 0.76) * foamLit, foam);
 
     // the reflection — tower + moons in the heaving surface
@@ -521,7 +540,9 @@ fn fs(in : VOut) -> @location(0) vec4f {
   if (seaFirst) { vtb = tw; } else if (tc > 0.0) { vtb = tc; }
   col += SIGNAL * beamScatter(ro, rd, vtb, time);
 
-  let prev = textureSampleLevel(prevTex, smp, in.uv, 0.0).rgb;
+  // framebuffer-aligned uv — vertex uv is vertically flipped vs texel rows
+  let suv = in.pos.xy / u.res.xy;
+  let prev = textureSampleLevel(prevTex, smp, suv, 0.0).rgb;
   let outc = mix(prev, col, u.acc.x);
   return vec4f(outc, 1.0);
 }
@@ -555,16 +576,36 @@ fn hash12(p : vec2f) -> f32 {
 
 @fragment
 fn fs(in : VOut) -> @location(0) vec4f {
+  // framebuffer-aligned uv — vertex uv is vertically flipped vs texel rows
+  let suv = in.pos.xy / u.res.xy;
   // chromatic dispersion — gated to bright pixels (mono law in the dark)
   let ca = 0.0007;
   let cc = vec2f(0.5);
-  let dir = in.uv - cc;
-  let base = textureSampleLevel(accTex, smp, in.uv, 0.0).rgb;
-  let r = textureSampleLevel(accTex, smp, in.uv + dir * ca, 0.0).r;
-  let b = textureSampleLevel(accTex, smp, in.uv - dir * ca, 0.0).b;
+  let dir = suv - cc;
+  let base = textureSampleLevel(accTex, smp, suv, 0.0).rgb;
+  let r = textureSampleLevel(accTex, smp, suv + dir * ca, 0.0).r;
+  let b = textureSampleLevel(accTex, smp, suv - dir * ca, 0.0).b;
   let lum = dot(base, vec3f(0.2126, 0.7152, 0.0722));
   let caW = smoothstep(0.18, 0.5, lum);
   var col = mix(base, vec3f(r, base.g, b), caW);
+
+  // crepuscular radial god-rays (GPU Gems 3 ch.13) — when the beam sweeps
+  // past the camera, the whole frame streaks toward the lantern
+  let facing = u.beam.z;
+  if (facing > 0.004 && u.beam.y > -0.5) {
+    let lp = u.beam.xy;
+    var uvr = suv;
+    let stepv = (lp - suv) / 26.0;
+    var accR = 0.0;
+    var wgt = 1.0;
+    for (var i = 0; i < 26; i++) {
+      uvr += stepv;
+      let sc = textureSampleLevel(accTex, smp, uvr, 0.0).rgb;
+      accR += dot(sc, vec3f(0.2126, 0.7152, 0.0722)) * wgt;
+      wgt *= 0.90;
+    }
+    col += vec3f(0.812, 0.890, 1.0) * accR * facing * 0.05;
+  }
 
   col = aces(col * 1.05);
 
@@ -579,7 +620,7 @@ fn fs(in : VOut) -> @location(0) vec4f {
   // sRGB FIRST — grain lives in display space (linear grain lifts blacks)
   col = pow(max(col, vec3f(0.0)), vec3f(1.0 / 2.2));
 
-  let gr = (hash12(in.uv * u.res.xy + vec2f(u.cam.w * 61.7, u.cam.w * 123.3)) - 0.5) * 0.02;
+  let gr = (hash12(suv * u.res.xy + vec2f(u.cam.w * 61.7, u.cam.w * 123.3)) - 0.5) * 0.02;
   col = max(col + vec3f(gr) * (0.25 + 0.75 * col.g), vec3f(0.0));
 
   let alpha = u.acc.z;
@@ -618,9 +659,9 @@ export async function createMonument(
   const format = navigator.gpu.getPreferredCanvasFormat();
   ctx.configure({ device, format, alphaMode: "premultiplied" });
 
-  const uniData = new Float32Array(12);
+  const uniData = new Float32Array(16);
   const uniBuf = device.createBuffer({
-    size: 48,
+    size: 64,
     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
   });
   const sampler = device.createSampler({ magFilter: "linear", minFilter: "linear" });
@@ -738,6 +779,29 @@ export async function createMonument(
     uniData.set([w, h, w / h, dpr], 0);
     uniData.set([tx, ty, scroll, t], 4);
     uniData.set([alpha, frame, fade, reduceMotion ? 1 : 0], 8);
+
+    // project the lantern into screen uv + how squarely the beam faces us
+    // (mirrors the WGSL camera exactly — keep in sync)
+    {
+      const roY = 6.2 + scroll * 1.6, roZ = 76.0 + scroll * 14.0;
+      const lookUp = 0.252 - scroll * 0.02 + ty * 0.026;
+      const yaw = tx * 0.038;
+      const fl = 1.65;
+      // world → camera: inverse yaw, then inverse pitch
+      let dx = 0 - 0, dy = 51.9 - roY, dz = 0 - roZ;
+      const cyw = Math.cos(-yaw), syw = Math.sin(-yaw);
+      const x1 = dx * cyw + dz * syw, z1 = -dx * syw + dz * cyw;
+      const cpt = Math.cos(-lookUp), spt = Math.sin(-lookUp);
+      const y2 = dy * cpt - z1 * spt, z2 = dy * spt + z1 * cpt;
+      const lu = z2 < -0.1
+        ? [((x1 / -z2) * fl / (w / h)) * 0.5 + 0.5, 0.5 - ((y2 / -z2) * fl) * 0.5]
+        : [0.5, -1];
+      const th = t * 0.40;
+      const toCam = Math.atan2(roZ, 0.0001); // camera azimuth from the axis
+      let facing = Math.cos(th - toCam) * 0.5 + 0.5;
+      facing = Math.pow(Math.max(0, Math.cos(th - toCam)), 24);
+      uniData.set([lu[0], lu[1], facing, 0], 12);
+    }
     dev.queue.writeBuffer(uniBuf, 0, uniData);
 
     const parity = frame % 2;

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import Descent from "@/components/descent";
 import { EditorialLink } from "@/components/editorial-link";
 import { Glyph } from "@/components/glyph";
 import { Hero } from "@/components/hero";
@@ -96,6 +97,10 @@ const STATUS_STYLES: Record<"REAL" | "EMERGING" | "VISION", string> = {
 export default function Home() {
   return (
     <div>
+      {/* THE DESCENT — one particle field behind the whole page; sections
+          tagged [data-descent-stage] are its five stations. */}
+      <Descent />
+      <div className="relative z-10">
       <Hero />
 
       <section className="mt-24 sm:mt-32 lg:mt-40">
@@ -158,7 +163,7 @@ export default function Home() {
         </Reveal>
       </section>
 
-      <section className="mt-28 sm:mt-36 lg:mt-44">
+      <section data-descent-stage="octad" className="mt-28 sm:mt-36 lg:mt-44">
         <div className="rule mb-12 sm:mb-14" />
 
         <Reveal delay={0}>
@@ -244,7 +249,7 @@ export default function Home() {
           The σ-honesty answer to "is any of this real?": three endpoints
           that respond right now, plus the open source. Nothing floats.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="mt-32 sm:mt-40 lg:mt-48">
+      <section data-descent-stage="constellation" className="mt-32 sm:mt-40 lg:mt-48">
         <Reveal delay={0}>
           <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -331,6 +336,84 @@ export default function Home() {
             .
           </p>
         </Reveal>
+      </section>
+
+      {/* ── § 2 · RESEARCH — THE LATTICE ────────────────────────────────
+          The knowledge layer: open papers, protocol specs, and findings
+          written so a normal technical reader gets the value in one pass.
+      ─────────────────────────────────────────────────────────────── */}
+      <section data-descent-stage="lattice" className="mt-32 sm:mt-40 lg:mt-48">
+        <Reveal delay={0}>
+          <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="label mb-3 text-[var(--fg-faint)]">Research · Protocols</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
+                Knowledge you can check.
+              </h2>
+              <p className="mt-4 max-w-[36rem] text-[0.98rem] leading-[1.75] text-[var(--fg-mute)]">
+                Open research papers, protocol specifications, and findings from
+                running real systems — written in plain language, published with
+                sources you can verify yourself.
+              </p>
+            </div>
+            <EditorialLink href="/research" className="shrink-0 self-start sm:self-auto">
+              All research&nbsp;→
+            </EditorialLink>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-3">
+          {[
+            {
+              name: "The corpus",
+              meta: "Open-access papers · DOI-registered",
+              line: "A public collection of research papers on one question: how do you measure the gap between what a system claims and what it actually did?",
+              href: "https://github.com/spektre-labs/corpus",
+              external: true,
+            },
+            {
+              name: "Protocol specs",
+              meta: "VRP · CRP · SID — open specifications",
+              line: "Routing protocols for value, intelligence, and identity: one address that can settle across many rails, one task router across many AI vendors, one identity that proves a fact without revealing the rest.",
+              href: "https://github.com/spektre-labs",
+              external: true,
+            },
+            {
+              name: "Field notes",
+              meta: "Findings from running systems",
+              line: "What actually holds up in production: fail-safe output gates, pre-sign transaction checks, and evaluation that agents cannot grade themselves.",
+              href: "/research",
+              external: false,
+            },
+          ].map((item, i) => (
+            <Reveal key={item.name} delay={i * 90} className="h-full">
+              <a
+                href={item.href}
+                {...(item.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="group flex h-full flex-col bg-[var(--bg-1)] p-8 transition-colors duration-500 hover:bg-[var(--bg-2)] sm:p-10"
+              >
+                <div className="mb-6 flex items-center justify-between gap-4">
+                  <span className="label text-[var(--fg-faint)]">{String(i + 1).padStart(2, "0")}</span>
+                  <Glyph variant="node" size={18} strokeOpacity={0.3} />
+                </div>
+                <h3 className="text-[1.35rem] font-semibold tracking-[-0.025em] leading-[1.12] text-[var(--fg)]">
+                  {item.name}
+                </h3>
+                <p className="mt-1.5 label text-[var(--fg-faint)]">{item.meta}</p>
+                <p className="mt-5 flex-1 text-[0.94rem] leading-[1.8] text-[var(--fg-dim)]">
+                  {item.line}
+                </p>
+                <div className="mt-8 border-t border-[var(--line)] pt-6">
+                  <span className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]">
+                    {item.external ? "Open ↗" : "Read →"}
+                  </span>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       <section className="mt-28 px-0 sm:mt-36 lg:mt-44">
@@ -638,7 +721,7 @@ export default function Home() {
       {/* ── § 6 · CLOSING ───────────────────────────────────────────────
           Strong terse statement. Two CTAs. Glyph seal. Perfect symmetry.
       ─────────────────────────────────────────────────────────────── */}
-      <section className="relative mt-44 overflow-hidden pb-28 sm:mt-56 sm:pb-36 lg:mt-72 lg:pb-48">
+      <section data-descent-stage="seal" className="relative mt-44 overflow-hidden pb-28 sm:mt-56 sm:pb-36 lg:mt-72 lg:pb-48">
         <div className="rule mb-0" />
 
         {/* Glyph seal — centered absolute backdrop */}
@@ -702,7 +785,16 @@ export default function Home() {
         </div>
 
         <div className="rule" />
+
+        {/* the closing axiom — centered, symmetric, on void */}
+        <div className="mt-20 flex flex-col items-center gap-4 text-center">
+          <p className="metal-text text-[2rem] font-semibold tracking-[-0.03em] sm:text-[2.6rem]">
+            1&nbsp;=&nbsp;1
+          </p>
+          <p className="label text-[var(--fg-faint)]">Declared equals realized</p>
+        </div>
       </section>
+      </div>
     </div>
   );
 }

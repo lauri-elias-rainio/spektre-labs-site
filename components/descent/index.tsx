@@ -56,7 +56,7 @@ export default function Descent() {
       );
     };
     const stageAt = () => {
-      if (!stageTops.length) return { fA: 0, fB: 0, blend: 0, seal: 0 };
+      if (!stageTops.length) return { fA: 0, fB: 0, blend: 0, seal: 0, exposure: 1 };
       const y = window.scrollY + window.innerHeight * 0.42;
       let pos = 0;
       for (let i = 0; i < stageTops.length - 1; i++) {
@@ -75,13 +75,18 @@ export default function Descent() {
       const blend = pos - fA;
       const seal =
         (fA === SEAL_STAGE ? 1 - blend : 0) + (fB === SEAL_STAGE ? blend : 0);
-      return { fA, fB, blend, seal };
+      // exposure choreography: the MONUMENT owns the hero (field dark there),
+      // ambient tissue through the text sections, full light at the seal.
+      const rise = Math.min(1, Math.max(0, (pos - 0.35) / 0.45));
+      const sealNear = Math.min(1, Math.max(0, (pos - 3.3) / 0.7));
+      const exposure = 0.24 * rise + 0.76 * sealNear;
+      return { fA, fB, blend, seal, exposure };
     };
 
     const onScroll = () => {
       if (!handle) return;
       const s = stageAt();
-      handle.setStage(s.fA, s.fB, s.blend, s.seal);
+      handle.setStage(s.fA, s.fB, s.blend, s.seal, s.exposure);
     };
     const onResize = () => { measure(); onScroll(); };
     window.addEventListener("scroll", onScroll, { passive: true });

@@ -112,7 +112,7 @@ export async function createDescentWebGL(
   mirror.scale.x = -1;
   scene.add(points, mirror);
 
-  let fA = 0, fB = 0, blend = 0, sealW = 0;
+  let fA = 0, fB = 0, blend = 0, sealW = 0, exposure = 1;
   let disposed = false;
   let liveFrames = 0;
   let fade = 0;
@@ -160,7 +160,7 @@ export async function createDescentWebGL(
     uniforms.uFB.value = fB;
     uniforms.uBlend.value = blend;
     uniforms.uSeal.value = sealW;
-    uniforms.uFade.value = fade;
+    uniforms.uFade.value = fade * exposure;
     renderer.render(scene, camera);
 
     if (liveFrames < 4) {
@@ -173,7 +173,7 @@ export async function createDescentWebGL(
   return {
     kind: "webgpu", // same contract
     count: COUNT * 2,
-    setStage(a, b, bl, sw) { fA = a; fB = b; blend = bl; sealW = sw; },
+    setStage(a, b, bl, sw, ex) { fA = a; fB = b; blend = bl; sealW = sw; exposure = ex; },
     setPointer() { /* fallback keeps stillness — no physics to disturb */ },
     dispose() {
       disposed = true;

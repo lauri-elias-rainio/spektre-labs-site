@@ -17,7 +17,13 @@ import { buildFormations, FORMATION_COUNT } from "./formations";
 export interface DescentHandle {
   kind: "webgpu";
   count: number;
-  setStage: (fA: number, fB: number, blend: number, sealWeight: number) => void;
+  setStage: (
+    fA: number,
+    fB: number,
+    blend: number,
+    sealWeight: number,
+    exposure: number
+  ) => void;
   setPointer: (x: number, y: number, strength: number) => void;
   dispose: () => void;
 }
@@ -308,7 +314,7 @@ export async function createDescentWebGPU(
   });
 
   /* state */
-  let fA = 0, fB = 0, blend = 0, sealW = 0;
+  let fA = 0, fB = 0, blend = 0, sealW = 0, exposure = 1;
   let px = 0, py = 0, pstr = 0;
   let disposed = false;
   let liveFrames = 0;
@@ -354,7 +360,7 @@ export async function createDescentWebGPU(
     uniData.set([up[0], up[1], up[2], t], 20);
     uniData.set([px, py, pstr, dt], 24);
     uniData.set([fA, fB, blend, sealW], 28);
-    uniData.set([COUNT, fade, aspect, 0], 32);
+    uniData.set([COUNT, fade * exposure, aspect, 0], 32);
     dev.queue.writeBuffer(uniBuf, 0, uniData);
 
     const enc = dev.createCommandEncoder();
@@ -391,7 +397,7 @@ export async function createDescentWebGPU(
   return {
     kind: "webgpu",
     count: COUNT * 2,
-    setStage(a, b, bl, sw) { fA = a; fB = b; blend = bl; sealW = sw; },
+    setStage(a, b, bl, sw, ex) { fA = a; fB = b; blend = bl; sealW = sw; exposure = ex; },
     setPointer(x, y, s) { px = x; py = y; pstr = Math.min(1.4, pstr + s); },
     dispose() {
       disposed = true;

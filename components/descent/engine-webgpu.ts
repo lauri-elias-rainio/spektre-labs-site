@@ -77,14 +77,14 @@ fn main(@builtin(global_invocation_id) gid : vec3u) {
   let fA = u32(u.stage.x);
   let fB = u32(u.stage.y);
   let bl = u.stage.z;
-  let target = mix(targets[fA * n + i].xyz, targets[fB * n + i].xyz, bl);
+  let tgt = mix(targets[fA * n + i].xyz, targets[fB * n + i].xyz, bl);
 
   // the law — spring toward the declared form
-  let toT = target - p.xyz;
-  var acc = toT * 14.0;
+  let toT = tgt - p.xyz;
+  var acc = toT * 22.0;
 
   // entropy — drift + per-particle breath
-  acc += drift(p.xyz, t) * (0.55 + 0.45 * sin(p.w * 6.2832 + t * 0.6));
+  acc += drift(p.xyz, t) * (0.30 + 0.22 * sin(p.w * 6.2832 + t * 0.6));
 
   // pointer — a soft entropy injection the law re-collapses
   let pd = p.xyz - vec3f(u.pointer.x, u.pointer.y, 0.0);
@@ -93,7 +93,7 @@ fn main(@builtin(global_invocation_id) gid : vec3u) {
     acc += (pd / max(pl, 0.05)) * (0.9 - pl) * 26.0 * u.pointer.z;
   }
 
-  v = vec4f((v.xyz + acc * dt) * exp(-6.5 * dt), v.w);
+  v = vec4f((v.xyz + acc * dt) * exp(-7.5 * dt), v.w);
   p = vec4f(p.xyz + v.xyz * dt, p.w);
 
   pos[i] = p;
@@ -128,12 +128,13 @@ fn vs(@builtin(vertex_index) vi : u32, @builtin(instance_index) inst : u32) -> V
   let n = u32(u.misc.x);
   let fA = u32(u.stage.x);
   let fB = u32(u.stage.y);
-  let target = mix(targets[fA * n + i].xyz, targets[fB * n + i].xyz, u.stage.z);
+  let tgt = mix(targets[fA * n + i].xyz, targets[fB * n + i].xyz, u.stage.z);
 
   // platinum ramp by depth + seed; the ONE signal, gated to the seal axis
   let plat = mix(vec3f(0.336, 0.357, 0.404), vec3f(0.910, 0.918, 0.933),
                  0.35 + 0.65 * fract(p.w * 7.31));
-  let sig = u.stage.w * (1.0 - smoothstep(0.02, 0.12, length(target.xz)));
+  let onAxis = select(0.0, 1.0, abs(tgt.x) < 0.0015 && abs(tgt.z) < 0.008);
+  let sig = u.stage.w * onAxis;
   let col = mix(plat, vec3f(0.812, 0.890, 1.0) * 1.6, clamp(sig, 0.0, 1.0));
 
   let size = u.right.w * (0.6 + 0.8 * fract(p.w * 3.77));
@@ -151,7 +152,7 @@ fn vs(@builtin(vertex_index) vi : u32, @builtin(instance_index) inst : u32) -> V
 fn fs(in : VOut) -> @location(0) vec4f {
   let d2 = dot(in.uv, in.uv);
   if (d2 > 1.0) { discard; }
-  let a = exp(-d2 * 4.2) * 0.06 * in.fade;
+  let a = exp(-d2 * 4.2) * 0.075 * in.fade;
   return vec4f(in.col * a, a);
 }
 `;
@@ -203,9 +204,26 @@ export async function createDescentWebGPU(
   if (!adapter) return null;
   const device = await adapter.requestDevice().catch(() => null);
   if (!device) return null;
+  const dev = device; // narrowed capture for the hoisted frame loop
+
+  /* σ-gate FIRST — prove the shaders compile before touching the canvas,
+     so a failure here leaves the canvas free for the WebGL2 fallback. */
+  const computeModule = device.createShaderModule({ code: COMPUTE_WGSL });
+  const renderModule = device.createShaderModule({ code: RENDER_WGSL });
+  const [ciC, ciR] = await Promise.all([
+    computeModule.getCompilationInfo(),
+    renderModule.getCompilationInfo(),
+  ]);
+  if (
+    ciC.messages.some((m) => m.type === "error") ||
+    ciR.messages.some((m) => m.type === "error")
+  ) {
+    device.destroy?.();
+    return null;
+  }
+
   const ctx = canvas.getContext("webgpu");
   if (!ctx) return null;
-  const dev = device; // narrowed capture for the hoisted frame loop
 
   const format = navigator.gpu.getPreferredCanvasFormat();
   ctx.configure({ device, format, alphaMode: "premultiplied" });
@@ -249,8 +267,6 @@ export async function createDescentWebGPU(
   });
 
   /* pipelines */
-  const computeModule = device.createShaderModule({ code: COMPUTE_WGSL });
-  const renderModule = device.createShaderModule({ code: RENDER_WGSL });
 
   const computePipeline = device.createComputePipeline({
     layout: "auto",
@@ -334,7 +350,7 @@ export async function createDescentWebGPU(
     const vp = mul4(proj, view);
 
     uniData.set(vp, 0);
-    uniData.set([right[0], right[1], right[2], 0.0105], 16);
+    uniData.set([right[0], right[1], right[2], 0.013], 16);
     uniData.set([up[0], up[1], up[2], t], 20);
     uniData.set([px, py, pstr, dt], 24);
     uniData.set([fA, fB, blend, sealW], 28);

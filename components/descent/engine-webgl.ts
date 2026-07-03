@@ -88,7 +88,8 @@ export async function createDescentWebGL(
 
         vec3 plat = mix(vec3(0.336, 0.357, 0.404), vec3(0.910, 0.918, 0.933),
                         0.35 + 0.65 * fract(seed * 7.31));
-        float sig = uSeal * (1.0 - smoothstep(0.02, 0.12, length(target.xz)));
+        float onAxis = (abs(target.x) < 0.0015 && abs(target.z) < 0.008) ? 1.0 : 0.0;
+        float sig = uSeal * onAxis;
         vCol = mix(plat, vec3(0.812, 0.890, 1.0) * 1.6, clamp(sig, 0.0, 1.0));
       }
     `,

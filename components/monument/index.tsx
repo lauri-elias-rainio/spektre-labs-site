@@ -42,6 +42,12 @@ export default function MonumentHero() {
     };
     window.addEventListener("pointermove", onPointer, { passive: true });
 
+    // the scale reveal — first viewport of scroll pulls the camera back
+    const onScroll = () => {
+      handle?.setScroll(window.scrollY / Math.max(1, window.innerHeight));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     (async () => {
       try {
         const { createMonument } = await import("./engine");
@@ -58,6 +64,7 @@ export default function MonumentHero() {
       io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("scroll", onScroll);
       handle?.dispose();
     };
   }, []);

@@ -14,6 +14,16 @@ export const metadata: Metadata = createPageMetadata({
   path: "/receipt",
 });
 
+const EDGE_SNIPPET = `# the same check, live — no signup, no API key
+curl "https://swagletz-sigmagate.hf.space/check?text=your+text"
+
+# first call answers HTTP 402 with the terms, machine-readable:
+# { "price_usdc": 0.001, "chain": "solana", "asset": "USDC",
+#   "pay_to": "7oDg…BzxyG", "then": "re-call with &tx=<sig>" }
+
+# pay 0.001 USDC on Solana, re-call with the signature → σ-score
+curl "…/check?text=your+text&tx=<solana_signature>"`;
+
 const VERIFY_STEPS = [
   {
     step: "decode",
@@ -74,6 +84,28 @@ export default function ReceiptPage() {
         <blockquote className="mt-6 max-w-[42rem] border-l border-[var(--line-strong)] pl-5 font-mono text-[0.8rem] leading-relaxed text-[var(--fg-dim)]">
           {GENESIS_CLAIM}
         </blockquote>
+      </Section>
+
+      <Section title="Run the check yourself">
+        <ProseBlock className="max-w-[42rem]">
+          <p>
+            The check that signed this receipt runs as a live endpoint. One call, one
+            answer — the first call returns the terms as an HTTP 402, you pay per call
+            on-chain, and no account exists anywhere to create, manage, or lose.
+          </p>
+        </ProseBlock>
+        <div className="mt-6 max-w-[42rem] border border-[var(--line-soft)]">
+          <pre className="overflow-x-auto px-5 py-5 font-mono text-[0.82rem] leading-[1.75] text-[var(--fg-dim)]">
+            <code>{EDGE_SNIPPET}</code>
+          </pre>
+        </div>
+        <p className="mt-6 max-w-[42rem] text-sm leading-relaxed text-[var(--fg-mute)]">
+          The full detector — secrets, injection, pii — and the offline SDK live on the{" "}
+          <a href="/systems" className="text-[var(--fg-dim)] underline underline-offset-4">
+            systems
+          </a>{" "}
+          page.
+        </p>
       </Section>
 
       <Section title="Honest scope">

@@ -228,5 +228,317 @@
         "note": "The operational layer — coherence measured, not self-reported"
       }
     ]
+  },
+  {
+    "slug": "pre-sign-firewall",
+    "eyebrow": "FIELD NOTE · 004",
+    "title": "Every AI agent with a wallet needs a check before it signs",
+    "date": "2026-07-04",
+    "readingTime": 5,
+    "sigmaStatus": "verified",
+    "summary": "A deterministic rule engine at the signature boundary is the only check that is structurally in position to matter. Why ML guardrails are the wrong layer for transaction safety, and how the allow/deny/limit pattern works.",
+    "body": [
+      {
+        "type": "p",
+        "text": "When an AI agent controls a wallet, the action boundary is the signature call. Everything that happens before that call is reasoning; everything after is a commitment to the chain. Most AI pipeline safety layers sit far from this boundary — they evaluate model outputs at generation time, before any downstream action has been selected. By the time a signing request reaches a hardware wallet, a software key, or a cloud HSM, those earlier checks are no longer in scope. A rule engine at the signature boundary itself is the only check that is structurally in position to matter."
+      },
+      {
+        "type": "h2",
+        "text": "Why ML guardrails are the wrong layer for transaction safety."
+      },
+      {
+        "type": "p",
+        "text": "A machine learning guardrail — a model asked to evaluate whether an action is appropriate — has two properties that make it a poor fit for the signature boundary. First, it is non-deterministic: the same input can produce different verdicts across calls, depending on temperature, context length, or model version. A transaction that passes on one call might fail on the next. This is tolerable in content moderation, where the consequence of a wrong verdict is a visible output. It is not tolerable when the consequence is an irreversible on-chain transfer. Second, an ML guardrail does not produce an auditable trace. When a signed transaction is later reviewed — by a regulator, a developer, or the agent's own logging system — the only record is that the guardrail ran and returned a result. The reasoning that produced the result is not inspectable in a deterministic way."
+      },
+      {
+        "type": "p",
+        "text": "A rule engine, by contrast, produces a specific rule match with a specific input hash. Both are inspectable by anyone reading the log. The decision is the same every time for the same input."
+      },
+      {
+        "type": "h2",
+        "text": "The allow/deny/limit pattern."
+      },
+      {
+        "type": "p",
+        "text": "A rule engine at the signature boundary evaluates three categories of decision. Allow: the transaction matches a pre-approved pattern — a transfer to a known address within a specified value range, a contract call to a known function selector, a token approval matching an existing allowance ceiling. Deny: the transaction violates a hard constraint — a destination address on a block list, a value that exceeds the agent's authorized ceiling, a function selector that has not been pre-approved for automated execution. Limit: the transaction is within policy but crosses a rate threshold — for example, the agent has already signed three transfers in this rolling hour and a fourth requires human review before execution."
+      },
+      {
+        "type": "p",
+        "text": "These categories are evaluated in that order. The logic at each tier is readable: a policy file that a human can inspect and update without modifying code. The engine matches the incoming signing request against the policy and returns a structured verdict — allowed with a rule reference, denied with a rule reference, or held for review. No model inference is involved."
+      },
+      {
+        "type": "h2",
+        "text": "Auditability as the primary design requirement."
+      },
+      {
+        "type": "p",
+        "text": "The signature boundary is auditable in a way that earlier pipeline stages are not. Every on-chain transaction has a transaction hash; every transaction hash links to a signed message that can be reconstructed from public chain data. A pre-sign rule engine that logs its verdict — the input transaction hash, the matched rule, the timestamp, and the outcome — creates a chain of custody from policy to transaction that is externally verifiable. An auditor can look at any on-chain transaction from the agent's wallet, identify the corresponding rule-engine log entry, and confirm what policy was applied. This is not achievable if the safety evaluation happened at model generation time with no persistent record tied to the specific signing event."
+      },
+      {
+        "type": "h2",
+        "text": "What the sigma-gate family implements at this layer."
+      },
+      {
+        "type": "p",
+        "text": "The sigma-gate open-source library published at github.com/spektre-labs includes a transaction pre-sign module that applies this pattern to Solana and EVM signing requests. Before any key operation, the agent passes the unsigned transaction to the gate. The gate evaluates the transaction against a policy file, returns a structured verdict, and logs the decision. The key operation proceeds only on an allow verdict. On a deny or hold verdict, the key operation does not execute — the gate does not route the transaction to the signing layer at all. The policy file is a plain text document; the gate code is dependency-free and auditable independently of the model pipeline that produced the transaction request."
+      },
+      {
+        "type": "h2",
+        "text": "The argument against adding this layer."
+      },
+      {
+        "type": "p",
+        "text": "The common objection is that rule engines cannot handle novel situations. If the agent is authorized to act autonomously, the argument goes, constraining it to a pre-approved rule set undermines its usefulness. This objection applies correctly in reasoning phases — a rule engine should not constrain which inferences the model draws. It applies incorrectly at the signature boundary, because the signature boundary is not a reasoning step. It is a commitment step. The value of a deterministic, auditable rule engine at that specific boundary is precisely that it does not reason: it checks, records, and blocks. Novel situations that the rule engine cannot classify as explicitly allowed are, by design, held for human review. That is the correct default at an irreversible commitment boundary."
+      }
+    ],
+    "references": [
+      {
+        "label": "sigma-gate",
+        "href": "https://github.com/spektre-labs/sigma-gate",
+        "note": "Open-source — includes the transaction pre-sign module"
+      },
+      {
+        "label": "Live guard demo",
+        "href": "/artifacts/sigma-gate",
+        "note": "Run the deterministic detector against example inputs in-browser"
+      }
+    ]
+  },
+  {
+    "slug": "proof-carrying-ai-output",
+    "eyebrow": "FIELD NOTE · 005",
+    "title": "Sign what you checked, not what you believe",
+    "date": "2026-07-04",
+    "readingTime": 5,
+    "sigmaStatus": "verified",
+    "summary": "ed25519-signed attestations binding exact bytes (SHA-256) to a verifier identity — verifiable offline with no shared secret. The attestation proves the check ran, not that the content is true. Deliberately underclaims.",
+    "body": [
+      {
+        "type": "p",
+        "text": "An AI system can make factual claims about its own outputs — 'this response was checked for prompt injection', 'this summary was verified against the source document', 'this transaction was evaluated by the pre-sign policy engine.' These claims are useful. They are also unverifiable unless accompanied by a cryptographic record. The word 'checked' means nothing without a signature over the specific bytes that were checked."
+      },
+      {
+        "type": "h2",
+        "text": "What ed25519 attestation provides."
+      },
+      {
+        "type": "p",
+        "text": "An ed25519 signature binds a private key to a specific byte sequence. Given a public key, a signature, and the original byte sequence, any party can independently verify that the holder of the private key signed exactly those bytes — not similar bytes, not bytes with the same meaning, exactly those bytes. This does not require a trusted third party, a shared secret, or a network call to any authority. The verification runs entirely from public key cryptography, specified and implemented in every major programming language."
+      },
+      {
+        "type": "p",
+        "text": "Applied to AI output, the pattern is: (1) run the check, (2) compute a SHA-256 hash of the exact bytes that were checked, (3) sign the hash with the verifier's ed25519 private key, (4) publish the public key, the signature, and the hash alongside the checked output. Any downstream consumer can confirm that the signature matches the public key, that the hash matches the output bytes, and therefore that whoever holds the corresponding private key ran a check over exactly these bytes."
+      },
+      {
+        "type": "h2",
+        "text": "What this proves and what it does not prove."
+      },
+      {
+        "type": "p",
+        "text": "This is a precise statement and it must not be overstated. The attestation proves that a check ran over specific bytes. It does not prove that the check was correct. It does not prove that the content of the output is true. It does not prove that the check used the right methodology, covered every relevant category, or was conducted by a competent system. A signature from a poorly calibrated or deliberately dishonest verifier is still a valid signature."
+      },
+      {
+        "type": "p",
+        "text": "The value is not that the attestation certifies truth — it is that it creates an audit chain. If a checked output later turns out to be incorrect or harmful, the attestation record allows a precise question: was this specific output checked by this specific verifier? The answer is now deterministic rather than requiring the verifier's self-report."
+      },
+      {
+        "type": "h2",
+        "text": "Offline verification without shared state."
+      },
+      {
+        "type": "p",
+        "text": "Verification requires only three inputs: the verifier's public key, the signature, and the byte sequence that was signed. None of these are secrets. None of them require a network call to the verifier's infrastructure. A receiving party can verify an attestation months after the fact, in an air-gapped environment, with a standard cryptographic library, without contacting the original verifier. This is the property that distinguishes cryptographic attestation from any claim that is verified by asking the original party to confirm it again. The original party cannot be reached. The original party may no longer exist. The signature verifies regardless."
+      },
+      {
+        "type": "h2",
+        "text": "The deliberate understatement."
+      },
+      {
+        "type": "p",
+        "text": "The sigma-attest protocol is designed to make a precise, deliberately understated claim: 'this output passed the checks that ran at this timestamp.' It does not say 'this output is safe.' It does not say 'this output is accurate.' It says a specific signed identity ran a specific check over a specific byte sequence and the check passed at a specific time. Every word in that sentence is verifiable. None of the words that were left out are verifiable, and they are left out intentionally."
+      },
+      {
+        "type": "p",
+        "text": "The common temptation in building attestation systems is to add claims that increase the apparent value of the attestation — 'AI-verified safe', 'accuracy-validated', 'fact-checked.' These claims are either meaningless in precise terms or unprovable without a specified ground truth. Every added claim that is not grounded in a specific deterministic check dilutes the value of the claims that are. An attestation system that proves exactly what it ran and nothing more is a stronger epistemic instrument than one that implies more than it can support."
+      },
+      {
+        "type": "h2",
+        "text": "The minimum viable deployment."
+      },
+      {
+        "type": "p",
+        "text": "Generate an ed25519 keypair. Publish the public key at a stable URL that you control. When a check completes, compute SHA-256 of the output bytes, sign the hash, and attach the signature and public key URL to the output. Document exactly what checks your verifier runs. That is the complete implementation. Receivers who want to verify can do so with a few lines of code in any standard language. The constraint is the discipline of only claiming what the check actually performed — not the technical complexity of the cryptographic primitives."
+      }
+    ],
+    "references": [
+      {
+        "label": "sigma-attest specification",
+        "href": "https://github.com/spektre-labs/sigma-gate",
+        "note": "Protocol spec and reference implementation"
+      },
+      {
+        "label": "ed25519 specification",
+        "href": "https://ed25519.cr.yp.to/",
+        "note": "Daniel J. Bernstein — original specification"
+      }
+    ]
+  },
+  {
+    "slug": "agent-payments-reality-check",
+    "eyebrow": "FIELD NOTE · 006",
+    "title": "AI agents can pay now. Almost nobody is charging them.",
+    "date": "2026-07-04",
+    "readingTime": 5,
+    "sigmaStatus": "inferred",
+    "summary": "The x402 pattern — HTTP 402 → pay → retry — works in prototype. What actually exists versus what is hype, and the missing discovery layer that prevents agents from reliably finding services that accept autonomous payment.",
+    "body": [
+      {
+        "type": "p",
+        "text": "The infrastructure for AI agents to make autonomous payments exists. An agent can hold a private key, query a balance, construct a transaction, sign it, and broadcast it to a blockchain in under a second. The technical capability has been real for several years. The market gap is not on the paying side. It is on the charging side: the layer where software services advertise that they accept autonomous machine payment, price for it, and fulfill delivery on proof of payment without requiring a human account."
+      },
+      {
+        "type": "h2",
+        "text": "The x402 pattern."
+      },
+      {
+        "type": "p",
+        "text": "HTTP 402 is a status code defined in the original HTTP specification with the note 'reserved for future use.' An emerging convention — sometimes called x402 — uses the 402 response to implement machine-readable payment requests. A client requests a resource. The server responds with 402 and a machine-readable payment instruction: an amount, a currency or token, a recipient address, and a callback or retry path. The client constructs and broadcasts a payment, then retries the original request with a payment proof header. The server verifies the proof and returns the resource. No account is required. No human clicks anything. The interaction is between two software processes."
+      },
+      {
+        "type": "h2",
+        "text": "What actually exists."
+      },
+      {
+        "type": "p",
+        "text": "The x402 pattern has been prototyped and published by several teams working in the machine payments space, including a reference implementation from Coinbase released publicly in 2024. Developer tools for constructing x402-compliant responses exist in several languages. Some blockchain infrastructure providers have experimented with charging for API calls via this pattern. The specification is not yet a formal standard; the response header format has minor variations across implementations; the pattern is not interoperable across all combinations of client and server implementations today."
+      },
+      {
+        "type": "p",
+        "text": "That is the honest state: working prototypes, reference implementations, early adopters, no interoperability guarantee, no formal standard. Public dashboards from infrastructure providers active in this space report request volumes that confirm real usage exists. The question is not whether the pattern works — it does. The question is whether the provider ecosystem has priced and exposed services through it in sufficient density that an agent can reliably find and pay for what it needs without a human-managed account. That ecosystem does not exist at that density yet."
+      },
+      {
+        "type": "h2",
+        "text": "The missing discovery layer."
+      },
+      {
+        "type": "p",
+        "text": "Even if every major API provider deployed x402 endpoints today, an agent would have difficulty finding them. There is no machine-readable directory of services that accept agent payments. A developer who wants to know which inference services, data APIs, storage providers, and compute resources accept autonomous payment currently has no authoritative list to query. They can search for known implementations, read documentation from providers who have announced support, and monitor open repositories for reference implementations. That is not discovery — it is research."
+      },
+      {
+        "type": "p",
+        "text": "A registry that lists payment-accepting endpoints, their URLs, their accepted currencies, their pricing structures, and their capability descriptions would solve the discovery problem. This does not require a new protocol — it is a data layer over x402. The absence is a gap in ecosystem infrastructure, not a technical limitation."
+      },
+      {
+        "type": "h2",
+        "text": "The account problem."
+      },
+      {
+        "type": "p",
+        "text": "Many API services that AI agents need to access require a human account to use: email verification, credit card on file, organization membership, API key issued after human review. These requirements are not accidental — they are fraud prevention measures, compliance requirements, and product decisions made for a user base of humans. An agent that needs to use one of these services without a human account cannot, regardless of its ability to pay. The x402 pattern does not help here; the barrier is not payment method but identity verification designed for humans."
+      },
+      {
+        "type": "p",
+        "text": "Some services have begun offering anonymous or reduced-registration access tiers, priced higher to account for the missing fraud signals that account verification provides. This is the right direction: price for the missing signal rather than refusing to serve the category. The broader shift in service design will take time."
+      },
+      {
+        "type": "h2",
+        "text": "The reasonable claim."
+      },
+      {
+        "type": "p",
+        "text": "The capability exists. Early infrastructure exists. Meaningful deployment does not yet exist at the density required for an agent to reliably complete multi-step tasks that require multiple paid service calls without any human-managed accounts in the chain. The gap between 'technically possible' and 'practically operational' is measured in ecosystem adoption, not in cryptographic primitives or protocol design. The primitives are ready. The ecosystem is not."
+      }
+    ],
+    "references": [
+      {
+        "label": "x402 reference implementation",
+        "href": "https://github.com/coinbase/x402",
+        "note": "Coinbase open-source x402 protocol implementation (2024)"
+      },
+      {
+        "label": "RFC 7235 — HTTP/1.1 Authentication",
+        "href": "https://datatracker.ietf.org/doc/html/rfc7235",
+        "note": "Original 402 status code specification context"
+      }
+    ]
+  },
+  {
+    "slug": "status-not-confidence",
+    "eyebrow": "FIELD NOTE · 007",
+    "title": "Make the model label its epistemic status",
+    "date": "2026-07-04",
+    "readingTime": 5,
+    "sigmaStatus": "verified",
+    "summary": "Verified / computed / inferred / unknown as output discipline. The only forbidden move is presenting a guess one rung above its actual status. How this eliminates most hallucination incidents in practice.",
+    "body": [
+      {
+        "type": "p",
+        "text": "A model that generates output without labeling the epistemic status of that output is forcing every downstream reader to determine it themselves. Readers vary in their ability to do this correctly. Some will treat inferred conclusions as facts. Some will treat uncertain probabilities as certainties. The model has more context about how it arrived at each claim than any reader does; if it does not surface that context, the reader is working with incomplete information."
+      },
+      {
+        "type": "h2",
+        "text": "Four labels that cover most cases."
+      },
+      {
+        "type": "p",
+        "text": "Most AI output falls into four epistemic categories. Verified: the claim was checked against a deterministic source — a database lookup, a calculation, a signature verification, a documented fact that was directly retrieved. Computed: the claim results from a deterministic computation with known inputs and defined operations — arithmetic, a code execution result, a formula applied to data. Inferred: the claim follows from reasoning over available evidence but is not directly verifiable in the current context — a conclusion drawn from patterns, an interpretation of ambiguous information, a prediction. Unknown: the model does not have sufficient basis to make a claim — the information is missing, the question is outside the model's knowledge boundary, or the evidence is contradictory."
+      },
+      {
+        "type": "p",
+        "text": "These four labels are not a confidence score. A confidence score is a continuous number that a reader must interpret relative to some unstated threshold. These are categorical distinctions about the method by which the claim was produced, which are interpretable without calibration."
+      },
+      {
+        "type": "h2",
+        "text": "The one forbidden move."
+      },
+      {
+        "type": "p",
+        "text": "The only forbidden move in this system is presenting a claim one rung above its actual status. Presenting an inferred claim as verified. Presenting an unknown as an inference. Presenting a computed result as verified when the computation used estimated inputs. This move — upward rounding of epistemic status — is the structural cause of most practical hallucination incidents. The model did not conjure a false fact from nothing; it inferred something plausible, failed to label it as an inference, and the reader treated it as a fact."
+      },
+      {
+        "type": "p",
+        "text": "The move is common because it reduces visible uncertainty, which makes output look more capable in short-term evaluation. A response that says 'I believe the answer is X, inferred from Y' looks less capable than one that says 'The answer is X.' Over many interactions, the apparent capability difference disappears when the inferences are wrong. The reputational cost of a failed inference labeled as inference is much smaller than the cost of a failed inference labeled as fact."
+      },
+      {
+        "type": "h2",
+        "text": "Implementation at the output level."
+      },
+      {
+        "type": "p",
+        "text": "The simplest implementation is a sentence-level tag: a parenthetical or a labeled prefix on any claim that is not directly verified. 'The contract was deployed on 2024-03-15 (verified: transaction hash 0x...).' 'The most common pattern in this domain is X (inferred: based on training distribution).' 'The regulatory status in this jurisdiction is unclear (unknown: no direct information).' The tag does not have to be formal — it has to be present. A model that consistently labels inferences as inferences and unknowns as unknowns is a model whose output can be checked and corrected without guessing at what was an estimate."
+      },
+      {
+        "type": "h2",
+        "text": "How this eliminates most hallucination incidents in practice."
+      },
+      {
+        "type": "p",
+        "text": "A hallucination incident follows a specific structure: the model produces a claim, the claim is wrong, the claim was not labeled as uncertain, and the reader had no signal to check it. Each step in that structure is necessary for the incident to cause harm. If the claim is labeled as inferred, the reader knows to verify it. Most hallucination incidents occur in domains where verification is possible but was not triggered — because there was no signal that verification was needed."
+      },
+      {
+        "type": "p",
+        "text": "A model that labels its epistemic status does not eliminate inference errors. It eliminates the category of harm caused by unmarked inference errors. Those are most of the incidents in practice. The model's inferences being wrong is a calibration problem, which is difficult to fix completely. The model's inferences being invisible is a design choice, which is straightforward to fix."
+      },
+      {
+        "type": "h2",
+        "text": "What this requires of the model."
+      },
+      {
+        "type": "p",
+        "text": "Asking a model to label epistemic status does not require the model to know when it is wrong. It requires the model to know the method by which each claim was produced. That is a different and significantly easier task. A model that retrieved a fact from a database knows it retrieved a fact. A model that generated a response by pattern-completing over training data knows it is doing that. The label is about method, not about correctness. Method is knowable; correctness requires ground truth the model may not have. The discipline is in treating that distinction as non-negotiable."
+      }
+    ],
+    "references": [
+      {
+        "label": "Research method",
+        "href": "/method",
+        "note": "Iterative falsification — applies the same status discipline to research outputs"
+      },
+      {
+        "label": "sigma-gate",
+        "href": "https://github.com/spektre-labs/sigma-gate",
+        "note": "Deterministic layer — removes the inferred/unknown ambiguity from detection verdicts"
+      }
+    ]
   }
 ]

@@ -42,7 +42,7 @@ const AD = {
   introBeamAt: 1.3, introSeaAt: 0.4,          // choreography (s)
 } as const;
 
-const RES_SCALE = 0.9; // internal render scale — CAS + EMA carry the crisp
+const RES_SCALE = 1.0; // full internal resolution — CAS + EMA supersample
 
 const WGSL_COMMON = /* wgsl */ `
 struct U {
@@ -160,7 +160,7 @@ fn glyphMask(p : vec3f) -> f32 {
 }
 
 fn normalAt(p : vec3f) -> vec3f {
-  let e = 0.006;
+  let e = 0.004;
   return normalize(vec3f(
     scene(p + vec3f(e, 0.0, 0.0)) - scene(p - vec3f(e, 0.0, 0.0)),
     scene(p + vec3f(0.0, e, 0.0)) - scene(p - vec3f(0.0, e, 0.0)),
@@ -171,7 +171,7 @@ fn march(ro : vec3f, rd : vec3f, tmax : f32) -> f32 {
   var t = 0.02;
   for (var i = 0; i < 88; i++) {
     let d = scene(ro + rd * t);
-    if (d < 0.0014 * t + 0.002) { return t; }
+    if (d < 0.0009 * t + 0.0012) { return t; }
     t += d * 0.95;
     if (t > tmax) { break; }
   }
@@ -461,6 +461,14 @@ fn vs(@builtin(vertex_index) vi : u32) -> VOut {
 
 const SIGNAL : vec3f = vec3f(0.812, 0.890, 1.0);
 
+/* Beer-Lambert water transmission: T(d) = exp(-a*d).
+   a chosen so the hue sits on the Atlantean cold axis (~222deg):
+   red absorbed ~7x faster than blue — physics gives the blue, not paint. */
+const W_ABSORB : vec3f = vec3f(1.35, 0.70, 0.20);
+fn waterTint(pathLen : f32) -> vec3f {
+  return exp(-W_ABSORB * pathLen);
+}
+
 /* the lantern's spot irradiance at a point (sector-gated inverse-square) */
 fn lanternIrr(p : vec3f, t : f32) -> f32 {
   let bd = beamDir(t);
@@ -589,20 +597,21 @@ fn fs(in : VOut) -> @location(0) vec4f {
     let NoV = max(dot(n, -rd), 0.0);
     let Fw = 0.028 + 0.972 * pow(1.0 - NoV, 5.0); // wet Schlick
 
-    // graded body: trough → OLED void, crest body → cold dark grey
+    // ATLANTEAN BODY — Beer-Lambert: optical path thins toward the crest,
+    // so crests transmit blue and troughs absorb to void. Physics, not paint.
     let depthG = smoothstep(0.0, 4.5, p.y);
-    var c = mix(vec3f(0.00090, 0.00105, 0.00140),
-                vec3f(0.0068, 0.0078, 0.0104), depthG);
-    c *= 0.48 + 0.52 * n.y;
+    let path = mix(3.4, 0.75, depthG);          // optical thickness (world u)
+    let tint = waterTint(path);
+    var c = tint * 0.011 * (0.48 + 0.52 * n.y);
     let lKey = normalize(vec3f(0.0, L_Y, L_Z) - p);
-    c += vec3f(0.0032, 0.0035, 0.0045) * max(dot(n, lKey), 0.0);
+    c += tint * 0.0062 * max(dot(n, lKey), 0.0);
     let sideF = (1.0 - n.y) * smoothstep(-0.1, 0.5, n.y) * 0.42;
-    c += vec3f(0.00095, 0.00110, 0.00145) * sideF;
+    c += tint * 0.0024 * sideF;
 
-    // backlit crest subsurface — gated to tall water
+    // backlit crest subsurface — thin path transmits the Atlantean cyan
     let crestH = smoothstep(1.4, 4.7, p.y);
     let backlit = pow(max(dot(rd, lKey), 0.0), 2.0) * 0.5 + 0.5;
-    c += vec3f(0.042, 0.045, 0.058) * crestH * backlit * (0.38 + 0.62 * (1.0 - NoV));
+    c += waterTint(0.55) * 0.075 * crestH * backlit * (0.38 + 0.62 * (1.0 - NoV));
 
     // Jacobian-proxy foam — compression + steepness + crest, noise-broken
     let slope = length(gH.yz);
@@ -727,7 +736,7 @@ fn fs(in : VOut) -> @location(0) vec4f {
 
   // shadow neutrality — deep tones carry NO hue (OLED shadow is colorless)
   let lum2 = dot(col, vec3f(0.2126, 0.7152, 0.0722));
-  col = mix(vec3f(lum2), col, smoothstep(0.0, 0.14, lum2));
+  col = mix(vec3f(lum2), col, smoothstep(0.0, 0.045, lum2)); // admin 2026-07-04: the sea carries the cold hue
 
   // vignette — symmetric
   let v = 1.0 - 0.34 * dot(dir * vec2f(1.6, 1.25), dir * vec2f(1.6, 1.25));

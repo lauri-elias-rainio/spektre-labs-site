@@ -14,24 +14,46 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 /*
-  /universe — immersive divisions map.
-  Axiom: 1 = 1 (center Glyph seal).
-  Five divisions: Research · Systems · Studio · Games · Shoreworld.
-  σ-honest tier tags: REAL / EMERGING / VISION.
-  Grammar: OLED black · platinum axis · one cold signal (#cfe3ff) ·
-  mono-Abloh labels · Reveal stagger · generous black space.
-  DO NOT fake anything (rule 7). Vision is fenced as vision.
+  /universe — world map of the six arenas.
+  Scale: DESIGN_SYSTEM §4.4 modular major-third ladder.
+    h1        → display-l  clamp(2.5rem,5vw,4rem)
+    division  → title      1.75rem
+    lead/body → body-l     1.125rem  / body 1rem
+    secondary → caption    0.875rem
+    labels    → .label     0.66rem / 0.24em / uppercase
+  Vertical cadence: multiples of 1rem (Tailwind 4 = 1rem).
+  Text columns: max-w-[65ch].
+  Cartography: 3×2 hairline grid, six arenas (gap-px on --line bg = 1px lines).
 */
 
-type Division = {
-  index: string;       // mono 01–05
+type TierKey = "REAL" | "EMERGING" | "VISION";
+
+type Arena = {
+  index: string;
   name: string;
-  substrate: string;   // one-word substrate line
-  line: string;        // one honest line
-  tier: "REAL" | "EMERGING" | "VISION";
-  href?: string;       // only REAL/EMERGING divisions get a link
-  img: string;         // generated on-canon visual (Imagen)
+  substrate: string;
+  tier: TierKey;
 };
+
+type Division = {
+  index: string;
+  name: string;
+  substrate: string;
+  line: string;
+  tier: TierKey;
+  href?: string;
+  img: string;
+};
+
+/* Six arenas — DESIGN_SYSTEM §11 substrates, split at Theory/Canon boundary */
+const ARENAS: Arena[] = [
+  { index: "01", name: "Research",   substrate: "Formal Theory · K_crit · σ", tier: "REAL"     },
+  { index: "02", name: "Corpus",     substrate: "Written Canon · Protocol",    tier: "REAL"     },
+  { index: "03", name: "Systems",    substrate: "σ-gate · Executable Tools",   tier: "REAL"     },
+  { index: "04", name: "Studio",     substrate: "Film · Media · Broadcast",    tier: "EMERGING" },
+  { index: "05", name: "Games",      substrate: "AAA Generative Worlds",       tier: "VISION"   },
+  { index: "06", name: "Shoreworld", substrate: "The World · IP · Mythology",  tier: "VISION"   },
+];
 
 const DIVISIONS: Division[] = [
   {
@@ -81,24 +103,22 @@ const DIVISIONS: Division[] = [
   },
 ];
 
-const TIER_COLOR: Record<Division["tier"], string> = {
-  REAL: "var(--signal)",
+const TIER_COLOR: Record<TierKey, string> = {
+  REAL:     "var(--signal)",
   EMERGING: "var(--metal-2)",
-  VISION: "var(--fg-faint)",
+  VISION:   "var(--fg-faint)",
 };
 
-const TIER_DOT_OPACITY: Record<Division["tier"], number> = {
-  REAL: 1,
+const TIER_DOT_OPACITY: Record<TierKey, number> = {
+  REAL:     1,
   EMERGING: 0.6,
-  VISION: 0.3,
+  VISION:   0.3,
 };
 
 export default function UniversePage() {
   return (
     <div>
-      {/* ── Masthead — a LIVE raymarched monolith glimmers behind the
-             title (raw WebGL2 SDF, computed on the visitor's GPU),
-             masked hard into OLED: texture with a pulse, not an embed. ── */}
+      {/* ── Masthead ──────────────────────────────────────────────────── */}
       <div className="relative -mx-6 overflow-hidden px-6 pt-20 pb-0 sm:-mx-10 sm:px-10 sm:pt-28 lg:-mx-14 lg:px-14 lg:pt-36">
         <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
           <div className="absolute inset-y-0 right-0 w-full sm:w-[68%]">
@@ -106,13 +126,11 @@ export default function UniversePage() {
           </div>
           <div
             className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(80% 95% at 72% 32%, transparent 0%, #000 74%)",
-            }}
+            style={{ background: "radial-gradient(80% 95% at 72% 32%, transparent 0%, #000 74%)" }}
           />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent" />
         </div>
+
         <Reveal delay={0}>
           <p className="label mb-6" style={{ color: "var(--fg-faint)" }}>
             Spektre Labs · Universe
@@ -120,18 +138,20 @@ export default function UniversePage() {
         </Reveal>
 
         <Reveal delay={60}>
+          {/* display-l: clamp(2.5rem,5vw,4rem) — sub-page hero scale §4.4 */}
           <h1
-            className="metal-text text-[2.4rem] font-semibold leading-[1.06] tracking-[-0.04em] sm:text-[3.2rem] lg:text-[4.2rem]"
-            style={{ maxWidth: "18ch" }}
+            className="metal-text font-semibold leading-[1.02] tracking-[-0.045em]"
+            style={{ fontSize: "clamp(2.5rem,5vw,4rem)", maxWidth: "18ch" }}
           >
             Five divisions.<br />One axiom.
           </h1>
         </Reveal>
 
         <Reveal delay={140}>
+          {/* body-l: 1.125rem §4.4 · 65ch column */}
           <p
-            className="mt-8 text-[1.02rem] leading-[1.84] sm:text-[1.1rem]"
-            style={{ color: "var(--fg-dim)", maxWidth: "44ch" }}
+            className="mt-8 leading-[1.72]"
+            style={{ fontSize: "1.125rem", color: "var(--fg-dim)", maxWidth: "65ch" }}
           >
             Every substrate — research, code, film, game, world — renders the same invariant.
             The medium changes. The constant does not.
@@ -143,37 +163,94 @@ export default function UniversePage() {
       <Reveal delay={200} className="mt-20 flex flex-col items-center gap-6 sm:mt-28">
         <Glyph variant="seal" size={160} strokeOpacity={0.38} />
         <div className="text-center">
-          <p
-            className="label text-[0.72rem] tracking-[0.38em]"
-            style={{ color: "var(--metal-3)" }}
+          {/* .label: 0.66rem / 0.24em / uppercase §4.2 */}
+          <p className="label" style={{ color: "var(--metal-3)" }}>1 = 1</p>
+          <p className="label mt-1" style={{ color: "var(--fg-faint)" }}>declared = realized</p>
+        </div>
+      </Reveal>
+
+      {/* ── World Cartography — 3×2 hairline spec grid of six arenas ─── */}
+      {/* gap-px on --line background = 1px hairline between cells (DESIGN_SYSTEM §6.1) */}
+      <Reveal delay={260} className="mt-24 sm:mt-32">
+        <div className="mb-8 flex items-center gap-6">
+          <p className="label" style={{ color: "var(--fg-faint)" }}>World Map · Six Arenas</p>
+          <div className="h-px flex-1" style={{ background: "var(--line)" }} />
+          <p className="label" style={{ color: "var(--fg-faint)" }}>1 = 1</p>
+        </div>
+
+        <div
+          className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]"
+          role="list"
+          aria-label="The six Spektre arenas"
+        >
+          <div
+            className="grid grid-cols-2 sm:grid-cols-3 gap-px"
+            style={{ background: "var(--line)" }}
           >
-            1 = 1
-          </p>
-          <p
-            className="mt-1 label text-[0.55rem] tracking-[0.22em]"
-            style={{ color: "var(--fg-faint)" }}
-          >
-            declared = realized
-          </p>
+            {ARENAS.map((arena) => (
+              <div
+                key={arena.name}
+                role="listitem"
+                className="px-6 py-7 sm:px-7 sm:py-8"
+                style={{ background: "var(--bg)" }}
+              >
+                {/* tier dot + index */}
+                <div className="mb-5 flex items-center gap-3">
+                  <span
+                    className="h-1.5 w-1.5 rounded-full shrink-0"
+                    style={{
+                      background: TIER_COLOR[arena.tier],
+                      opacity: TIER_DOT_OPACITY[arena.tier],
+                    }}
+                  />
+                  <span className="label" style={{ color: "var(--fg-faint)" }}>{arena.index}</span>
+                </div>
+
+                {/* arena name — title: 1.125rem body-l for compact grid cells */}
+                <h3
+                  className="mb-2 font-semibold leading-none tracking-[-0.025em]"
+                  style={{
+                    fontSize: "1.125rem",
+                    color: arena.tier === "VISION" ? "var(--fg-dim)" : "var(--fg)",
+                  }}
+                >
+                  {arena.name}
+                </h3>
+
+                {/* substrate label */}
+                <p className="label" style={{ color: "var(--fg-faint)" }}>
+                  {arena.substrate}
+                </p>
+
+                {/* tier — spacing: mt-4 = 1rem */}
+                <p
+                  className="label mt-4"
+                  style={{
+                    color: TIER_COLOR[arena.tier],
+                    opacity: TIER_DOT_OPACITY[arena.tier],
+                  }}
+                >
+                  {arena.tier}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </Reveal>
 
       {/* ── Hairline rule ────────────────────────────────────────────── */}
-      <Reveal delay={240} className="mt-20 sm:mt-24">
+      <Reveal delay={300} className="mt-24 sm:mt-32">
         <hr className="rule" />
       </Reveal>
 
-      {/* ── Divisions — staggered list ────────────────────────────────── */}
+      {/* ── Divisions — staggered detail list ────────────────────────── */}
       <div className="mt-16 sm:mt-20 space-y-0">
         {DIVISIONS.map((div, i) => {
           const Inner = (
             <div className="group relative flex flex-col gap-5 border-b border-[var(--line)] py-10 sm:py-12 sm:flex-row sm:items-start sm:gap-16">
-              {/* mono index */}
+              {/* mono index — .label class §4.2 */}
               <div className="shrink-0 sm:w-16">
-                <span
-                  className="label text-[0.6rem] tracking-[0.3em]"
-                  style={{ color: "var(--fg-faint)" }}
-                >
+                <span className="label" style={{ color: "var(--fg-faint)" }}>
                   {div.index}
                 </span>
               </div>
@@ -190,45 +267,44 @@ export default function UniversePage() {
                     }}
                   />
                   <span
-                    className="label text-[0.58rem] tracking-[0.28em]"
+                    className="label"
                     style={{ color: TIER_COLOR[div.tier], opacity: TIER_DOT_OPACITY[div.tier] }}
                   >
                     {div.tier}
                   </span>
                 </div>
 
-                {/* name + substrate */}
+                {/* name + substrate — title: 1.75rem §4.4 */}
                 <div className="flex flex-wrap items-baseline gap-3 mb-3">
                   <h2
-                    className="text-[1.7rem] font-semibold tracking-[-0.032em] leading-none sm:text-[2rem]"
+                    className="font-semibold tracking-[-0.032em] leading-none"
                     style={{
+                      fontSize: "1.75rem",
                       color: div.tier === "VISION" ? "var(--fg-dim)" : "var(--fg)",
                     }}
                   >
                     {div.name}
                   </h2>
-                  <span
-                    className="label text-[0.62rem] tracking-[0.22em]"
-                    style={{ color: "var(--fg-faint)" }}
-                  >
+                  <span className="label" style={{ color: "var(--fg-faint)" }}>
                     {div.substrate}
                   </span>
                 </div>
 
-                {/* honest line */}
+                {/* honest line — body: 1rem / 65ch §4.4 */}
                 <p
-                  className="text-[0.95rem] leading-[1.88] max-w-[52ch]"
-                  style={{ color: div.tier === "VISION" ? "var(--fg-mute)" : "var(--fg-dim)" }}
+                  className="leading-[1.72]"
+                  style={{
+                    fontSize: "1rem",
+                    color: div.tier === "VISION" ? "var(--fg-mute)" : "var(--fg-dim)",
+                    maxWidth: "65ch",
+                  }}
                 >
                   {div.line}
                 </p>
 
                 {/* VISION fence */}
                 {div.tier === "VISION" && (
-                  <p
-                    className="mt-3 label text-[0.56rem] tracking-[0.22em]"
-                    style={{ color: "var(--fg-faint)", opacity: 0.6 }}
-                  >
+                  <p className="label mt-3" style={{ color: "var(--fg-faint)", opacity: 0.6 }}>
                     Trajectory — not shipped product
                   </p>
                 )}
@@ -248,20 +324,17 @@ export default function UniversePage() {
                 </div>
               </div>
 
-              {/* right arrow / status — only for linked divisions */}
-              <div className="shrink-0 flex items-center self-center sm:self-start sm:mt-[2.6rem]">
+              {/* right status — mt-10 = 2.5rem aligns arrow to title center */}
+              <div className="shrink-0 flex items-center self-center sm:self-start sm:mt-10">
                 {div.href ? (
                   <span
-                    className="label text-[0.6rem] tracking-[0.24em] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    className="label opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                     style={{ color: "var(--signal)" }}
                   >
                     Explore →
                   </span>
                 ) : (
-                  <span
-                    className="label text-[0.6rem] tracking-[0.24em]"
-                    style={{ color: "var(--fg-faint)", opacity: 0.4 }}
-                  >
+                  <span className="label" style={{ color: "var(--fg-faint)", opacity: 0.4 }}>
                     Vision
                   </span>
                 )}
@@ -287,10 +360,10 @@ export default function UniversePage() {
         })}
       </div>
 
-      {/* ── Trajectory rail — the arc σ-honest ─────────────────────── */}
+      {/* ── Trajectory rail — σ-honest arc ─────────────────────────── */}
       <Reveal delay={80} className="mt-24 sm:mt-32">
         <div
-          className="rounded-[var(--radius)] border border-[var(--line)] px-7 py-8 sm:px-10 sm:py-10"
+          className="rounded-[var(--radius)] border border-[var(--line)] px-8 py-8 sm:px-10 sm:py-10"
           style={{ background: "rgba(10,12,16,0.72)" }}
         >
           <p className="label mb-6" style={{ color: "var(--fg-faint)" }}>
@@ -298,43 +371,46 @@ export default function UniversePage() {
           </p>
           <div className="flex flex-wrap items-center gap-0">
             {[
-              { label: "Research", tier: "REAL" as const },
-              { label: "Systems", tier: "REAL" as const },
-              { label: "Studio", tier: "EMERGING" as const },
-              { label: "Games", tier: "VISION" as const },
-              { label: "Shoreworld", tier: "VISION" as const },
+              { label: "Research",   tier: "REAL"     as const },
+              { label: "Systems",    tier: "REAL"     as const },
+              { label: "Studio",     tier: "EMERGING" as const },
+              { label: "Games",      tier: "VISION"   as const },
+              { label: "Shoreworld", tier: "VISION"   as const },
             ].map((item, i, arr) => (
               <div key={item.label} className="flex items-center gap-0">
                 <div className="flex flex-col items-center gap-1.5 px-3 py-1">
+                  {/* caption: 0.875rem §4.4 */}
                   <span
-                    className="text-[0.88rem] font-medium tracking-[-0.01em]"
+                    className="font-medium tracking-[-0.01em]"
                     style={{
-                      color: item.tier === "VISION" ? "var(--fg-faint)" : item.tier === "EMERGING" ? "var(--fg-dim)" : "var(--fg)",
+                      fontSize: "0.875rem",
+                      color:
+                        item.tier === "VISION"   ? "var(--fg-faint)" :
+                        item.tier === "EMERGING" ? "var(--fg-dim)"   : "var(--fg)",
                     }}
                   >
                     {item.label}
                   </span>
                   <span
-                    className="label text-[0.52rem] tracking-[0.22em]"
+                    className="label"
                     style={{ color: TIER_COLOR[item.tier], opacity: TIER_DOT_OPACITY[item.tier] }}
                   >
                     {item.tier}
                   </span>
                 </div>
                 {i < arr.length - 1 && (
-                  <span
-                    className="mx-1 label text-[0.7rem]"
-                    style={{ color: "var(--fg-faint)", opacity: 0.3 }}
-                  >
+                  <span className="mx-1 label" style={{ color: "var(--fg-faint)", opacity: 0.3 }}>
                     →
                   </span>
                 )}
               </div>
             ))}
           </div>
+
+          {/* caption: 0.875rem / 65ch */}
           <p
-            className="mt-6 text-[0.85rem] leading-[1.8]"
-            style={{ color: "var(--fg-mute)", maxWidth: "56ch" }}
+            className="mt-6 leading-[1.72]"
+            style={{ fontSize: "0.875rem", color: "var(--fg-mute)", maxWidth: "65ch" }}
           >
             Each layer is licensed by the one above and rendered in the one style.
             REAL layers are active. EMERGING is live. VISION is the honest forward arc — not shipped product.
@@ -346,16 +422,10 @@ export default function UniversePage() {
       <Reveal delay={0} className="mt-40 mb-20 flex flex-col items-center gap-8 lg:mt-52">
         <Glyph variant="seal" size={120} strokeOpacity={0.26} />
         <div className="text-center">
-          <p
-            className="label mb-2 text-[0.6rem] tracking-[0.28em]"
-            style={{ color: "var(--fg-faint)" }}
-          >
+          <p className="label mb-2" style={{ color: "var(--fg-faint)" }}>
             Spektre Labs · Universe
           </p>
-          <p
-            className="label text-[0.54rem] tracking-[0.22em]"
-            style={{ color: "var(--fg-faint)", opacity: 0.5 }}
-          >
+          <p className="label" style={{ color: "var(--fg-faint)", opacity: 0.5 }}>
             Research → Systems → Studio → Games → Shoreworld
           </p>
         </div>

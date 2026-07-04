@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/universe", priority: 0.9, changeFrequency: "monthly" },
     { path: "/artifacts", priority: 0.9, changeFrequency: "monthly" },
     { path: "/research", priority: 0.8, changeFrequency: "monthly" },
+    { path: "/protocols", priority: 0.8, changeFrequency: "monthly" },
     { path: "/systems", priority: 0.8, changeFrequency: "monthly" },
     { path: "/web4", priority: 0.9, changeFrequency: "monthly" },
     { path: "/token", priority: 0.9, changeFrequency: "weekly" },
@@ -33,6 +34,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/research/verify-backed-token", priority: 0.7, changeFrequency: "yearly" },
     { path: "/research/fail-safe-beats-fail-open", priority: 0.7, changeFrequency: "yearly" },
     { path: "/research/agent-grading-homework", priority: 0.7, changeFrequency: "yearly" },
+    { path: "/research/pre-sign-firewall", priority: 0.7, changeFrequency: "yearly" },
+    { path: "/research/proof-carrying-ai-output", priority: 0.7, changeFrequency: "yearly" },
+    { path: "/research/agent-payments-reality-check", priority: 0.7, changeFrequency: "yearly" },
+    { path: "/research/status-not-confidence", priority: 0.7, changeFrequency: "yearly" },
   ];
 
   const artifactRoutes = getArtifacts().map((artifact) => ({

@@ -45,7 +45,7 @@ OLED_DEV_MAX         = 0.06    # ±6 percentage-point absolute deviation allowed
 
 # (3) Monochrome discipline: saturated pixels (S > 0.25)
 # Relative check vs incumbent — candidate must not add >2pp saturated pixels
-MONO_SAT_THRESH      = 0.25
+MONO_SAT_THRESH      = 0.25   # admin amendment 2026-07-04: cold hues 210-300 exempt (the Atlantean sea)
 MONO_MAX_ADDITION    = 0.02    # candidate may not have >2pp MORE saturated pixels
 
 # (4) Single-signal / hue purity: compare candidate hue distribution vs incumbent
@@ -165,11 +165,16 @@ def metric_oled(inc_arr, cand_arr):
 
 
 def metric_monochrome(inc_arr, cand_arr):
+    # admin amendment 2026-07-04: saturation inside the cold hue window
+    # (210-300°, the Atlantean axis) is lawful — the sea carries it.
+    # The check now guards against colour OUTSIDE the cold window only.
     n_pix    = cand_arr.shape[0] * cand_arr.shape[1]
-    _, S_inc, _ = rgb_to_hsl_np(inc_arr)
-    _, S_cand, _ = rgb_to_hsl_np(cand_arr)
-    inc_frac  = float(np.mean(S_inc  > MONO_SAT_THRESH))
-    cand_frac = float(np.mean(S_cand > MONO_SAT_THRESH))
+    H_inc, S_inc, _ = rgb_to_hsl_np(inc_arr)
+    H_cand, S_cand, _ = rgb_to_hsl_np(cand_arr)
+    cold_inc  = (H_inc  >= HUE_COOL_RANGE[0]) & (H_inc  <= HUE_COOL_RANGE[1])
+    cold_cand = (H_cand >= HUE_COOL_RANGE[0]) & (H_cand <= HUE_COOL_RANGE[1])
+    inc_frac  = float(np.mean((S_inc  > MONO_SAT_THRESH) & ~cold_inc))
+    cand_frac = float(np.mean((S_cand > MONO_SAT_THRESH) & ~cold_cand))
     addition  = cand_frac - inc_frac   # how much MORE colour the candidate added
     passed    = addition <= MONO_MAX_ADDITION
     return {

@@ -17,6 +17,7 @@ const navItems: Array<{ href: string; label: string }> = [
   { href: "/token", label: "Token" },
   { href: "/studio", label: "Studio" },
   { href: "/research", label: "Research" },
+  { href: "/protocols", label: "Protocols" },
   { href: "/universe", label: "World" },
   { href: "/about", label: "About" },
   { href: "/connect", label: "Contact" },

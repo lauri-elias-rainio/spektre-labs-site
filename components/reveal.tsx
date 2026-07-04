@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ElementType, type ReactNode } from "react";
 
 /*
   Reveal — Apple-grade scroll reveal. Wraps content and fades/rises it into view once,
@@ -14,12 +14,14 @@ export function Reveal({
   delay = 0,
   className = "",
   y = 18,
+  style,
 }: {
   children: ReactNode;
   as?: ElementType;
   delay?: number;
   className?: string;
   y?: number;
+  style?: CSSProperties;
 }) {
   const ref = useRef<HTMLElement>(null);
   const [shown, setShown] = useState(false);
@@ -51,6 +53,7 @@ export function Reveal({
       ref={ref}
       className={className}
       style={{
+        ...style,
         opacity: shown ? 1 : 0,
         transform: shown ? "translateY(0)" : `translateY(${y}px)`,
         transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,

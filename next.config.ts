@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async headers() {
+    // The x402 discovery descriptor is machine-read — serve it as JSON so
+    // crawlers and agent tooling parse it, not as octet-stream.
+    return [
+      {
+        source: "/.well-known/x402",
+        headers: [
+          { key: "Content-Type", value: "application/json; charset=utf-8" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
+    ];
+  },
   async redirects() {
     // One canonical host (spektre.org). Every alias 308s there — no
     // duplicate-content hosts serving 200.

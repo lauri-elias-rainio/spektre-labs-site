@@ -1,0 +1,82 @@
+{
+  "x402_version": 1,
+  "generator": "spektre.sigma-attest",
+  "updated": "2026-07-04",
+  "resources": [
+    {
+      "resource_url": "https://sigmagate-864996675261.europe-north1.run.app/v1/attest/channel/{id}",
+      "price_usdc": 0.001,
+      "pay_to": "7oDgMfFRHyVVP7YQT6Kywe2Uj37rKWkpThFMpGQBzxyG",
+      "asset": "USDC",
+      "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "scheme": "exact",
+      "network": "solana-mainnet",
+      "non_custodial": true,
+      "kyc": false,
+      "method": "POST",
+      "description": "Proof-carrying \u03c3-attestation per call. POST an AI output; get back a portable ed25519-signed \u03c3-attestation (declared==realized \u27fa \u03c3=0) verifiable OFFLINE with zero shared secret. No account, no KYC; USDC settles direct to a self-custody wallet.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "claim": {
+            "type": "string",
+            "description": "the AI output / declared bytes to attest"
+          },
+          "realized": {
+            "type": "string",
+            "description": "evidence bytes; defaults to claim \u2192 \u03c3=0 self-check"
+          },
+          "kind": {
+            "type": "string",
+            "default": "ai_output"
+          }
+        },
+        "required": [
+          "claim"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "sigma": {
+            "type": "number",
+            "description": "declared\u2212realized distance; 0 = 1=1 PASS"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "HALT"
+            ]
+          },
+          "signature": {
+            "type": "string",
+            "description": "ed25519 signature over the exact bytes"
+          },
+          "pubkey": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string",
+            "description": "portable JWT-shaped attestation, offline-verifiable"
+          },
+          "output_sha256": {
+            "type": "string"
+          }
+        }
+      },
+      "payment_flow": {
+        "402": "POST with no active frame \u2192 HTTP 402 + Solana Pay invoice keyed to your channel",
+        "pay": "send 0.001 USDC (per-call, or one frame block) to pay_to on Solana",
+        "retry": "re-POST with ?tx=<signature> \u2192 frame activates on-chain \u2192 signed \u03c3-attestation returned"
+      },
+      "free_endpoints": {
+        "spec": "https://sigmagate-864996675261.europe-north1.run.app/attest/spec",
+        "verify": "https://sigmagate-864996675261.europe-north1.run.app/attest/verify",
+        "demo": "https://sigmagate-864996675261.europe-north1.run.app/verify"
+      },
+      "protocol": "sigma-attest",
+      "version": "1"
+    }
+  ]
+}

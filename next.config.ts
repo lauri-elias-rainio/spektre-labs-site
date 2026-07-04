@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
           { key: "Access-Control-Allow-Origin", value: "*" },
         ],
       },
+      // Reference verifiers are source you read and drop in — serve them as
+      // plain text (so a browser shows them) and allow cross-origin fetch.
+      {
+        source: "/verify.:ext(js|py)",
+        headers: [
+          { key: "Content-Type", value: "text/plain; charset=utf-8" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
     ];
   },
   async redirects() {

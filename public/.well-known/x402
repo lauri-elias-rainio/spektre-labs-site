@@ -78,5 +78,11 @@
       "protocol": "sigma-attest",
       "version": "1"
     }
-  ]
+  ],
+  "reference_verifiers": {
+    "note": "zero-dependency, offline sigma-attest verifiers \u2014 three independent implementations agree byte-for-byte on the same token; a signature proves provenance, not truth",
+    "python": "https://spektre.org/verify.py",
+    "javascript": "https://spektre.org/verify.js",
+    "spec": "https://sigmagate-864996675261.europe-north1.run.app/attest/spec"
+  }
 }

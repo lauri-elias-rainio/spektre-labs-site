@@ -21,6 +21,20 @@ const nextConfig: NextConfig = {
           { key: "Access-Control-Allow-Origin", value: "*" },
         ],
       },
+      {
+        source: "/sigma-attest-spec.md",
+        headers: [
+          { key: "Content-Type", value: "text/plain; charset=utf-8" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
+      {
+        source: "/.well-known/sigma-attest-vectors.json",
+        headers: [
+          { key: "Content-Type", value: "application/json; charset=utf-8" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
     ];
   },
   async redirects() {

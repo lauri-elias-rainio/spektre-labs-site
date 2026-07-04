@@ -132,12 +132,28 @@ export default function ReceiptPage() {
             verify.js — zero npm
           </a>
           <a
+            href="/sigma-attest-spec.md"
+            className="label border border-[var(--line-soft)] px-4 py-2 text-[var(--fg-dim)] transition-colors hover:border-[var(--line-strong)]"
+          >
+            spec — the format
+          </a>
+          <a
+            href="/.well-known/sigma-attest-vectors.json"
+            className="label border border-[var(--line-soft)] px-4 py-2 text-[var(--fg-dim)] transition-colors hover:border-[var(--line-strong)]"
+          >
+            6 conformance vectors
+          </a>
+          <a
             href="/.well-known/x402"
             className="label border border-[var(--line-soft)] px-4 py-2 text-[var(--fg-dim)] transition-colors hover:border-[var(--line-strong)]"
           >
             /.well-known/x402 — discovery
           </a>
         </div>
+        <p className="mt-6 max-w-[42rem] text-sm leading-relaxed text-[var(--fg-mute)]">
+          Six vectors — one valid, five that must be rejected. Any implementation that
+          agrees on all six is conformant; both reference verifiers do.
+        </p>
       </Section>
 
       <Section title="Honest scope">

@@ -1,0 +1,45 @@
+{
+  "protocol": "sigma-attest",
+  "version": 1,
+  "attester_pubkey_hex": "b9eb6866ebbfa5638c33741ba45d6d2e938d949f7eb90d7ed40f0a8cbe3ef887",
+  "canonical_json": "json.dumps(payload, sort_keys=True, separators=(',',':'), ensure_ascii=False) UTF-8",
+  "verify": "ed25519_verify(sig, canonical_bytes(payload), payload.attester) AND transmitted==canonical",
+  "vectors": [
+    {
+      "name": "valid",
+      "expect_valid": true,
+      "token": "eyJhdHRlc3RlciI6ImI5ZWI2ODY2ZWJiZmE1NjM4YzMzNzQxYmE0NWQ2ZDJlOTM4ZDk0OWY3ZWI5MGQ3ZWQ0MGYwYThjYmUzZWY4ODciLCJjbGFpbV9zaGEyNTYiOiJlOWMwMmY2ZjlkMWM1MmEzNWFhMWE4Y2Q2ZDA3YjU2ZWQ3NTE2YjZlY2YzNzcwOGU0NWMyOTliZmY3ZTEzYWViIiwiZ2F0ZSI6MC4zNCwia2luZCI6ImNvbmZvcm1hbmNlIiwibm90ZSI6ImF0dGVzdHMgYSBkZWNsYXJlZD09cmVhbGl6ZWQgQ0hFQ0sgb3ZlciB0aGVzZSBieXRlLWhhc2hlcyDigJQgTk9UIGFic29sdXRlIHRydXRoIG9mIHRoZSBjbGFpbSIsInJlYWxpemVkX3NoYTI1NiI6ImJiYjNhZTQzMzFmNzRjY2IzMjAwMDFmYzA0YTZkMTkyZmEwMTc1MWI4NjJkNjlhM2MxOTZiMTVjMTBmZWY1ZTIiLCJzaWdtYSI6MC45ODk3LCJ0cyI6IjIwMjYtMDctMDRUMTk6MzQ6MjUrMDA6MDAiLCJ0eXAiOiJzaWdtYS1hdHRlc3QiLCJ2IjoxLCJ2ZXJkaWN0IjoiSEFMVCJ9.rTDEggvdP1AHFLCMI0jacwGxD0WsvCWCdWcB2XxrvO583vFFqXomSaKSfLhquVFssWJAnqsMJ3rRJtbZINn2Cw",
+      "note": "correctly signed canonical token — the only vector that must verify True"
+    },
+    {
+      "name": "tampered_signature",
+      "expect_valid": false,
+      "token": "eyJhdHRlc3RlciI6ImI5ZWI2ODY2ZWJiZmE1NjM4YzMzNzQxYmE0NWQ2ZDJlOTM4ZDk0OWY3ZWI5MGQ3ZWQ0MGYwYThjYmUzZWY4ODciLCJjbGFpbV9zaGEyNTYiOiJlOWMwMmY2ZjlkMWM1MmEzNWFhMWE4Y2Q2ZDA3YjU2ZWQ3NTE2YjZlY2YzNzcwOGU0NWMyOTliZmY3ZTEzYWViIiwiZ2F0ZSI6MC4zNCwia2luZCI6ImNvbmZvcm1hbmNlIiwibm90ZSI6ImF0dGVzdHMgYSBkZWNsYXJlZD09cmVhbGl6ZWQgQ0hFQ0sgb3ZlciB0aGVzZSBieXRlLWhhc2hlcyDigJQgTk9UIGFic29sdXRlIHRydXRoIG9mIHRoZSBjbGFpbSIsInJlYWxpemVkX3NoYTI1NiI6ImJiYjNhZTQzMzFmNzRjY2IzMjAwMDFmYzA0YTZkMTkyZmEwMTc1MWI4NjJkNjlhM2MxOTZiMTVjMTBmZWY1ZTIiLCJzaWdtYSI6MC45ODk3LCJ0cyI6IjIwMjYtMDctMDRUMTk6MzQ6MjUrMDA6MDAiLCJ0eXAiOiJzaWdtYS1hdHRlc3QiLCJ2IjoxLCJ2ZXJkaWN0IjoiSEFMVCJ9.rTDEggvdA1AHFLCMI0jacwGxD0WsvCWCdWcB2XxrvO583vFFqXomSaKSfLhquVFssWJAnqsMJ3rRJtbZINn2Cw",
+      "note": "sig segment mutated — ed25519 math must reject"
+    },
+    {
+      "name": "tampered_payload",
+      "expect_valid": false,
+      "token": "eyJhdHRlc3RlciI6ImI5ZWI2ODY2ZWJiZmE1NjM4YzMzNzQxYmE0NWQ2ZDJlOTM4ZDk0OWY3ZWI5MGQ3ZWQ0MGYwYThjYmUzZWY4ODciLCJjbGFpbV9zaGEyNTYiOiJlOWMwMmY2ZjlkMWM1MmEzNWFhMWE4Y2Q2ZDA3YjU2ZWQ3NTE2YjZlY2YzNzcwOGU0NWMyOTliZmY3ZTEzYWViIiwiZ2F0ZSI6MC4zNCwia2luZCI6ImNvbmZvcm1hbmNlIiwibm90ZSI6ImF0dGVzdHMgYSBkZWNsYXJlZD09cmVhbGl6ZWQgQ0hFQ0sgb3ZlciB0aGVzZSBieXRlLWhhc2hlcyDigJQgTk9UIGFic29sdXRlIHRydXRoIG9mIHRoZSBjbGFpbSIsInJlYWxpemVkX3NoYTI1NiI6ImJiYjNhZTQzMzFmNzRjY2IzMjAwMDFmYzA0YTZkMTkyZmEwMTc1MWI4NjJkNjlhM2MxOTZiMTVjMTBmZWY1ZTIiLCJzaWdtYSI6MC4wLCJ0cyI6IjIwMjYtMDctMDRUMTk6MzQ6MjUrMDA6MDAiLCJ0eXAiOiJzaWdtYS1hdHRlc3QiLCJ2IjoxLCJ2ZXJkaWN0IjoiSEFMVCJ9.rTDEggvdP1AHFLCMI0jacwGxD0WsvCWCdWcB2XxrvO583vFFqXomSaKSfLhquVFssWJAnqsMJ3rRJtbZINn2Cw",
+      "note": "payload bytes changed, old signature reused — must reject"
+    },
+    {
+      "name": "wrong_attester_key",
+      "expect_valid": false,
+      "token": "eyJhdHRlc3RlciI6ImY0YmM2NmNlZjJjODUzYjlkYzgwYjU4N2E3ZmQwODczM2YxMzBiZTk2M2EzYzI3MjUzNzA3ZWUwY2Q4YmFkZmQiLCJjbGFpbV9zaGEyNTYiOiJlOWMwMmY2ZjlkMWM1MmEzNWFhMWE4Y2Q2ZDA3YjU2ZWQ3NTE2YjZlY2YzNzcwOGU0NWMyOTliZmY3ZTEzYWViIiwiZ2F0ZSI6MC4zNCwia2luZCI6ImNvbmZvcm1hbmNlIiwibm90ZSI6ImF0dGVzdHMgYSBkZWNsYXJlZD09cmVhbGl6ZWQgQ0hFQ0sgb3ZlciB0aGVzZSBieXRlLWhhc2hlcyDigJQgTk9UIGFic29sdXRlIHRydXRoIG9mIHRoZSBjbGFpbSIsInJlYWxpemVkX3NoYTI1NiI6ImJiYjNhZTQzMzFmNzRjY2IzMjAwMDFmYzA0YTZkMTkyZmEwMTc1MWI4NjJkNjlhM2MxOTZiMTVjMTBmZWY1ZTIiLCJzaWdtYSI6MC45ODk3LCJ0cyI6IjIwMjYtMDctMDRUMTk6MzQ6MjUrMDA6MDAiLCJ0eXAiOiJzaWdtYS1hdHRlc3QiLCJ2IjoxLCJ2ZXJkaWN0IjoiSEFMVCJ9.rTDEggvdP1AHFLCMI0jacwGxD0WsvCWCdWcB2XxrvO583vFFqXomSaKSfLhquVFssWJAnqsMJ3rRJtbZINn2Cw",
+      "note": "attester replaced with a different valid pubkey — signature must not verify under it"
+    },
+    {
+      "name": "non_canonical_payload",
+      "expect_valid": false,
+      "token": "eyJhdHRlc3RlciI6ICJiOWViNjg2NmViYmZhNTYzOGMzMzc0MWJhNDVkNmQyZTkzOGQ5NDlmN2ViOTBkN2VkNDBmMGE4Y2JlM2VmODg3IiwgImNsYWltX3NoYTI1NiI6ICJlOWMwMmY2ZjlkMWM1MmEzNWFhMWE4Y2Q2ZDA3YjU2ZWQ3NTE2YjZlY2YzNzcwOGU0NWMyOTliZmY3ZTEzYWViIiwgImdhdGUiOiAwLjM0LCAia2luZCI6ICJjb25mb3JtYW5jZSIsICJub3RlIjogImF0dGVzdHMgYSBkZWNsYXJlZD09cmVhbGl6ZWQgQ0hFQ0sgb3ZlciB0aGVzZSBieXRlLWhhc2hlcyDigJQgTk9UIGFic29sdXRlIHRydXRoIG9mIHRoZSBjbGFpbSIsICJyZWFsaXplZF9zaGEyNTYiOiAiYmJiM2FlNDMzMWY3NGNjYjMyMDAwMWZjMDRhNmQxOTJmYTAxNzUxYjg2MmQ2OWEzYzE5NmIxNWMxMGZlZjVlMiIsICJzaWdtYSI6IDAuOTg5NywgInRzIjogIjIwMjYtMDctMDRUMTk6MzQ6MjUrMDA6MDAiLCAidHlwIjogInNpZ21hLWF0dGVzdCIsICJ2IjogMSwgInZlcmRpY3QiOiAiSEFMVCJ9.rTDEggvdP1AHFLCMI0jacwGxD0WsvCWCdWcB2XxrvO583vFFqXomSaKSfLhquVFssWJAnqsMJ3rRJtbZINn2Cw",
+      "note": "signature valid over canonical bytes but transmitted encoding is non-canonical — reject"
+    },
+    {
+      "name": "malformed_structure",
+      "expect_valid": false,
+      "token": "not-a-valid-token",
+      "note": "structurally invalid — reject without raising"
+    }
+  ]
+}

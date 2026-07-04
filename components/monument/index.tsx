@@ -56,7 +56,19 @@ export default function MonumentHero() {
           getActive: () => visible && tabVisible,
         });
       } catch { handle = null; }
-      if (!handle && !disposed) setTier("prism"); // WebGL2 prism takes the hero
+
+      // WebGL2 fallback — full scene for Safari / Firefox
+      if (!handle && !disposed) {
+        try {
+          const { createMonumentGL } = await import("./engine-gl");
+          handle = await createMonumentGL(canvas, {
+            onLive: () => { if (!disposed) setTier("monument"); },
+            getActive: () => visible && tabVisible,
+          });
+        } catch { handle = null; }
+      }
+
+      if (!handle && !disposed) setTier("prism"); // SIGIL PRISM last resort
     })();
 
     return () => {

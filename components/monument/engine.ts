@@ -33,14 +33,27 @@ export interface MonumentOptions {
   getActive: () => boolean;
 }
 
-/* ══ ART DIRECTION — tournament config (swapped per variant) ══ */
-const AD = {
-  camY: 8.6, camZ: 76.0, lookUp: 0.235,      // camera
-  fogT: 0.040,                                // atmosphere
-  beamK: 760.0, beamSweep: 0.40,              // the signal
-  seaAmp: 1.0, foamK: 1.0,                    // the storm
-  introBeamAt: 1.3, introSeaAt: 0.4,          // choreography (s)
-} as const;
+/* ══ ART DIRECTION — runtime-tunable (the FOUNDRY's control surface).
+   Defaults = current champion; ?ad={"camZ":70,...} overrides per load.
+   WGSL interpolates these at module load — no rebuild per candidate. ══ */
+const AD_DEFAULT = {
+  camY: 8.0, camZ: 64.0, lookUp: 0.255,
+  fogT: 0.040,
+  beamK: 760.0, beamSweep: 0.40,
+  seaAmp: 1.0, foamK: 1.0,
+  introBeamAt: 1.3, introSeaAt: 0.4,
+  seaBody: 0.018, sssK: 0.105, grainA: 0.034, exposure: 1.05, haloK: 0.05,
+};
+function resolveAD(): typeof AD_DEFAULT {
+  if (typeof window === "undefined") return AD_DEFAULT;
+  try {
+    const q = new URLSearchParams(window.location.search).get("ad");
+    if (!q) return AD_DEFAULT;
+    const o = JSON.parse(q);
+    return { ...AD_DEFAULT, ...o };
+  } catch { return AD_DEFAULT; }
+}
+const AD = resolveAD();
 
 const RES_SCALE = 1.0; // full internal resolution — CAS + EMA supersample
 
@@ -353,10 +366,14 @@ fn beamDir(t : f32) -> vec3f {
   let th = t * ${AD.beamSweep};
   return normalize(vec3f(cos(th), -0.055, sin(th)));
 }
+/* the mirror lobe — bilateral optics: symmetry is held in TIME, not luck */
+fn beamDir2(t : f32) -> vec3f {
+  let th = t * ${AD.beamSweep};
+  return normalize(vec3f(-cos(th), -0.055, sin(th)));
+}
 
 /* analytic pencil scatter — closest approach between ray and beam line */
-fn beamScatter(ro : vec3f, rd : vec3f, tmaxv : f32, t : f32) -> f32 {
-  let bd = beamDir(t);
+fn beamScatterD(ro : vec3f, rd : vec3f, tmaxv : f32, t : f32, bd : vec3f) -> f32 {
   let w0 = ro - LANTERN;
   let b = dot(rd, bd);
   let d0 = dot(rd, w0);
@@ -376,8 +393,14 @@ fn beamScatter(ro : vec3f, rd : vec3f, tmaxv : f32, t : f32) -> f32 {
   let mu = dot(rd, bd);
   let g = 0.5;
   let ph = (1.0 - g * g) / (4.0 * PI * pow(1.0 + g * g - 2.0 * g * mu, 1.5));
-  // storm spray keeps the beam readable even where height-fog thins
-  return core * att * ph * (fogDensity(pr.y) + 0.009) * ${AD.beamK};
+  // storm spray keeps the beam readable even where height-fog thins;
+  // noise modulation — light through storm air, not vacuum (tribunal fix)
+  let airn = 0.75 + 0.25 * vnoise(pr.xz * 0.3 + vec2f(t * 0.6, 0.0));
+  return core * att * ph * (fogDensity(pr.y) + 0.009) * airn * ${AD.beamK};
+}
+fn beamScatter(ro : vec3f, rd : vec3f, tmaxv : f32, t : f32) -> f32 {
+  return beamScatterD(ro, rd, tmaxv, t, beamDir(t))
+       + beamScatterD(ro, rd, tmaxv, t, beamDir2(t));
 }
 
 /* ---- storm atmosphere — mist hugs the sea, the summit stays clear ---- */
@@ -471,10 +494,11 @@ fn waterTint(pathLen : f32) -> vec3f {
 
 /* the lantern's spot irradiance at a point (sector-gated inverse-square) */
 fn lanternIrr(p : vec3f, t : f32) -> f32 {
-  let bd = beamDir(t);
   let dl = p - LANTERN;
   let dist2 = dot(dl, dl);
-  let gate = pow(max(dot(dl / sqrt(dist2), bd), 0.0), 380.0);
+  let dn = dl / sqrt(dist2);
+  let gate = pow(max(dot(dn, beamDir(t)), 0.0), 380.0)
+           + pow(max(dot(dn, beamDir2(t)), 0.0), 380.0);
   return gate * 620.0 / (1.0 + dist2 * 0.9);
 }
 
@@ -602,7 +626,7 @@ fn fs(in : VOut) -> @location(0) vec4f {
     let depthG = smoothstep(0.0, 4.5, p.y);
     let path = mix(3.4, 0.75, depthG);          // optical thickness (world u)
     let tint = waterTint(path);
-    var c = tint * 0.011 * (0.48 + 0.52 * n.y);
+    var c = tint * ${AD.seaBody} * (0.48 + 0.52 * n.y);
     let lKey = normalize(vec3f(0.0, L_Y, L_Z) - p);
     c += tint * 0.0062 * max(dot(n, lKey), 0.0);
     let sideF = (1.0 - n.y) * smoothstep(-0.1, 0.5, n.y) * 0.42;
@@ -611,15 +635,20 @@ fn fs(in : VOut) -> @location(0) vec4f {
     // backlit crest subsurface — thin path transmits the Atlantean cyan
     let crestH = smoothstep(1.4, 4.7, p.y);
     let backlit = pow(max(dot(rd, lKey), 0.0), 2.0) * 0.5 + 0.5;
-    c += waterTint(0.55) * 0.075 * crestH * backlit * (0.38 + 0.62 * (1.0 - NoV));
+    c += waterTint(0.55) * ${AD.sssK} * crestH * backlit * (0.38 + 0.62 * (1.0 - NoV));
 
     // Jacobian-proxy foam — compression + steepness + crest, noise-broken
     let slope = length(gH.yz);
     let foamJ = clamp(1.0 - gH.w, 0.0, 1.0);
     let foamS = smoothstep(0.26, 0.74, slope);
     let foamH = smoothstep(1.9, 4.8, p.y);
+    // the crash collar — storm breaks around the tower (contact = weight)
+    let axisR = length(p.xz);
+    let collar = smoothstep(3.2, 0.0, abs(axisR - 5.6)) * 0.85
+               * (0.5 + 0.5 * vnoise(vec2f(atan2(p.z, p.x) * 4.0, time * 0.7)));
+    let contactAO = 1.0 - smoothstep(7.0, 4.4, axisR) * 0.45; // pooling shadow
     let brup = swVnoise2(p.xz * 0.45 + vec2f(0.0, time * 0.22));
-    let foam = clamp((foamH * ${0.9 * AD.foamK} + foamS * ${0.55 * AD.foamK} + foamJ * ${0.3 * AD.foamK}) * (0.28 + 0.72 * brup), 0.0, 1.0);
+    let foam = clamp((foamH * ${0.9 * AD.foamK} + foamS * ${0.55 * AD.foamK} + foamJ * ${0.3 * AD.foamK}) * (0.28 + 0.72 * brup) + collar, 0.0, 1.0);
     let fLamb = clamp(dot(n, lKey) * 0.62 + 0.09, 0.0, 1.0);
     let fCol = vec3f(0.13, 0.132, 0.142) * fLamb;
     c = mix(c, fCol, foam);
@@ -655,7 +684,7 @@ fn fs(in : VOut) -> @location(0) vec4f {
       c += SIGNAL * (gl * 1.6 + fo) * irr * introBeam(u.acc.w);
     }
 
-    col = c * transmittance(ro, rd, tw) * (0.25 + 0.75 * introSea(u.acc.w));
+    col = c * contactAO * transmittance(ro, rd, tw) * (0.25 + 0.75 * introSea(u.acc.w));
   } else {
     col = env(rd);
   }
@@ -732,7 +761,22 @@ fn fs(in : VOut) -> @location(0) vec4f {
     col += vec3f(0.812, 0.890, 1.0) * accR * facing * 0.05;
   }
 
-  col = aces(col * 1.05);
+  // halation — bright sources bleed into storm air (8-tap cross, threshold)
+  {
+    let px2 = 3.0 / u.res.xy;
+    var halo = vec3f(0.0);
+    halo += max(textureSampleLevel(accTex, smp, suv + vec2f(px2.x, 0.0), 0.0).rgb - 0.5, vec3f(0.0));
+    halo += max(textureSampleLevel(accTex, smp, suv - vec2f(px2.x, 0.0), 0.0).rgb - 0.5, vec3f(0.0));
+    halo += max(textureSampleLevel(accTex, smp, suv + vec2f(0.0, px2.y), 0.0).rgb - 0.5, vec3f(0.0));
+    halo += max(textureSampleLevel(accTex, smp, suv - vec2f(0.0, px2.y), 0.0).rgb - 0.5, vec3f(0.0));
+    halo += max(textureSampleLevel(accTex, smp, suv + px2, 0.0).rgb - 0.5, vec3f(0.0));
+    halo += max(textureSampleLevel(accTex, smp, suv - px2, 0.0).rgb - 0.5, vec3f(0.0));
+    halo += max(textureSampleLevel(accTex, smp, suv + vec2f(px2.x, -px2.y), 0.0).rgb - 0.5, vec3f(0.0));
+    halo += max(textureSampleLevel(accTex, smp, suv + vec2f(-px2.x, px2.y), 0.0).rgb - 0.5, vec3f(0.0));
+    col += halo * ${AD.haloK};
+  }
+
+  col = aces(col * ${AD.exposure});
 
   // shadow neutrality — deep tones carry NO hue (OLED shadow is colorless)
   let lum2 = dot(col, vec3f(0.2126, 0.7152, 0.0722));
@@ -759,7 +803,7 @@ fn fs(in : VOut) -> @location(0) vec4f {
     col = clamp(col * (1.0 + 4.0 * k) - (nN + nS + nW + nE) * k, mn, mx);
   }
 
-  let gr = (hash12(suv * u.res.xy + vec2f(u.cam.w * 61.7, u.cam.w * 123.3)) - 0.5) * 0.02;
+  let gr = (hash12(suv * u.res.xy + vec2f(u.cam.w * 61.7, u.cam.w * 123.3)) - 0.5) * ${AD.grainA};
   col = max(col + vec3f(gr) * (0.25 + 0.75 * col.g), vec3f(0.0));
 
   let alpha = u.acc.z;

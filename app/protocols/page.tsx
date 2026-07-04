@@ -9,7 +9,7 @@ import { createPageMetadata } from "@/lib/site";
 export const metadata: Metadata = createPageMetadata({
   title: "Protocols",
   description:
-    "Four open protocol specifications from Spektre Labs. VRP, CRP, SID, VTC — infrastructure anyone implements.",
+    "Five open protocol specifications from Spektre Labs. VRP, CRP, SID, VDP, VTC — infrastructure anyone implements.",
   path: "/protocols",
 });
 
@@ -59,6 +59,18 @@ const PROTOCOLS = [
   },
   {
     index: "04",
+    id: "VDP",
+    name: "Verified Delta Protocol",
+    layer: "Work · Trust routing",
+    problem: "Compose work from machines you do not trust — the artifact carries its own admission test.",
+    statusA: { label: "SPEC + KERNEL RUNNING", exists: true },
+    statusB: { label: "NETWORK: ROADMAP", exists: false },
+    description:
+      "A minimal envelope for AI-era work: task coordinate, artifact hash, a deterministic gate that travels with the work, a champion-relative verdict, and an ed25519 signature. Only verified deltas are admitted — no self-graded progress, any substrate may produce, anyone may verify. The reference loop runs in this repository today: a renderer searched by machine against a nine-metric pixel gate, every generation ledgered. A multi-party network is a roadmap item, not a claim.",
+    href: "https://github.com/spektre-labs",
+  },
+  {
+    index: "05",
     id: "VTC",
     name: "Verifiable Transaction Chain",
     layer: "Trust · Verification",
@@ -79,7 +91,7 @@ const JSONLD = {
   "@type": "TechArticle",
   name: "Spektre Labs Open Protocol Specifications",
   description:
-    "Four open protocol specifications: VRP (value routing), CRP (capability routing), SID (selective identity disclosure), VTC (verifiable transaction chain).",
+    "Five open protocol specifications: VRP (value routing), CRP (capability routing), SID (selective identity disclosure), VDP (verified delta — work routing), VTC (verifiable transaction chain).",
   author: {
     "@type": "Organization",
     name: "Spektre Labs",
@@ -117,7 +129,7 @@ export default function ProtocolsPage() {
         {/* ── Header ────────────────────────────────────────────────── */}
         <PageHeader
           title="Protocols"
-          description="Four open specifications. No single deployment owns them."
+          description="Five open specifications. No single deployment owns them."
         />
 
         {/* ── § 1 · THESIS ──────────────────────────────────────────── */}
@@ -136,7 +148,7 @@ export default function ProtocolsPage() {
                 </h2>
                 {/* Body: 1.02rem leading-[1.85] — matches existing pattern */}
                 <p className="mt-6 max-w-[40rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
-                  These four are open specifications anyone can implement. Spektre Labs
+                  These five are open specifications anyone can implement. Spektre Labs
                   authors the spec and the reference kernel. Nobody owns the protocol.
                   No permission required to build on it.
                 </p>

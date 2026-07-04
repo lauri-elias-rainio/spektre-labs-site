@@ -83,7 +83,11 @@ export function Navigation({ className }: { className?: string }) {
         {/* Mobile nav */}
         <nav
           aria-label="Primary mobile"
-          className="mt-3 flex gap-5 overflow-x-auto border-t border-[var(--line-soft)] pt-3 sm:hidden"
+          className="mt-3 flex gap-5 overflow-x-auto border-t border-[var(--line-soft)] pt-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:hidden"
+          style={{
+            maskImage: "linear-gradient(90deg, #000 0%, #000 86%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 86%, transparent 100%)",
+          }}
         >
           {navItems.map((item) => (
             <Link

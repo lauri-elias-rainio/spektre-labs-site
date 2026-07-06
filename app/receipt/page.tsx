@@ -111,11 +111,12 @@ export default function ReceiptPage() {
       <Section title="Verify it anywhere — the protocol is open">
         <ProseBlock className="max-w-[42rem]">
           <p>
-            The verifier is not ours to hold. Two single-file, zero-dependency reference
-            implementations verify any sigma-attest receipt offline — one pure Python, one
-            pure JavaScript, each ed25519 from scratch. Three independent implementations
-            agree byte-for-byte on the same token; that is what makes it a protocol and not
-            a service.
+            The verifier is not ours to hold. Single-file, zero-dependency reference
+            implementations verify any sigma-attest receipt offline — pure Python, pure
+            JavaScript, and C to the metal, each ed25519 from scratch. Four independent
+            implementations agree byte-for-byte on the same token, and the C core compiles
+            freestanding — no OS — so it runs on any device from a microcontroller to a
+            browser to a server. That is what makes it a protocol and not a service.
           </p>
         </ProseBlock>
         <div className="mt-6 flex flex-wrap gap-4">
@@ -130,6 +131,12 @@ export default function ReceiptPage() {
             className="label border border-[var(--line-soft)] px-4 py-2 text-[var(--fg-dim)] transition-colors hover:border-[var(--line-strong)]"
           >
             verify.js — zero npm
+          </a>
+          <a
+            href="/verify.c"
+            className="label border border-[var(--line-soft)] px-4 py-2 text-[var(--fg-dim)] transition-colors hover:border-[var(--line-strong)]"
+          >
+            verify.c — to the metal
           </a>
           <a
             href="/sigma-attest-spec.md"

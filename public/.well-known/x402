@@ -80,11 +80,12 @@
     }
   ],
   "reference_verifiers": {
-    "note": "zero-dependency, offline sigma-attest verifiers \u2014 three independent implementations agree byte-for-byte on the same token; a signature proves provenance, not truth",
+    "note": "zero-dependency, offline sigma-attest verifiers \u2014 FOUR independent implementations (Python stdlib, JS/WebCrypto, pure-JS BigInt, and C to the metal) agree byte-for-byte on the same conformance vectors; runs on any device from a microcontroller to a browser to a server. A signature proves provenance, not truth",
     "python": "https://spektre.org/verify.py",
     "javascript": "https://spektre.org/verify.js",
     "spec": "https://spektre.org/sigma-attest-spec.md",
     "conformance_vectors": "https://spektre.org/.well-known/sigma-attest-vectors.json",
-    "conformance_note": "6 canonical vectors (1 valid + 5 must-reject); both reference verifiers pass all 6"
+    "conformance_note": "6 canonical vectors (1 valid + 5 must-reject); both reference verifiers pass all 6",
+    "c": "https://spektre.org/verify.c"
   }
 }

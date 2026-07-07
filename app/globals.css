@@ -511,3 +511,30 @@ code {
     }
   }
 }
+
+/* ============================================================
+   SCROLLBAR — thin platinum on OLED, non-intrusive.
+   Standard property first; webkit override for Blink/WebKit.
+   ============================================================ */
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: var(--metal-4) transparent;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--metal-4);
+  border-radius: 2px;
+  transition: background var(--t-micro) var(--ease);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--metal-3);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

@@ -5,7 +5,11 @@ import { CanonVideo } from "@/components/canon-video";
 import { Glyph } from "@/components/glyph";
 import { PageHeader } from "@/components/page-header";
 import { GuardDemo } from "@/components/guard-demo";
-import { ProductPanel, type ProductDimension } from "@/components/product-panel";
+import {
+  ProductPanel,
+  EndpointProbe,
+  type ProductDimension,
+} from "@/components/product-panel";
 import { Reveal } from "@/components/reveal";
 import { createPageMetadata } from "@/lib/site";
 
@@ -18,18 +22,53 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 /* ─────────────────────────────────────────────────────────────────
-   DIMENSIONS — left = right, declared = realized.
-   Only real, verifiable facts. No fabricated numbers.
+   PRODUCT DIMENSIONS — declared = realized, every cell verifiable.
+   No fabricated numbers. Values sourced from live source code.
 ────────────────────────────────────────────────────────────────── */
 const GUARD_DIMENSIONS = [
-  { label: "Status", value: "REAL · SHIPPING", accent: true },
-  { label: "Dependencies", value: "Zero" },
-  { label: "Runtime", value: "deterministic · in-process" },
-  { label: "Network", value: "None required" },
-  { label: "Model", value: "None required" },
-  { label: "License", value: "Open core" },
+  { label: "Status",       value: "REAL · SHIPPING", accent: true },
+  { label: "Dependencies", value: "Zero"                           },
+  { label: "Runtime",      value: "deterministic · in-process"    },
+  { label: "Network",      value: "None required"                  },
+  { label: "Model",        value: "None required"                  },
+  { label: "License",      value: "Open core"                     },
 ] as const;
 
+/* ─────────────────────────────────────────────────────────────────
+   LIVE ENDPOINTS — three surfaces that exist right now.
+   URLs pulled from production; they are the only claims made here.
+   Latency is never pre-loaded. Probe on demand → honest readout.
+────────────────────────────────────────────────────────────────── */
+const LIVE_ENDPOINTS = [
+  {
+    index: "01",
+    name: "sigma-collapse",
+    sub: "Cloud Run · europe-north1",
+    url: "https://sigma-collapse-985332749804.europe-north1.run.app/collapse",
+    description:
+      "Raw WebGPU σ-field — 262 k mirrored particles, σ measured on-GPU. The axiom rendered as a physics engine. Returns the collapse experience or JSON state.",
+  },
+  {
+    index: "02",
+    name: "btc-edge",
+    sub: "Cloud Run · europe-north1",
+    url: "https://btc-edge-985332749804.europe-north1.run.app/btc/fees",
+    description:
+      "Live Bitcoin mempool fee oracle — real-time sat/vB tiers and confirmation estimates. No model, no prediction. The chain's own state, routed.",
+  },
+  {
+    index: "03",
+    name: "guard · σ-coherence",
+    sub: "HuggingFace Space",
+    url: "https://swagletz-sigmagate.hf.space/check?text=sigma-gate-probe",
+    description:
+      "The hosted σ-coherence scoring endpoint. Permissionless. No signup. Pass text, receive verdict. Pay-per-call via x402 at 0.001 USDC on Solana.",
+  },
+] as const;
+
+/* ─────────────────────────────────────────────────────────────────
+   ARCHITECTURE LAYER ROWS
+────────────────────────────────────────────────────────────────── */
 const LAYER_ROWS = [
   {
     index: "01",
@@ -53,6 +92,9 @@ const LAYER_ROWS = [
   },
 ] as const;
 
+/* ─────────────────────────────────────────────────────────────────
+   CODE SNIPPETS
+────────────────────────────────────────────────────────────────── */
 const GUARD_CODE_SNIPPET = `from guard import guard
 
 result = guard("Here is the key: ghp_16C7e42F292c6912E7710c838347Ae178B4a")
@@ -79,6 +121,9 @@ curl "https://swagletz-sigmagate.hf.space/check?text=your+text"
 # 3 · pay 0.001 USDC on Solana, re-call with the signature
 curl "…/check?text=your+text&tx=<solana_signature>"   # → σ-score`;
 
+/* ─────────────────────────────────────────────────────────────────
+   DESIGN PRINCIPLES
+────────────────────────────────────────────────────────────────── */
 const DESIGN_PRINCIPLES = [
   {
     glyph: "Deterministic.",
@@ -103,9 +148,8 @@ const DESIGN_PRINCIPLES = [
 export default function SystemsPage() {
   return (
     <div>
-      {/* ── Header — the platinum lattice glimmers through the void
-             behind it (texture, not an embed): heavy radial mask into
-             OLED so only the header's halo reveals the circuitry. ───── */}
+
+      {/* ── Header — platinum lattice behind void ─────────────────── */}
       <div className="relative -mx-6 -mt-10 overflow-hidden px-6 pb-6 pt-10 sm:-mx-10 sm:px-10 sm:pt-14 lg:-mx-14 lg:px-14 lg:pt-16">
         <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
           <CanonVideo
@@ -129,7 +173,7 @@ export default function SystemsPage() {
         />
       </div>
 
-      {/* ── § 1 · AXIOM STATEMENT ───────────────────────────────── */}
+      {/* ── § 1 · AXIOM STATEMENT ─────────────────────────────────── */}
       <section className="relative mt-24 overflow-hidden sm:mt-32 lg:mt-40">
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>
           <Glyph variant="seal" size={340} strokeOpacity={0.06} />
@@ -163,7 +207,45 @@ export default function SystemsPage() {
         <div className="rule" />
       </section>
 
-      {/* ── § 2 · PRODUCT PANEL — guard (open core) ─────────────── */}
+      {/* ── § 1.5 · LIVE ENDPOINTS — instrument panel ─────────────── */}
+      <section className="mt-24 sm:mt-32 lg:mt-40">
+        <Reveal delay={0}>
+          <div className="mb-14 grid gap-6 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-4">
+              <p className="label mb-4 text-[var(--fg-faint)]">Systems · Live · Three surfaces</p>
+              <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
+                Running<br />right now.
+              </h2>
+            </div>
+            <div className="lg:col-span-7 lg:col-start-6 flex flex-col justify-end">
+              <p className="text-[1.02rem] leading-[1.85] text-[var(--fg-mute)] max-w-[38rem]">
+                Three live endpoints. Each returns real data. Probe on demand —
+                latency is measured at click, never pre-loaded. CORS-blocked endpoints
+                open directly in a new tab.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Endpoint rows */}
+        <div className="space-y-0">
+          {LIVE_ENDPOINTS.map((ep, i) => (
+            <Reveal key={ep.index} delay={i * 80}>
+              <EndpointProbe
+                index={ep.index}
+                name={ep.name}
+                sub={ep.sub}
+                url={ep.url}
+                description={ep.description}
+              />
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="rule mt-0" />
+      </section>
+
+      {/* ── § 2 · PRODUCT PANEL — guard (open core) ──────────────── */}
       <section className="mt-24 sm:mt-32 lg:mt-40">
         <Reveal delay={0}>
           <div className="mb-10 flex items-baseline justify-between gap-6">
@@ -206,34 +288,35 @@ export default function SystemsPage() {
         />
       </section>
 
-      {/* ── § 2.5 · TRY THE GATE — live, in-browser ─────────────── */}
+      {/* ── § 2.5 · GATE DEMO — lab instrument centerpiece ────────── */}
       <section className="mt-32 sm:mt-44 lg:mt-52">
         <div className="rule mb-14" />
+
         <Reveal delay={0}>
-          <div className="mb-10 grid gap-6 lg:grid-cols-12 lg:gap-14">
+          <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-4">
-              <p className="label mb-4 text-[var(--fg-faint)]">Proof · Try it</p>
+              <p className="label mb-4 text-[var(--fg-faint)]">Proof · Gate · Live</p>
               <h2 className="text-[1.75rem] font-semibold tracking-[-0.03em] leading-[1.08] text-[var(--fg)] sm:text-[2.2rem]">
                 Declared,<br />then realized.
               </h2>
             </div>
             <div className="lg:col-span-8">
               <p className="max-w-[34rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
-                The gate runs right here — the open-core detectors, ported to your browser. No model,
-                no network, no key. Type anything, or load an example. The verdict is deterministic:
-                the same input gives the same answer, every time.
+                The open-core detectors, ported to your browser. No model, no network,
+                no key. Type anything or load an example. The verdict is deterministic:
+                same input → same answer, every time. Response time is measured
+                on each keystroke — you can watch the gate run.
               </p>
             </div>
           </div>
         </Reveal>
+
         <Reveal delay={120}>
-          <div className="mx-auto max-w-[44rem]">
-            <GuardDemo />
-          </div>
+          <GuardDemo />
         </Reveal>
       </section>
 
-      {/* ── § 3 · TWO-LAYER ARCHITECTURE ────────────────────────── */}
+      {/* ── § 3 · TWO-LAYER ARCHITECTURE ──────────────────────────── */}
       <section className="mt-32 sm:mt-44 lg:mt-52">
         <div className="rule mb-14" />
 
@@ -259,7 +342,7 @@ export default function SystemsPage() {
           </div>
         </Reveal>
 
-        {/* Layer rows — editorial list */}
+        {/* Layer rows */}
         <div className="space-y-0">
           {LAYER_ROWS.map((row, i) => (
             <Reveal key={row.index} delay={i * 80}>
@@ -323,7 +406,7 @@ export default function SystemsPage() {
         <div className="rule mt-0" />
       </section>
 
-      {/* ── § 4 · HOSTED ENDPOINT — code example ────────────────── */}
+      {/* ── § 4 · HOSTED ENDPOINT — code example ──────────────────── */}
       <section className="mt-32 sm:mt-44 lg:mt-52">
         <Reveal delay={0}>
           <div className="mb-10">
@@ -374,7 +457,7 @@ export default function SystemsPage() {
         </Reveal>
       </section>
 
-      {/* ── § 4.5 · MCP TOOL — install into any agent ───────────── */}
+      {/* ── § 4.5 · MCP TOOL — install into any agent ─────────────── */}
       <section className="mt-32 sm:mt-44 lg:mt-52">
         <div className="rule mb-14" />
         <Reveal delay={0}>
@@ -388,7 +471,8 @@ export default function SystemsPage() {
             <div className="lg:col-span-8">
               <p className="mb-7 max-w-[40rem] text-[1.02rem] leading-[1.85] text-[var(--fg-dim)]">
                 σ-gate ships a zero-dependency MCP server. One command and any agent — Claude Code,
-                Claude Desktop, Cursor, Cline — has a deterministic <code className="text-[var(--fg)]">guard</code>{" "}
+                Claude Desktop, Cursor, Cline — has a deterministic{" "}
+                <code className="text-[var(--fg)]">guard</code>{" "}
                 tool it can call before shipping output. No model, no key, no token cost.
               </p>
               <div className="rounded-[10px] border border-[var(--line)] bg-[var(--bg-2)] overflow-hidden">
@@ -415,7 +499,7 @@ export default function SystemsPage() {
         </Reveal>
       </section>
 
-      {/* ── § 5 · DESIGN PRINCIPLES ──────────────────────────────── */}
+      {/* ── § 5 · DESIGN PRINCIPLES ───────────────────────────────── */}
       <section className="mt-32 sm:mt-44 lg:mt-52">
         <div className="rule mb-14" />
 
@@ -461,7 +545,7 @@ export default function SystemsPage() {
         <div className="rule mt-14" />
       </section>
 
-      {/* ── § 6 · FINAL CTA ──────────────────────────────────────── */}
+      {/* ── § 6 · FINAL CTA ───────────────────────────────────────── */}
       <section className="mt-32 pb-40 sm:mt-44 lg:mt-52 lg:pb-56">
         <div className="flex flex-col items-center gap-0 text-center">
           <Reveal delay={0}>

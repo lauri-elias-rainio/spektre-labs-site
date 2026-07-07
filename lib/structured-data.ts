@@ -107,3 +107,19 @@ export function getArtifactStructuredData(artifact: Artifact) {
     sameAs: [artifact.github, artifact.zenodo].filter(Boolean),
   };
 }
+
+/** BreadcrumbList — pass ordered crumbs from root to current page. */
+export function getBreadcrumbStructuredData(
+  crumbs: { name: string; path: string }[]
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: absoluteUrl(crumb.path),
+    })),
+  };
+}

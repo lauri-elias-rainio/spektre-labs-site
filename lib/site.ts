@@ -23,7 +23,7 @@ export function absoluteUrl(path = "/") {
 }
 
 // routes that ship a real per-route opengraph-image; everything else falls back to the root card
-const OG_ROUTES = new Set(["/", "/about", "/research", "/method", "/artifacts"]);
+const OG_ROUTES = new Set(["/", "/about", "/research", "/method", "/artifacts", "/token", "/sigma"]);
 
 export function createPageMetadata({
   title,

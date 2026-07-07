@@ -1,83 +1,86 @@
 import Link from "next/link";
 
-import HeroSignal from "@/components/hero-signal";
+import MonumentHero from "@/components/monument";
 import { LINKS } from "@/lib/links";
 import lab from "@/data/lab.json";
 
 const hero = lab.home.hero;
 
+/*
+  The hero is a brand moment — a full-bleed cinematic scene (THE MONUMENT v2)
+  with typography in its own reserved band at the base. Scene and text never
+  compete: the monument owns the upper frame, the words sit on pure black
+  behind a gradient shield. Centered on the page axis (Symmetry Law §5).
+*/
 export function Hero() {
   return (
-    <section className="relative isolate -mx-6 -mt-4 min-h-[calc(100svh-5rem)] overflow-hidden px-6 pb-20 pt-10 sm:-mx-8 sm:px-8 sm:pb-24 sm:pt-14 lg:pb-28">
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div
-          className="absolute inset-y-[-8%] right-[-26%] h-[116%] w-[120vw] opacity-70 sm:right-[-18%] sm:w-[88vw] lg:right-0 lg:w-[56vw]"
-          aria-hidden
-        >
-          <HeroSignal />
-        </div>
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.92)_28%,rgba(0,0,0,0.54)_58%,rgba(0,0,0,0.12)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(72%_58%_at_18%_16%,rgba(255,255,255,0.045),transparent_58%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black to-transparent" />
+    <section
+      data-descent-stage="monolith"
+      className="relative isolate -mx-6 -mt-4 min-h-[100svh] overflow-hidden px-6 sm:-mx-8 sm:px-8"
+    >
+      {/* the scene — full bleed behind everything in the hero */}
+      <div className="absolute inset-0 z-0">
+        <MonumentHero />
+        {/* legibility shield: the text band floor — pure black, hard guarantee */}
+        {/* light shield — the storm stays visible beneath the words */}
+        <div className="absolute inset-x-0 bottom-0 h-[34svh] bg-gradient-to-t from-[rgba(0,0,0,0.88)] via-[rgba(0,0,0,0.5)] to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent" />
       </div>
 
-      <div className="relative z-10 flex min-h-[calc(100svh-11rem)] flex-col">
-        <div className="max-w-[62rem]">
-          <div className="rise flex max-w-[54rem] flex-wrap items-center gap-x-5 gap-y-2 border-b border-[var(--line-soft)] pb-4">
-            <span className="label">Spektre</span>
-            <span className="label hidden sm:inline">Helsinki&nbsp;·&nbsp;60.17°N</span>
-            <span className="label hidden md:inline">Multi-domain</span>
-            <span className="label hidden md:inline">Working&nbsp;systems</span>
-            <span className="label ml-auto text-[var(--fg-faint)]">Est.&nbsp;MMXXVI</span>
-          </div>
+      {/* coordinates rail — top, out of the scene's way */}
+      <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 pt-8">
+        <span className="label">Spektre</span>
+        <span className="label hidden sm:inline">Helsinki&nbsp;·&nbsp;60.17°N</span>
+        <span className="label hidden md:inline">Independent&nbsp;lab</span>
+        <span className="label text-[var(--fg-faint)]">Est.&nbsp;MMXXVI</span>
+      </div>
 
-          <div className="pt-16 sm:pt-24 lg:pt-28">
-            <p className="rise label mb-7 text-[var(--fg-mute)]" style={{ animationDelay: "0.05s" }}>
-              {hero.eyebrow}
-            </p>
+      {/* the words — their own band at the base, never over the monument */}
+      <div className="absolute inset-x-6 bottom-0 z-10 flex flex-col items-center pb-14 text-center sm:inset-x-8 sm:pb-16">
+        <h1 className="rise-blur metal-text hero-display max-w-[13ch] text-balance">
+          {hero.headline}
+        </h1>
 
-            <h1
-              className="rise-blur metal-text hero-display max-w-[11ch] text-balance"
-              style={{ animationDelay: "0.1s" }}
-            >
-              {hero.headline}
-            </h1>
+        <p
+          className="rise mt-6 max-w-[36rem] text-pretty text-[1rem] leading-[1.75] text-[var(--fg-dim)] sm:text-[1.06rem]"
+          style={{ animationDelay: "0.12s" }}
+        >
+          {hero.sub}
+        </p>
 
-            <p className="rise mt-7 max-w-[34rem] text-pretty text-[1rem] leading-[1.75] text-[var(--fg-dim)] sm:text-[1.08rem]" style={{ animationDelay: "0.18s" }}>
-              {hero.sub}
-            </p>
+        <div
+          className="rise mt-7 flex items-center gap-6 sm:gap-10"
+          style={{ animationDelay: "0.18s" }}
+        >
+          <span className="h-px w-12 bg-[var(--line-strong)] sm:w-20" />
+          <span className="label text-[var(--fg-mute)]">{hero.axiom}</span>
+          <span className="h-px w-12 bg-[var(--line-strong)] sm:w-20" />
+        </div>
 
-            <div className="rise mt-7 flex max-w-[36rem] flex-wrap gap-x-4 gap-y-2" style={{ animationDelay: "0.22s" }}>
-              {["Labs", "Systems", "Studio", "Intelligence", "Compute", "Health"].map((domain) => (
-                <span key={domain} className="label text-[var(--fg-faint)]">
-                  {domain}
-                </span>
-              ))}
-            </div>
-
-            <div className="rise mt-10 flex flex-wrap items-center gap-3 lg:mt-12" style={{ animationDelay: "0.3s" }}>
-              <Link
-                href={hero.primaryCta.href}
-                className="btn-metal rounded-[10px] px-6 py-3 text-[0.95rem] font-semibold tracking-tight"
-              >
-                {hero.primaryCta.label}&nbsp;→
-              </Link>
-              <Link
-                href={hero.secondaryCta.href}
-                className="rounded-[10px] border border-[var(--line-strong)] px-6 py-3 text-[0.95rem] font-medium tracking-tight text-[var(--fg-dim)] transition-colors duration-500 hover:border-[var(--metal-3)] hover:text-[var(--fg)]"
-              >
-                {hero.secondaryCta.label}
-              </Link>
-              <Link
-                href={LINKS.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="label ml-2 hidden text-[var(--fg-faint)] transition-colors duration-500 hover:text-[var(--fg-mute)] sm:inline"
-              >
-                GitHub&nbsp;↗
-              </Link>
-            </div>
-          </div>
+        <div
+          className="rise mt-8 flex flex-wrap items-center justify-center gap-3"
+          style={{ animationDelay: "0.24s" }}
+        >
+          <Link
+            href={hero.primaryCta.href}
+            className="btn-metal rounded-[10px] px-7 py-3 text-[0.95rem] font-semibold tracking-tight"
+          >
+            {hero.primaryCta.label}&nbsp;→
+          </Link>
+          <Link
+            href={hero.secondaryCta.href}
+            className="rounded-[10px] border border-[var(--line-strong)] px-7 py-3 text-[0.95rem] font-medium tracking-tight text-[var(--fg-dim)] transition-colors duration-500 hover:border-[var(--metal-3)] hover:text-[var(--fg)]"
+          >
+            {hero.secondaryCta.label}
+          </Link>
+          <Link
+            href={LINKS.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="label ml-2 hidden text-[var(--fg-faint)] transition-colors duration-500 hover:text-[var(--fg-mute)] sm:inline"
+          >
+            GitHub&nbsp;↗
+          </Link>
         </div>
       </div>
     </section>

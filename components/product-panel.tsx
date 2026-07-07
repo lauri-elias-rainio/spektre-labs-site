@@ -1,3 +1,7 @@
+"use client";
+
+import { useState, useCallback } from "react";
+
 import { Glyph } from "@/components/glyph";
 import { Reveal } from "@/components/reveal";
 
@@ -214,6 +218,144 @@ export function ProductPanel({
             ))}
           </div>
         ) : null}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   EndpointProbe — live endpoint status row with probe-on-demand affordance.
+
+   σ-honest:
+   · No numbers are pre-fabricated. Latency and status appear ONLY after the
+     user clicks PROBE and a real fetch completes.
+   · CORS / network failures are reported honestly; the direct ↗ link is always
+     available regardless of probe result.
+   · Timeout is 7 seconds. Status codes come from the actual HTTP response.
+────────────────────────────────────────────────────────────────────────────── */
+
+type ProbeState =
+  | { s: "idle" }
+  | { s: "probing" }
+  | { s: "ok"; ms: number; code: number }
+  | { s: "failed"; reason: "timeout" | "network" };
+
+function ProbeStatus({ state }: { state: ProbeState }) {
+  if (state.s === "idle") {
+    return <span className="label text-[var(--fg-faint)]">—</span>;
+  }
+  if (state.s === "probing") {
+    return <span className="label text-[var(--fg-mute)]">CHECKING…</span>;
+  }
+  if (state.s === "ok") {
+    return (
+      <span className="label tabular-nums" style={{ color: "var(--signal)" }}>
+        HTTP {state.code} · {state.ms.toFixed(0)} ms
+      </span>
+    );
+  }
+  if (state.reason === "timeout") {
+    return <span className="label text-[var(--fg-faint)]">TIMEOUT</span>;
+  }
+  /* network / CORS — honest: we cannot distinguish in the browser */
+  return (
+    <span className="label text-[var(--fg-mute)]">CORS / UNREACHABLE</span>
+  );
+}
+
+export function EndpointProbe({
+  index,
+  name,
+  sub,
+  url,
+  description,
+}: {
+  index: string;
+  name: string;
+  sub?: string;
+  url: string;
+  description: string;
+}) {
+  const [state, setState] = useState<ProbeState>({ s: "idle" });
+
+  const probe = useCallback(async () => {
+    setState({ s: "probing" });
+    const t0 = performance.now();
+    try {
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), 7000);
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(tid);
+      setState({
+        s: "ok",
+        ms: performance.now() - t0,
+        code: res.status,
+      });
+    } catch (e) {
+      if ((e as Error).name === "AbortError") {
+        setState({ s: "failed", reason: "timeout" });
+      } else {
+        setState({ s: "failed", reason: "network" });
+      }
+    }
+  }, [url]);
+
+  return (
+    <div className="group relative border-t border-[var(--line)] py-10 transition-colors duration-500 hover:border-[var(--line-strong)] sm:py-12">
+      {/* Hover accent hairline */}
+      <span
+        className="pointer-events-none absolute left-0 top-0 h-px w-0 bg-[var(--metal-3)] transition-[width] duration-700 group-hover:w-full"
+        aria-hidden
+      />
+
+      <div className="grid gap-6 lg:grid-cols-12 lg:gap-14">
+        {/* Index + name + URL */}
+        <div className="flex items-baseline gap-5 lg:col-span-4">
+          <span className="label tabular-nums text-[var(--fg-faint)] shrink-0">{index}</span>
+          <div className="min-w-0">
+            <h3 className="text-[1.35rem] font-semibold tracking-[-0.025em] leading-none text-[var(--fg)] sm:text-[1.6rem]">
+              {name}
+            </h3>
+            {sub ? (
+              <p className="mt-1.5 label text-[var(--fg-faint)]">{sub}</p>
+            ) : null}
+            <p className="mt-2 font-mono text-[0.63rem] tracking-tight leading-relaxed text-[var(--fg-faint)] break-all">
+              {url}
+            </p>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="lg:col-span-5 lg:col-start-5">
+          <p className="text-[0.97rem] leading-[1.84] text-[var(--fg-dim)]">
+            {description}
+          </p>
+        </div>
+
+        {/* Probe status + controls */}
+        <div className="flex items-center justify-between gap-4 lg:col-span-3 lg:col-start-10 lg:flex-col lg:items-end lg:justify-center">
+          <ProbeStatus state={state} />
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={probe}
+              disabled={state.s === "probing"}
+              aria-label={`Probe ${name} endpoint`}
+              className="label rounded-[6px] border border-[var(--line)] px-3 py-1.5 text-[var(--fg-mute)] transition-colors duration-300 hover:border-[var(--line-strong)] hover:text-[var(--fg)] disabled:opacity-40 disabled:pointer-events-none"
+            >
+              {state.s === "probing" ? "…" : "PROBE"}
+            </button>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${name} endpoint directly`}
+              className="label text-[var(--fg-mute)] transition-colors duration-500 group-hover:text-[var(--fg)]"
+            >
+              ↗
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

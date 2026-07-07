@@ -14,8 +14,10 @@ import lab from "@/data/lab.json";
 const navItems: Array<{ href: string; label: string }> = [
   { href: "/systems", label: "Systems" },
   { href: "/web4", label: "Web4" },
+  { href: "/token", label: "Token" },
   { href: "/studio", label: "Studio" },
   { href: "/research", label: "Research" },
+  { href: "/protocols", label: "Protocols" },
   { href: "/universe", label: "World" },
   { href: "/about", label: "About" },
   { href: "/connect", label: "Contact" },
@@ -52,13 +54,17 @@ export function Navigation({ className }: { className?: string }) {
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
                   className={cn(
-                    "relative text-[0.8rem] tracking-[0.04em] font-medium transition-colors duration-500",
-                    "after:absolute after:-bottom-[1.28rem] after:left-0 after:h-px after:w-full",
-                    "after:scale-x-0 after:bg-[var(--metal-2)] after:opacity-0",
-                    "after:transition-all after:duration-500 after:[transition-timing-function:var(--ease)]",
+                    // base — color shift slower than underline draw (phosphor-fade feel)
+                    "relative text-[0.8rem] tracking-[0.04em] font-medium",
+                    "transition-colors [transition-duration:350ms] [transition-timing-function:var(--ease)]",
+                    // sub-pixel underline via ::after — machined, not decorative
+                    "after:absolute after:-bottom-[1.28rem] after:left-0 after:h-[0.5px] after:w-full",
+                    "after:scale-x-0 after:opacity-0",
+                    "after:transition-[transform,opacity,background-color]",
+                    "after:[transition-duration:200ms] after:[transition-timing-function:var(--ease)]",
                     isActive(item.href)
-                      ? "text-[var(--fg)] after:scale-x-100 after:opacity-100"
-                      : "text-[var(--fg-mute)] hover:text-[var(--fg-dim)] hover:after:scale-x-100 hover:after:opacity-60"
+                      ? "text-[var(--fg)] after:scale-x-100 after:opacity-100 after:bg-[var(--metal-1)]"
+                      : "text-[var(--fg-mute)] hover:text-[var(--fg)] after:bg-[var(--metal-3)] hover:after:scale-x-100 hover:after:opacity-[0.55]"
                   )}
                 >
                   {item.label}
@@ -67,7 +73,7 @@ export function Navigation({ className }: { className?: string }) {
             </div>
             <ExternalLink
               href={LINKS.github}
-              className="label text-[0.66rem] tracking-[0.22em] text-[var(--fg-faint)] transition-colors duration-500 hover:text-[var(--fg-mute)]"
+              className="label text-[0.66rem] tracking-[0.22em] text-[var(--fg-faint)] transition-colors [transition-duration:350ms] [transition-timing-function:var(--ease)] hover:text-[var(--fg-mute)]"
             >
               GitHub
             </ExternalLink>
@@ -77,7 +83,11 @@ export function Navigation({ className }: { className?: string }) {
         {/* Mobile nav */}
         <nav
           aria-label="Primary mobile"
-          className="mt-3 flex gap-5 overflow-x-auto border-t border-[var(--line-soft)] pt-3 sm:hidden"
+          className="mt-3 flex gap-5 overflow-x-auto border-t border-[var(--line-soft)] pt-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:hidden"
+          style={{
+            maskImage: "linear-gradient(90deg, #000 0%, #000 86%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 86%, transparent 100%)",
+          }}
         >
           {navItems.map((item) => (
             <Link
@@ -85,10 +95,11 @@ export function Navigation({ className }: { className?: string }) {
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
               className={cn(
-                "whitespace-nowrap border-b pb-1 text-[0.82rem] tracking-[0.02em] transition-colors duration-500",
+                "whitespace-nowrap border-b pb-1 text-[0.82rem] tracking-[0.02em]",
+                "transition-[color,border-color] [transition-duration:300ms] [transition-timing-function:var(--ease)]",
                 isActive(item.href)
-                  ? "border-[var(--metal-3)] text-[var(--fg)]"
-                  : "border-transparent text-[var(--fg-mute)] hover:text-[var(--fg-dim)]"
+                  ? "border-[var(--metal-2)] text-[var(--fg)]"
+                  : "border-transparent text-[var(--fg-mute)] hover:text-[var(--fg)] hover:border-[var(--metal-4)]"
               )}
             >
               {item.label}
@@ -96,7 +107,7 @@ export function Navigation({ className }: { className?: string }) {
           ))}
           <ExternalLink
             href={LINKS.github}
-            className="whitespace-nowrap text-[0.82rem] text-[var(--fg-faint)] transition-colors duration-500 hover:text-[var(--fg-mute)]"
+            className="whitespace-nowrap text-[0.82rem] text-[var(--fg-faint)] transition-colors [transition-duration:300ms] [transition-timing-function:var(--ease)] hover:text-[var(--fg-mute)]"
           >
             GitHub
           </ExternalLink>

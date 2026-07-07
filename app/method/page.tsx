@@ -15,20 +15,34 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 /*
-  /method — Computational Orchestration
-  4-stage process rendered as a precise symmetric sequence: mono numerals,
-  hairline connectors, σ-honest descriptions. Grammar from studio/page.tsx.
-  Art-canon: OLED, platinum, hairline, Abloh mono, absolute symmetry (1=1).
+  /method — Computational Orchestration.
+  Scale: DESIGN_SYSTEM §4.4 modular major-third ladder.
+    stage title → body-l  1.125rem
+    descriptions → caption 0.875rem
+    metadata     → caption 0.875rem
+    labels       → .label  0.66rem / 0.24em / uppercase
+  Vertical cadence: multiples of 1rem (mt-16=4, mt-20=5, mt-24=6).
+  Text columns: max-w-[65ch].
+  Symmetric diagram: 4 nodes on a 1px hairline centerline (§5.1 bilateral symmetry).
+    Nodes 01↔04 mirror, 02↔03 mirror — 1=1 rendered as sequence.
 */
 
 const STAGE_NUMERALS = ["01", "02", "03", "04"];
 
 const STAGE_SUBTITLES: Record<string, string> = {
-  "Formal Modeling":       "declare the structure",
+  "Formal Modeling":           "declare the structure",
   "Computational Exploration": "traverse the space",
   "Iterative Falsification":   "stress-test to collapse",
   "Structural Synthesis":      "formalize the invariant",
 };
+
+/* Diagram node labels — compressed for the narrow spec strip */
+const DIAGRAM_NODES = [
+  { n: "01", sub: "Declare" },
+  { n: "02", sub: "Traverse" },
+  { n: "03", sub: "Stress-test" },
+  { n: "04", sub: "Formalize" },
+];
 
 export default function MethodPage() {
   const steps = lab.method.process.steps;
@@ -38,8 +52,9 @@ export default function MethodPage() {
       <PageHeader title={lab.method.title} description={lab.method.description} />
 
       {/* ── Lead ─────────────────────────────────────────────────────── */}
+      {/* cadence: mt-16/20/24 = 4/5/6rem steps */}
       <div className="mt-16 sm:mt-20 lg:mt-24">
-        <ProseBlock size="lead" className="max-w-[44rem] text-[var(--fg-dim)]">
+        <ProseBlock size="lead" className="max-w-[65ch] text-[var(--fg-dim)]">
           {lab.method.introduction.map((paragraph, i) => (
             <Reveal key={paragraph} as="p" delay={80 + i * 90}>
               {paragraph}
@@ -54,9 +69,10 @@ export default function MethodPage() {
           <div className="h-px flex-1 bg-[var(--line)]" />
           <div className="text-center">
             <p className="label mb-2 text-[var(--fg-faint)]">Axiom</p>
+            {/* display-l: clamp(2.5rem,6vw,4.4rem) §4.4 */}
             <p
-              className="metal-text font-semibold tracking-[-0.04em] leading-none"
-              style={{ fontSize: "clamp(2.4rem, 6vw, 4.4rem)" }}
+              className="metal-text font-semibold tracking-[-0.045em] leading-none"
+              style={{ fontSize: "clamp(2.5rem,6vw,4.4rem)" }}
             >
               1 = 1
             </p>
@@ -66,13 +82,13 @@ export default function MethodPage() {
         </div>
       </Reveal>
 
-      {/* ── 4-Stage Process — symmetric precision sequence ────────────── */}
+      {/* ── 4-Stage Process ───────────────────────────────────────────── */}
       <Section title={lab.method.process.title} eyebrow="Process">
-        {/* Process intro */}
+        {/* Process intro — caption: 0.875rem §4.4 */}
         <Reveal delay={60}>
           <p
-            className="max-w-[42rem] text-[0.9rem] leading-[1.87]"
-            style={{ color: "var(--fg-mute)" }}
+            className="leading-[1.72]"
+            style={{ fontSize: "0.875rem", color: "var(--fg-mute)", maxWidth: "65ch" }}
           >
             {lab.method.process.introduction} Each stage is a discrete gate — no
             stage begins until its predecessor closes. The sequence is fixed; the
@@ -80,13 +96,13 @@ export default function MethodPage() {
           </p>
         </Reveal>
 
-        {/* Metadata rail */}
+        {/* Metadata rail — caption: 0.875rem values §4.4 */}
         <Reveal delay={120} className="mt-10">
           <div className="grid grid-cols-2 sm:grid-cols-4 border border-[var(--line)] rounded-[var(--radius)] overflow-hidden">
             {[
               { label: "Method", value: "Computational Orchestration" },
               { label: "Stages", value: "04" },
-              { label: "Gate", value: "Per-stage" },
+              { label: "Gate",   value: "Per-stage" },
               { label: "Output", value: "Structural Invariant" },
             ].map((item, i) => (
               <div
@@ -95,11 +111,50 @@ export default function MethodPage() {
                 style={{ animationDelay: `${i * 60}ms` }}
               >
                 <p className="label text-[var(--fg-faint)] mb-1.5">{item.label}</p>
+                {/* caption: 0.875rem §4.4 */}
                 <p
-                  className="text-[0.88rem] tracking-[-0.01em]"
-                  style={{ color: "var(--fg-dim)" }}
+                  className="leading-[1.4] tracking-[-0.01em]"
+                  style={{ fontSize: "0.875rem", color: "var(--fg-dim)" }}
                 >
                   {item.value}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* ── Symmetric 4-node diagram ───────────────────────────────── */}
+        {/*
+          Nodes 01↔04 mirror, 02↔03 mirror — bilateral symmetry = 1=1.
+          Badge: 3.5rem × 3.5rem .surface rounded-[8px].
+          Centerline: 1px --line at top:1.75rem (badge midpoint).
+        */}
+        <Reveal delay={180} className="mt-12 sm:mt-16">
+          <div className="relative flex justify-between" style={{ maxWidth: "36rem" }}>
+            {/* 1px hairline through badge centers — top: half of 3.5rem badge */}
+            <div
+              className="pointer-events-none absolute left-0 right-0 h-px"
+              style={{ top: "1.75rem", background: "var(--line)" }}
+              aria-hidden
+            />
+            {DIAGRAM_NODES.map((s) => (
+              <div key={s.n} className="relative z-10 flex flex-col items-center gap-3">
+                {/* badge: 3.5rem = 14 × 0.25rem §scale */}
+                <div
+                  className="surface flex items-center justify-center"
+                  style={{ width: "3.5rem", height: "3.5rem", borderRadius: "8px" }}
+                >
+                  {/* body-l: 1.125rem §4.4 */}
+                  <span
+                    className="metal-text font-semibold"
+                    style={{ fontSize: "1.125rem", letterSpacing: "-0.03em" }}
+                  >
+                    {s.n}
+                  </span>
+                </div>
+                {/* sub-label — .label class §4.2 */}
+                <p className="label text-center" style={{ color: "var(--fg-faint)", maxWidth: "5rem" }}>
+                  {s.sub}
                 </p>
               </div>
             ))}
@@ -116,11 +171,13 @@ export default function MethodPage() {
             return (
               <Reveal key={step.title} delay={80 + i * 110}>
                 <div className="relative">
-                  {/* Vertical connector — runs between stages, not after the last */}
+                  {/* Vertical connector — not after the last */}
                   {!isLast && (
                     <div
-                      className="absolute left-[2.1rem] top-[4.8rem] w-px"
+                      className="absolute w-px"
                       style={{
+                        left: "2.1rem",
+                        top: "4.8rem",
                         height: "calc(100% - 1.5rem)",
                         background: "linear-gradient(180deg, var(--line-strong) 0%, var(--line) 100%)",
                       }}
@@ -129,47 +186,47 @@ export default function MethodPage() {
                   )}
 
                   <div className="flex gap-6 sm:gap-9 pb-14 last:pb-0">
-                    {/* Numeral column — fixed width, perfectly aligned */}
+                    {/* Numeral column — 4.2rem = 16.8 × 0.25rem */}
                     <div className="flex flex-col items-center shrink-0" style={{ width: "4.2rem" }}>
-                      {/* Numeral badge */}
                       <div
                         className="surface flex items-center justify-center rounded-[6px] shrink-0"
                         style={{ width: "3.2rem", height: "3.2rem" }}
                       >
+                        {/* body-l: 1.125rem §4.4 */}
                         <span
-                          className="metal-text font-semibold tracking-[-0.03em]"
-                          style={{ fontSize: "1.15rem" }}
+                          className="metal-text font-semibold"
+                          style={{ fontSize: "1.125rem", letterSpacing: "-0.03em" }}
                         >
                           {numeral}
                         </span>
                       </div>
                     </div>
 
-                    {/* Stage content */}
-                    <div className="flex-1 pt-[0.35rem]">
+                    {/* Stage content — pt-1 = 0.25rem §scale */}
+                    <div className="flex-1 pt-1">
                       {/* Stage header */}
                       <div className="mb-4">
                         <p className="label mb-1.5" style={{ color: "var(--fg-faint)" }}>
                           Stage {numeral} — {subtitle}
                         </p>
+                        {/* body-l: 1.125rem §4.4 */}
                         <h3
-                          className="text-[1.12rem] font-semibold tracking-[-0.025em] leading-[1.2]"
-                          style={{ color: "var(--fg)" }}
+                          className="font-semibold tracking-[-0.025em] leading-[1.2]"
+                          style={{ fontSize: "1.125rem", color: "var(--fg)" }}
                         >
                           {step.title}
                         </h3>
                       </div>
 
-                      {/* Hairline */}
                       <div className="rule mb-5" />
 
-                      {/* Description */}
+                      {/* Description — caption: 0.875rem §4.4 */}
                       <div className="space-y-3">
                         {step.paragraphs.map((p) => (
                           <p
                             key={p}
-                            className="text-[0.92rem] leading-[1.88]"
-                            style={{ color: "var(--fg-dim)" }}
+                            className="leading-[1.72]"
+                            style={{ fontSize: "0.875rem", color: "var(--fg-dim)" }}
                           >
                             {p}
                           </p>
@@ -183,11 +240,11 @@ export default function MethodPage() {
           })}
         </div>
 
-        {/* Sequence close — symmetry marker */}
+        {/* Sequence close — σ symmetry marker */}
         <Reveal delay={520} className="mt-4">
           <div className="flex items-center gap-5">
             <div className="h-px flex-1" style={{ background: "var(--line)" }} />
-            <span className="label" style={{ color: "var(--signal)", fontSize: "0.58rem" }}>
+            <span className="label" style={{ color: "var(--signal)" }}>
               σ — sequence closed
             </span>
             <div className="h-px flex-1" style={{ background: "var(--line)" }} />
@@ -197,7 +254,7 @@ export default function MethodPage() {
 
       {/* ── Cross-Domain Validation ───────────────────────────────────── */}
       <Section title={lab.method.crossDomainValidation.title} eyebrow="Validation">
-        <div className="max-w-[44rem]">
+        <div className="max-w-[65ch]">
           <ProseBlock className="text-[var(--fg-dim)]">
             {lab.method.crossDomainValidation.paragraphs.map((paragraph, i) => (
               <Reveal key={paragraph} as="p" delay={i * 80}>
@@ -209,16 +266,14 @@ export default function MethodPage() {
           {/* Domain grid — Abloh mono tags */}
           {lab.method.crossDomainValidation.domains?.length ? (
             <Reveal delay={160}>
-              <div className="mt-10 grid grid-cols-2 gap-px border border-[var(--line)] sm:grid-cols-3">
+              <div className="mt-10 grid grid-cols-2 gap-px border border-[var(--line)] sm:grid-cols-3" style={{ background: "var(--line)" }}>
                 {lab.method.crossDomainValidation.domains.map((domain, i) => (
                   <div
                     key={domain}
-                    className="border border-[var(--line)] px-5 py-4 flex items-center gap-3"
+                    className="px-5 py-4 flex items-center gap-3"
+                    style={{ background: "var(--bg)" }}
                   >
-                    <span
-                      className="label shrink-0"
-                      style={{ color: "var(--fg-faint)", fontSize: "0.58rem" }}
-                    >
+                    <span className="label shrink-0" style={{ color: "var(--fg-faint)" }}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <p className="label text-[var(--fg-mute)]">{domain}</p>
@@ -232,7 +287,7 @@ export default function MethodPage() {
 
       {/* ── Role of Computational Systems ─────────────────────────────── */}
       <Section title={lab.method.roleOfComputationalSystems.title} eyebrow="Instrumentation">
-        <div className="max-w-[44rem]">
+        <div className="max-w-[65ch]">
           {/* Pull quote — Abloh device */}
           <Reveal delay={0} className="mb-10">
             <blockquote className="relative pl-6 sm:pl-8">
@@ -243,9 +298,10 @@ export default function MethodPage() {
               >
                 &ldquo;
               </span>
+              {/* body-l: 1.125rem §4.4 */}
               <p
-                className="text-pretty leading-[1.84] sm:text-[1.08rem]"
-                style={{ color: "var(--fg-dim)" }}
+                className="text-pretty leading-[1.72]"
+                style={{ fontSize: "1.125rem", color: "var(--fg-dim)" }}
               >
                 Computation amplifies reasoning. It does not replace the researcher who directs
                 the search and evaluates what survives.
@@ -265,7 +321,7 @@ export default function MethodPage() {
 
       {/* ── Research Philosophy ───────────────────────────────────────── */}
       <Section title={lab.method.researchPhilosophy.title} eyebrow="Philosophy">
-        <div className="max-w-[44rem]">
+        <div className="max-w-[65ch]">
           <ProseBlock className="text-[var(--fg-dim)]">
             {lab.method.researchPhilosophy.paragraphs.map((paragraph, i) => (
               <Reveal key={paragraph} as="p" delay={i * 80}>
@@ -277,6 +333,7 @@ export default function MethodPage() {
       </Section>
 
       {/* ── Closing symmetry seal ──────────────────────────────────────── */}
+      {/* cadence: mt-32/40/56 = 8/10/14rem */}
       <Reveal delay={0} className="mt-32 flex flex-col items-center gap-6 sm:mt-40 lg:mt-56">
         <Glyph variant="seal" size={88} strokeOpacity={0.22} />
         <p className="label text-[var(--fg-faint)]">σ — structural invariant</p>

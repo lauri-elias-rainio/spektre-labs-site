@@ -1,0 +1,11 @@
+{
+  "law": "ordering is established fact, never taste; a gate change must preserve it and widen the margin",
+  "frames": [
+    { "image": "scripts/calibration/tier0-champion.png", "tier": 0,
+      "why": "foundry run-3 champion render, WebGPU full scene, measured 75.5 under gate v1" },
+    { "image": "scripts/calibration/tier1-fallback.png", "tier": 1,
+      "why": "no-WebGPU fallback page — legible but not the scene; the class Safari saw" },
+    { "image": "scripts/calibration/tier2-dead.png", "tier": 2,
+      "why": "dead render — pure black frame, the flip-bug failure class" }
+  ]
+}

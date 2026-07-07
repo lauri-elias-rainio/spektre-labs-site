@@ -5,7 +5,6 @@ import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
 import { StudioFilms } from "@/components/studio-films";
-import { EditorialLink } from "@/components/editorial-link";
 import { CanonVideo } from "@/components/canon-video";
 import { createPageMetadata } from "@/lib/site";
 import { LINKS } from "@/lib/links";
@@ -19,13 +18,20 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 /*
-  Studio page — the production arm of the Spektre universe.
-  Divisions expressed σ-honestly:
-    Research → Systems → Studio (EMERGING, YouTube live) →
-    Games (VISION) → Shoreworld (VISION)
-  Art-canon: OLED, platinum/chrome, hairline, film grain, specular,
-  Atlantean sacred geometry, absolute symmetry.
+  /studio — production arm of the Spektre universe.
+  Scale: DESIGN_SYSTEM §4.4 modular major-third ladder.
+    lead          → body-l   1.125rem · leading-[1.72]
+    body          → body     1rem     · leading-[1.72]
+    secondary     → caption  0.875rem
+    labels/tags   → .label   0.66rem / 0.24em / uppercase
+    nodes title   → title    1.75rem
+    section heads → title    1.75rem (via Section component)
+  Vertical cadence: multiples of 1rem (mt-16=4, mt-20=5, mt-24=6, mt-32=8).
+  Text columns: max-w-[65ch].
+  Film-index aesthetics: catalog codes S·LAB·NNN on all production plates;
+    figcaptions as spec-sheet entries (border-t hairline, label typography).
 */
+
 
 export default function StudioPage() {
   return (
@@ -36,8 +42,9 @@ export default function StudioPage() {
         description="AI-native film and media generation. The dark-luxury sci-fi aesthetic as the product."
       />
 
-      {/* ── Generated hero — the studio's own visual engine, on-canon ── */}
-      <Reveal delay={40} className="mt-12 sm:mt-14">
+      {/* ── Hero still — S·LAB·001 ────────────────────────────────── */}
+      {/* cadence: mt-12 = 3rem */}
+      <Reveal delay={40} className="mt-12 sm:mt-16">
         <figure className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -46,14 +53,16 @@ export default function StudioPage() {
             className="aspect-video w-full object-cover"
             loading="lazy"
           />
-          <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
-            <span>Generated · Imagen · on-canon</span>
-            <span>1 = 1</span>
+          {/* film-index figcaption: border-t hairline, spec-sheet labels */}
+          <figcaption className="label flex items-center justify-between border-t border-[var(--line)] px-5 py-3.5 text-[var(--fg-faint)]">
+            <span>S·LAB·001 · Imagen 3.0 · On-canon</span>
+            <span style={{ color: "var(--metal-4)" }}>1 = 1</span>
           </figcaption>
         </figure>
       </Reveal>
 
-      {/* ── Motion — a real clip generated in-canon on Vertex Veo 3.0 ── */}
+      {/* ── Motion — S·LAB·002 — Vertex Veo 3.0 ──────────────────── */}
+      {/* cadence: mt-5 = 1.25rem (tight stacking within media cluster) */}
       <Reveal delay={60} className="mt-5 sm:mt-6">
         <figure className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)]">
           <CanonVideo
@@ -62,20 +71,20 @@ export default function StudioPage() {
             label="The Coherence Gate — a colossal symmetric Atlantean monolith rising from a black sea, generated in-canon on Vertex Veo 3.0"
             className="aspect-video w-full object-cover"
           />
-          <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
-            <span>Motion · generated · Vertex Veo 3.0 · on-canon</span>
-            <span>1 = 1</span>
+          <figcaption className="label flex items-center justify-between border-t border-[var(--line)] px-5 py-3.5 text-[var(--fg-faint)]">
+            <span>S·LAB·002 · Motion · Vertex Veo 3.0 · On-canon</span>
+            <span style={{ color: "var(--metal-4)" }}>1 = 1</span>
           </figcaption>
         </figure>
       </Reveal>
 
-      {/* ── Showreel — more real in-canon Veo shots ──────────────────── */}
+      {/* ── Showreel — S·LAB·003 / S·LAB·004 ───────────────────────── */}
       <Reveal delay={40} className="mt-5 sm:mt-6">
-        <p className="label mb-4 text-[var(--fg-faint)]">Showreel · generated in-canon · Vertex Veo 3.0</p>
+        <p className="label mb-4 text-[var(--fg-faint)]">Showreel · Vertex Veo 3.0 · On-canon</p>
         <div className="grid gap-5 sm:grid-cols-2">
           {[
-            { src: "/generated/studio/spire.mp4", cap: "The Spire — ascent past an engraved platinum monolith" },
-            { src: "/generated/studio/capital.mp4", cap: "The Capital — radial descent over concentric rings" },
+            { id: "S·LAB·003", src: "/generated/studio/spire.mp4",   cap: "The Spire — ascent past an engraved platinum monolith" },
+            { id: "S·LAB·004", src: "/generated/studio/capital.mp4", cap: "The Capital — radial descent over concentric rings" },
           ].map((c) => (
             <figure
               key={c.src}
@@ -86,30 +95,31 @@ export default function StudioPage() {
                 label={`${c.cap} — generated in-canon on Vertex Veo 3.0`}
                 className="aspect-video w-full object-cover"
               />
-              <figcaption className="label flex items-center justify-between px-4 py-3 text-[var(--fg-faint)]">
-                <span>{c.cap}</span>
-                <span>1 = 1</span>
+              <figcaption className="label flex items-center justify-between border-t border-[var(--line)] px-5 py-3.5 text-[var(--fg-faint)]">
+                <span>{c.id} · {c.cap}</span>
+                <span style={{ color: "var(--metal-4)" }}>1 = 1</span>
               </figcaption>
             </figure>
           ))}
         </div>
       </Reveal>
 
-      {/* ── THE NODES — the agent organization, personified.
-             Fashion-lookbook composition, not boxed embeds: a lead motion
-             plate + editorial statement, then three stills — every plate
-             carries its own serif-numeral lockup over a scrim, grounded
-             into OLED. Chrome helmets: the face stays private (§9).
-             Generated in-canon on Midjourney, graded platinum-mono. ────── */}
+      {/* ── THE NODES — fashion-lookbook · S·LAB·005–010 ─────────── */}
+      {/*
+        Fashion-lookbook composition: lead motion plate + editorial statement +
+        three portrait stills. Each plate carries its serif-numeral lockup over
+        a scrim, grounded into OLED. Chrome helmets: the face stays private (§9).
+        Catalog: S·LAB·005 (motion) + S·LAB·006–008 (stills).
+      */}
       <Reveal delay={60} className="mt-16 sm:mt-20">
         <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-          <p className="label text-[var(--signal)]">“The Nodes” · Lookbook</p>
+          <p className="label" style={{ color: "var(--signal)" }}>&ldquo;The Nodes&rdquo; · Lookbook · S·LAB·005</p>
           <p className="label text-[var(--fg-faint)]">
             The agent organization, personified · generated in-canon
           </p>
         </div>
 
-        {/* Row 1 — lead motion plate + statement panel */}
+        {/* Row 1 — lead motion plate + editorial statement panel */}
         <div className="grid gap-5 lg:grid-cols-12">
           <figure className="relative overflow-hidden rounded-[var(--radius)] border border-[var(--line)] lg:col-span-7">
             <CanonVideo
@@ -124,13 +134,12 @@ export default function StudioPage() {
             >
               <div>
                 <p className="label text-[var(--fg-dim)]">Scouts</p>
-                <p className="mt-1 label text-[0.5rem] text-[var(--fg-faint)]">
-                  Fan out · return with the frontier
-                </p>
+                <p className="label mt-1 text-[var(--fg-faint)]">Fan out · return with the frontier</p>
               </div>
+              {/* title: 1.75rem §4.4 serif numeral lockup */}
               <span
-                className="metal-text text-[3.4rem] leading-none sm:text-[4.2rem]"
-                style={{ fontFamily: "var(--font-display), serif" }}
+                className="metal-text leading-none"
+                style={{ fontSize: "3.5rem", fontFamily: "var(--font-display), serif" }}
               >
                 01
               </span>
@@ -138,9 +147,10 @@ export default function StudioPage() {
           </figure>
 
           <div className="flex flex-col justify-between rounded-[var(--radius)] border border-[var(--line)] bg-[var(--bg-1)] p-8 sm:p-10 lg:col-span-5">
+            {/* title: 1.75rem §4.4 */}
             <p
-              className="text-pretty text-[1.5rem] leading-[1.28] text-[var(--fg)] sm:text-[1.9rem]"
-              style={{ fontFamily: "var(--font-display), serif" }}
+              className="text-pretty leading-[1.28] text-[var(--fg)]"
+              style={{ fontSize: "1.75rem", fontFamily: "var(--font-display), serif" }}
             >
               The face stays private.
               <br />
@@ -150,8 +160,8 @@ export default function StudioPage() {
               {[
                 ["Figures", "06 · one organization"],
                 ["Palette", "Platinum monochrome"],
-                ["Helmet", "Privacy, worn (STYLE_LAW §9)"],
-                ["Source", "Generated in-canon · graded"],
+                ["Helmet",  "Privacy, worn (STYLE_LAW §9)"],
+                ["Source",  "Generated in-canon · graded"],
               ].map(([k, v]) => (
                 <div
                   key={k}
@@ -167,27 +177,12 @@ export default function StudioPage() {
           </div>
         </div>
 
-        {/* Row 2 — three plates, serif numerals over scrims */}
+        {/* Row 2 — three portrait plates · S·LAB·006–008 */}
         <div className="mt-5 grid gap-5 sm:grid-cols-3">
           {[
-            {
-              src: "/generated/nodes/node-01.jpg",
-              n: "02",
-              role: "Solver",
-              cap: "Builds and ships · does not critique",
-            },
-            {
-              src: "/generated/nodes/node-04.jpg",
-              n: "03",
-              role: "Synthesizer",
-              cap: "Signal condensed from noise",
-            },
-            {
-              src: "/generated/nodes/node-06.jpg",
-              n: "04",
-              role: "Orchestrator",
-              cap: "One directive · many hands",
-            },
+            { src: "/generated/nodes/node-01.jpg", id: "S·LAB·006", n: "02", role: "Solver",      cap: "Builds and ships · does not critique" },
+            { src: "/generated/nodes/node-04.jpg", id: "S·LAB·007", n: "03", role: "Synthesizer", cap: "Signal condensed from noise"         },
+            { src: "/generated/nodes/node-06.jpg", id: "S·LAB·008", n: "04", role: "Orchestrator",cap: "One directive · many hands"           },
           ].map((f) => (
             <figure
               key={f.src}
@@ -206,11 +201,12 @@ export default function StudioPage() {
               >
                 <div>
                   <p className="label text-[var(--fg-dim)]">{f.role}</p>
-                  <p className="mt-1 label text-[0.5rem] text-[var(--fg-faint)]">{f.cap}</p>
+                  <p className="label mt-1 text-[var(--fg-faint)]">{f.cap}</p>
                 </div>
+                {/* serif numeral: 2.5rem = 10 × 0.25rem */}
                 <span
-                  className="metal-text text-[2.6rem] leading-none"
-                  style={{ fontFamily: "var(--font-display), serif" }}
+                  className="metal-text leading-none"
+                  style={{ fontSize: "2.5rem", fontFamily: "var(--font-display), serif" }}
                 >
                   {f.n}
                 </span>
@@ -220,9 +216,10 @@ export default function StudioPage() {
         </div>
       </Reveal>
 
-      {/* ── Opening statement — full editorial weight ───────────────── */}
-      <Reveal delay={80} className="mt-14 sm:mt-16">
-        <div className="max-w-[48rem]">
+      {/* ── Opening editorial statement ─────────────────────────────── */}
+      {/* cadence: mt-16 = 4rem */}
+      <Reveal delay={80} className="mt-16 sm:mt-20">
+        <div className="max-w-[65ch]">
           <blockquote className="relative pl-6 sm:pl-8">
             <span
               className="pointer-events-none absolute left-0 top-[-0.15em] font-serif text-[3rem] leading-none select-none"
@@ -231,9 +228,10 @@ export default function StudioPage() {
             >
               &ldquo;
             </span>
+            {/* body-l: 1.125rem §4.4 */}
             <p
-              className="text-pretty leading-[1.84] sm:text-[1.15rem] lg:text-[1.22rem]"
-              style={{ color: "var(--fg-dim)" }}
+              className="text-pretty leading-[1.72]"
+              style={{ fontSize: "1.125rem", color: "var(--fg-dim)" }}
             >
               The aesthetic is not decoration. It is the argument: structure persists,
               and coherence made visible is the rarest material.
@@ -251,16 +249,16 @@ export default function StudioPage() {
       <Section
         title="AI-Native Film Studio"
         eyebrow="Studio · Emerging"
-        className="mt-24 pt-12 sm:mt-32 sm:pt-16 lg:mt-36 lg:pt-20"
+        className="mt-24 pt-12 sm:mt-32 sm:pt-16 lg:mt-40 lg:pt-20"
       >
-        <div className="max-w-[50rem]">
-          {/* Metadata rail — Abloh mono labels */}
+        <div className="max-w-[65ch]">
+          {/* Metadata rail — caption: 0.875rem values §4.4 */}
           <div className="mb-10 grid grid-cols-2 gap-0 sm:grid-cols-4 border border-[var(--line)] rounded-[var(--radius)] overflow-hidden">
             {[
               { label: "Division", value: "Studio" },
-              { label: "Status", value: "Emerging" },
+              { label: "Status",  value: "Emerging" },
               { label: "Channel", value: "@spektrelabs" },
-              { label: "Metric", value: "σ = realized" },
+              { label: "Metric",  value: "σ = realized" },
             ].map((item, i) => (
               <Reveal
                 key={item.label}
@@ -268,9 +266,10 @@ export default function StudioPage() {
                 className="border-r border-[var(--line)] last:border-r-0 px-5 py-4"
               >
                 <p className="label text-[var(--fg-faint)] mb-1.5">{item.label}</p>
+                {/* caption: 0.875rem §4.4 */}
                 <p
-                  className="text-[0.92rem] tracking-[-0.01em]"
-                  style={{ color: "var(--fg-dim)" }}
+                  className="tracking-[-0.01em] leading-[1.4]"
+                  style={{ fontSize: "0.875rem", color: "var(--fg-dim)" }}
                 >
                   {item.value}
                 </p>
@@ -279,13 +278,21 @@ export default function StudioPage() {
           </div>
 
           <Reveal delay={100}>
-            <div className="space-y-6" style={{ color: "var(--fg-dim)" }}>
-              <p className="text-[1.02rem] leading-[1.84] sm:text-[1.1rem]">
+            <div className="space-y-6">
+              {/* body-l: 1.125rem §4.4 */}
+              <p
+                className="leading-[1.72]"
+                style={{ fontSize: "1.125rem", color: "var(--fg-dim)" }}
+              >
                 Studio is the production arm of Spektre Labs — where the invariants discovered
                 in research become image, sequence, and world. AI-native from the ground up:
                 generative models orchestrated as a director, not a filter.
               </p>
-              <p className="text-[0.97rem] leading-[1.9]" style={{ color: "var(--fg-mute)" }}>
+              {/* body: 1rem §4.4 */}
+              <p
+                className="leading-[1.72]"
+                style={{ fontSize: "1rem", color: "var(--fg-mute)" }}
+              >
                 The aesthetic is not lifted from genre convention. It is derived: Altered Carbon
                 precision, Prada restraint, Fear of God negative space — rendered as a coherent
                 visual language with a single invariant at its center. Symmetry is 1&nbsp;=&nbsp;1.
@@ -300,7 +307,7 @@ export default function StudioPage() {
                 href={LINKS.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-metal rounded-[8px] px-5 py-2.5 text-[0.82rem] font-medium tracking-[0.06em] uppercase no-underline inline-block"
+                className="btn-metal rounded-[8px] px-5 py-2.5 text-[0.875rem] font-medium tracking-[0.06em] uppercase no-underline inline-block"
               >
                 Watch on YouTube
               </a>
@@ -315,11 +322,12 @@ export default function StudioPage() {
       <Section
         title="Media Reel"
         eyebrow="Production · Active"
-        className="mt-32 pt-16 sm:mt-40 sm:pt-20 lg:mt-44 lg:pt-24"
+        className="mt-32 pt-16 sm:mt-40 sm:pt-20 lg:mt-48 lg:pt-24"
       >
         <StudioFilms />
 
         <Reveal delay={100} className="mt-8">
+          {/* caption: 0.875rem §4.4 */}
           <p className="label" style={{ color: "var(--fg-faint)" }}>
             01 — Channel live on YouTube. 02–03 — Generative pipeline, in development.
             04–06 — Vision divisions, see below.
@@ -341,7 +349,7 @@ export default function StudioPage() {
         eyebrow="Vision · In Development"
         className="mt-36 pt-16 sm:mt-44 sm:pt-20 lg:mt-52 lg:pt-24"
       >
-        <div className="max-w-[50rem]">
+        <div className="max-w-[65ch]">
           {/* Vision banner */}
           <Reveal delay={0}>
             <div
@@ -360,17 +368,29 @@ export default function StudioPage() {
 
           <Reveal delay={80}>
             <div className="space-y-6">
-              <p className="text-[1.1rem] leading-[1.82] text-balance font-semibold tracking-[-0.022em]" style={{ color: "var(--fg)" }}>
+              {/* body-l: 1.125rem §4.4 */}
+              <p
+                className="leading-[1.72] font-semibold tracking-[-0.022em]"
+                style={{ fontSize: "1.125rem", color: "var(--fg)" }}
+              >
                 AAA generative worlds. Structure as the engine.
               </p>
-              <p className="text-[0.97rem] leading-[1.9]" style={{ color: "var(--fg-dim)" }}>
+              {/* body: 1rem §4.4 */}
+              <p
+                className="leading-[1.72]"
+                style={{ fontSize: "1rem", color: "var(--fg-dim)" }}
+              >
                 The same invariants that govern system coherence in the research corpus
                 apply to world design. A world holds together for the same reason a proof
                 holds: internal consistency, no contradiction at the root. Games built from
                 the Spektre Protocol are self-consistent by construction — not authored scene
                 by scene, but derived from a set of structural axioms.
               </p>
-              <p className="text-[0.93rem] leading-[1.9]" style={{ color: "var(--fg-mute)" }}>
+              {/* caption: 0.875rem §4.4 */}
+              <p
+                className="leading-[1.72]"
+                style={{ fontSize: "0.875rem", color: "var(--fg-mute)" }}
+              >
                 The aesthetic is canon: cold Atlantean geometry, platinum surface,
                 OLED depth. Environments that feel excavated rather than constructed.
                 Worlds that carry weight because their structure is real.
@@ -378,13 +398,13 @@ export default function StudioPage() {
             </div>
           </Reveal>
 
-          {/* Domain tags — Abloh metadata grid */}
+          {/* Domain tags — .label class §4.2 (0.66rem / 0.24em / uppercase) */}
           <Reveal delay={160} className="mt-10">
             <div className="flex flex-wrap gap-0">
               {["Generative Worlds", "Structural Design", "AI World-Building", "Proc-Gen", "σ-Coherent Systems"].map((tag, i) => (
                 <span
                   key={tag}
-                  className="label mr-6 mb-4 text-[0.62rem] tracking-[0.2em]"
+                  className="label mr-6 mb-4"
                   style={{ color: "var(--fg-faint)" }}
                 >
                   {String(i + 1).padStart(2, "0")} — {tag}
@@ -406,7 +426,7 @@ export default function StudioPage() {
         eyebrow="Vision · In Development"
         className="mt-36 pt-16 sm:mt-44 sm:pt-20 lg:mt-52 lg:pt-24"
       >
-        <div className="max-w-[50rem]">
+        <div className="max-w-[65ch]">
           {/* Vision banner */}
           <Reveal delay={0}>
             <div
@@ -425,16 +445,28 @@ export default function StudioPage() {
 
           <Reveal delay={80}>
             <div className="space-y-6">
-              <p className="text-[1.1rem] leading-[1.82] text-balance font-semibold tracking-[-0.022em]" style={{ color: "var(--fg)" }}>
+              {/* body-l: 1.125rem §4.4 */}
+              <p
+                className="leading-[1.72] font-semibold tracking-[-0.022em]"
+                style={{ fontSize: "1.125rem", color: "var(--fg)" }}
+              >
                 The world. The IP. The fiction at the center of everything.
               </p>
-              <p className="text-[0.97rem] leading-[1.9]" style={{ color: "var(--fg-dim)" }}>
+              {/* body: 1rem §4.4 */}
+              <p
+                className="leading-[1.72]"
+                style={{ fontSize: "1rem", color: "var(--fg-dim)" }}
+              >
                 Shoreworld is the narrative universe that contains the Spektre aesthetic —
                 the place where the theory becomes mythology. A setting built from the same
                 structural axioms as the research, expressed as story, image, and world.
                 Cold. Precise. Ancient and post-human simultaneously.
               </p>
-              <p className="text-[0.93rem] leading-[1.9]" style={{ color: "var(--fg-mute)" }}>
+              {/* caption: 0.875rem §4.4 */}
+              <p
+                className="leading-[1.72]"
+                style={{ fontSize: "0.875rem", color: "var(--fg-mute)" }}
+              >
                 The lore is the σ-axiom made narrative. Civilizations that held coherence
                 and those that did not. Ruins that are not metaphors — they are proofs of
                 collapse, made inhabitable. Shoreworld is not background; it is the argument
@@ -443,13 +475,13 @@ export default function StudioPage() {
             </div>
           </Reveal>
 
-          {/* Domain tags */}
+          {/* Domain tags — .label §4.2 */}
           <Reveal delay={160} className="mt-10">
             <div className="flex flex-wrap gap-0">
               {["World IP", "Dark-Luxury Sci-Fi", "Narrative Systems", "Franchise", "σ-Mythology"].map((tag, i) => (
                 <span
                   key={tag}
-                  className="label mr-6 mb-4 text-[0.62rem] tracking-[0.2em]"
+                  className="label mr-6 mb-4"
                   style={{ color: "var(--fg-faint)" }}
                 >
                   {String(i + 1).padStart(2, "0")} — {tag}
@@ -499,21 +531,26 @@ export default function StudioPage() {
                 className="surface surface-hover group block rounded-[var(--radius)] p-6 sm:p-7 no-underline"
               >
                 <p className="label mb-3" style={{ color: "var(--fg-faint)" }}>{item.eyebrow}</p>
+                {/* body-l: 1.125rem §4.4 */}
                 <h3
-                  className="text-[1.05rem] font-semibold tracking-[-0.02em] leading-[1.2] mb-3"
-                  style={{ color: "var(--fg)" }}
+                  className="font-semibold tracking-[-0.02em] leading-[1.2] mb-3"
+                  style={{ fontSize: "1.125rem", color: "var(--fg)" }}
                 >
                   {item.title}
                 </h3>
-                <p className="text-[0.87rem] leading-[1.82]" style={{ color: "var(--fg-mute)" }}>
+                {/* caption: 0.875rem §4.4 */}
+                <p
+                  className="leading-[1.72]"
+                  style={{ fontSize: "0.875rem", color: "var(--fg-mute)" }}
+                >
                   {item.desc}
                 </p>
                 <div className="mt-5 flex items-center gap-3">
+                  <span className="h-px flex-1" style={{ background: "var(--line)" }} />
                   <span
-                    className="h-px flex-1"
-                    style={{ background: "var(--line)" }}
-                  />
-                  <span className="label text-[0.58rem]" style={{ color: item.status === "Live" ? "var(--signal)" : "var(--fg-faint)" }}>
+                    className="label"
+                    style={{ color: item.status === "Live" ? "var(--signal)" : "var(--fg-faint)" }}
+                  >
                     {item.status}
                   </span>
                 </div>
@@ -524,16 +561,14 @@ export default function StudioPage() {
       </Section>
 
       {/* ── Final seal — absolute symmetry ─────────────────────────── */}
+      {/* cadence: mt-40 lg:mt-52 = 10/13rem */}
       <Reveal delay={0} className="mt-40 mb-20 flex flex-col items-center gap-8 lg:mt-52">
         <Glyph variant="seal" size={140} strokeOpacity={0.32} />
         <div className="text-center">
           <p className="label mb-2" style={{ color: "var(--fg-faint)" }}>
             Spektre Labs · Studio Division
           </p>
-          <p
-            className="label text-[0.6rem] tracking-[0.26em]"
-            style={{ color: "var(--fg-faint)", opacity: 0.6 }}
-          >
+          <p className="label" style={{ color: "var(--fg-faint)", opacity: 0.6 }}>
             Research → Systems → Studio → Games → Shoreworld
           </p>
         </div>

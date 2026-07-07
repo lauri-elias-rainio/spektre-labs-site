@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type React from "react";
+import Link from "next/link";
 
 import { PageHeader } from "@/components/page-header";
 import { ProseBlock } from "@/components/prose-block";
@@ -9,6 +10,7 @@ import { ResearchGrid } from "@/components/research-grid";
 import { Glyph } from "@/components/glyph";
 import { Reveal } from "@/components/reveal";
 import { getResearchIntroduction, getResearchLayers, getResearchItemCount } from "@/lib/research";
+import { getArticles } from "@/lib/articles";
 import { createPageMetadata } from "@/lib/site";
 import corpus from "@/data/corpus-papers.json";
 
@@ -70,6 +72,7 @@ export default function ResearchPage() {
   const research = getResearchLayers();
   const introduction = getResearchIntroduction();
   const itemCount = getResearchItemCount(research);
+  const articles = getArticles();
 
   return (
     <div>
@@ -461,6 +464,70 @@ export default function ResearchPage() {
       {/* ── Research Layers ── */}
       <Section title="Research Layers" eyebrow="Detail">
         <ResearchGrid items={research} />
+      </Section>
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          FIELD NOTES — published plain-language articles from the program
+      ══════════════════════════════════════════════════════════════════════ */}
+      <Section title="Field Notes" eyebrow="Published">
+        <Reveal delay={0}>
+          <p className="mb-12 max-w-[44rem] text-[0.9rem] leading-[1.84] text-[var(--fg-mute)]">
+            Plain-language readings from the research program. No in-house jargon —
+            each note translates one structural finding into a method any technical
+            reader can use or verify directly.
+          </p>
+        </Reveal>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {articles.map((article, i) => (
+            <Reveal key={article.slug} delay={i * 80}>
+              <article className="group surface surface-hover flex h-full flex-col p-7 sm:p-8">
+                {/* eyebrow */}
+                <p className="label mb-5" style={{ color: "var(--fg-faint)" }}>
+                  {article.eyebrow}
+                </p>
+
+                {/* title */}
+                <h3
+                  className="flex-1 text-[1.02rem] font-semibold leading-[1.24] tracking-[-0.022em]"
+                  style={{ color: "var(--fg)" }}
+                >
+                  <Link
+                    href={`/research/${article.slug}`}
+                    className="transition-colors duration-500 hover:text-[var(--metal-1)]"
+                  >
+                    {article.title}
+                  </Link>
+                </h3>
+
+                {/* summary */}
+                <p
+                  className="mt-4 text-[0.84rem] leading-[1.82]"
+                  style={{ color: "var(--fg-mute)" }}
+                >
+                  {article.summary}
+                </p>
+
+                {/* footer rail */}
+                <div
+                  className="mt-6 flex items-center justify-between border-t pt-5"
+                  style={{ borderColor: "var(--line)" }}
+                >
+                  <Link
+                    href={`/research/${article.slug}`}
+                    className="label transition-colors duration-500 hover:text-[var(--fg)]"
+                    style={{ color: "var(--fg-dim)" }}
+                  >
+                    Read&nbsp;→
+                  </Link>
+                  <span className="label" style={{ color: "var(--fg-faint)" }}>
+                    {article.readingTime}&nbsp;min
+                  </span>
+                </div>
+              </article>
+            </Reveal>
+          ))}
+        </div>
       </Section>
 
       {/* ══════════════════════════════════════════════════════════════════════

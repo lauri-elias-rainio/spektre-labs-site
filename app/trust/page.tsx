@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/page-header";
 import { ProseBlock } from "@/components/prose-block";
 import { ReceiptVerifier } from "@/components/receipt-verifier";
 import { Section } from "@/components/section";
+import { TrustCheckBox } from "@/components/trust-check-box";
 import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
@@ -39,9 +40,21 @@ export default function TrustPage() {
         description="A signed receipt that verifies in your browser — no account, no server, no key. The same check runs on any device, from a phone to a bare-metal chip. Proof travels with the claim; you never have to trust us to check it."
       />
 
-      <div className="mt-12 sm:mt-14">
+      <Section title="Read any AI answer">
+        <ProseBlock className="mb-6 max-w-[42rem]">
+          <p>
+            Not sure whether to trust an AI answer? Paste it. You get an instant read of
+            its reliability shapes — over-claiming, mixed evidence, or a hidden instruction
+            trying to hijack you — computed on your device, nothing uploaded. It flags how
+            to read the text; it does not decide the truth for you.
+          </p>
+        </ProseBlock>
+        <TrustCheckBox />
+      </Section>
+
+      <Section title="Verify a signed receipt">
         <ReceiptVerifier />
-      </div>
+      </Section>
 
       <Section title="Three doors, one layer">
         <div className="grid gap-6 sm:grid-cols-3">

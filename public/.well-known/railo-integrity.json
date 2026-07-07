@@ -1,0 +1,18 @@
+{
+  "protocol": "railo-integrity",
+  "version": 1,
+  "all_passed": true,
+  "checks": {
+    "sigma_attest_roundtrip": true,
+    "verify_pure_selftest": true,
+    "conformance_python": true,
+    "conformance_c_metal": true,
+    "fleet_proof_selftest": true,
+    "ingest_gate_selftest": true,
+    "trust_kernel_selftest": true,
+    "agi_loop_gate_independent": true
+  },
+  "receipt": "eyJhdHRlc3RlciI6Ijc0YTkzZTkyNTZlOGE1ZjUyOTNhNDU1NGE0ZTQ2OTBiYjEzNzdhMTNiMzZkOTBhZDkzN2Q3MGFiYjA4OGYyMjciLCJjbGFpbV9zaGEyNTYiOiI4ODJkZDljZTUzOTNkNDVmMmViZWQ0N2JlNTNiZWM5ODc0ZDVkMmFmY2U5NGRhMDYzNDg2NDExNjI3NGVhOGE5IiwiZ2F0ZSI6MC4zNCwia2luZCI6InRydXN0X2tlcm5lbF9vcGVyYXRpb24iLCJub3RlIjoiYXR0ZXN0cyBhIGRlY2xhcmVkPT1yZWFsaXplZCBDSEVDSyBvdmVyIHRoZXNlIGJ5dGUtaGFzaGVzIOKAlCBOT1QgYWJzb2x1dGUgdHJ1dGggb2YgdGhlIGNsYWltIiwicmVhbGl6ZWRfc2hhMjU2IjoiODgyZGQ5Y2U1MzkzZDQ1ZjJlYmVkNDdiZTUzYmVjOTg3NGQ1ZDJhZmNlOTRkYTA2MzQ4NjQxMTYyNzRlYThhOSIsInNpZ21hIjowLjAsInRzIjoiMjAyNi0wNy0wN1QxMDozMzoyNSswMDowMCIsInR5cCI6InNpZ21hLWF0dGVzdCIsInYiOjEsInZlcmRpY3QiOiJQQVNTIn0.I6B2PFJhQJQeWO-wYPzHmef4R-_HEzmBYAdh-V2MT-aofTrMcUnjFHdTS-s9Q_aC1Hk3u2C1YiPcL41IjojlDA",
+  "claim": "{\"inputs_fenced\":\"9e1137ab3c8dacbfe656f3c8534eace906aa635b19952241ab9206be97303bd8\",\"intent\":\"railo trust-stack integrity self-attestation\",\"kernel\":\"trust_kernel\",\"output_sha256\":\"675771d0f556ff0d259d5ec0dc714040034cbe0a33df0d824fdf784b891204e0\",\"untrusted_inputs_present\":false}",
+  "verify": "any of spektre.org/verify.py|js|c re-derives trust from the token's own bytes"
+}

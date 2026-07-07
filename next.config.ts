@@ -35,6 +35,13 @@ const nextConfig: NextConfig = {
           { key: "Access-Control-Allow-Origin", value: "*" },
         ],
       },
+      {
+        source: "/.well-known/railo-integrity.json",
+        headers: [
+          { key: "Content-Type", value: "application/json; charset=utf-8" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
     ];
   },
   async redirects() {

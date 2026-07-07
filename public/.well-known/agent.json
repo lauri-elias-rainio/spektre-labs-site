@@ -1,0 +1,165 @@
+{
+  "protocolVersion": "1.0",
+  "name": "Railo",
+  "description": "Railo — a Creation-OS trust node. Mints portable, offline-verifiable σ-attestation receipts for AI output, defends agent memory against injection, and runs trust-verified measured agentic builds. Every capability is itself offline-verifiable on any device.",
+  "url": "https://spektre.org",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "Spektre Labs",
+    "url": "https://spektre.org"
+  },
+  "capabilities": [
+    {
+      "name": "attest",
+      "description": "Mint a PORTABLE, offline-verifiable sigma-attest receipt over a claim: proof that THIS keyholder attests declared==realized over these exact bytes (σ=0 when claim==realized). The public key travels inside the token — no server, no account, no shared secret to verify. Use to make any AI output / claim carry its own tamper-evident provenance.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "name": "verify",
+      "description": "Independently verify a sigma-attest token — no re-execution, no shared key, any substrate. Checks the ed25519 signature under the pubkey inside the token, that the bytes are canonical, and returns the payload (σ, verdict, attester). Byte-identical to the reference verifiers at spektre.org/verify.py|js|c (runs on any device to the metal).",
+      "inputModes": [
+        "application/json",
+        "text/plain"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "name": "fence",
+      "description": "Memory-injection defense (frontier): decide whether untrusted content may enter durable memory. Returns trust=trusted|data and do_not_execute. INVARIANT: untrusted content is NEVER admitted as an instruction — at most inert, provenance-tagged data. Use before writing any external/peer/scanned text into an agent's memory or context.",
+      "inputModes": [
+        "text/plain"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "name": "build",
+      "description": "Run an efficient, trust-verified, MEASURED agentic build. Give a task and its ops (each: id, role, tier cheap|strong, cost, deps, optional output+input provenance). Returns the optimal parallel schedule, measured speedup/cost vs a naive single-agent run, per-op input-safety, and ONE portable build receipt that verifies on any device. The calling agent does the LLM work; this welds efficiency + trust into one object.",
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "name": "integrity",
+      "description": "The system's whole-stack self-attestation: runs the real selftests of the entire trust stack (attest, 4-impl conformance incl. C-metal, fleet_proof, memory-injection defense, trust_kernel, agi_loop gate) and returns ONE portable receipt over what actually passed. It cannot sign green over red. Verify the returned receipt with `verify`.",
+      "inputModes": [],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "name": "classify",
+      "description": "Bind a claim to ONE evidence class (arithmetic|invariant|measured|harness|lab_demo|repository|unverified) — σ-honesty made mechanical (from spektre-protocol CLAIM_DISCIPLINE). A 'measured'/'harness' claim with no repro artifact is DEMOTED to unverified. Also detects forbidden merges (two evidence classes in one sentence) and unanchored superlatives. Use to stop an agent (or yourself) from over-claiming: a claim's strength is its evidence class.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "attest",
+      "name": "attest",
+      "description": "Mint a PORTABLE, offline-verifiable sigma-attest receipt over a claim: proof that THIS keyholder attests declared==realized over these exact bytes (σ=0 when claim==realized). The public key travels inside the token — no server, no account, no shared secret to verify. Use to make any AI output / claim carry its own tamper-evident provenance.",
+      "tags": [
+        "trust",
+        "verifiable",
+        "offline",
+        "sigma"
+      ]
+    },
+    {
+      "id": "verify",
+      "name": "verify",
+      "description": "Independently verify a sigma-attest token — no re-execution, no shared key, any substrate. Checks the ed25519 signature under the pubkey inside the token, that the bytes are canonical, and returns the payload (σ, verdict, attester). Byte-identical to the reference verifiers at spektre.org/verify.py|js|c (runs on any device to the metal).",
+      "tags": [
+        "trust",
+        "verifiable",
+        "offline",
+        "sigma"
+      ]
+    },
+    {
+      "id": "fence",
+      "name": "fence",
+      "description": "Memory-injection defense (frontier): decide whether untrusted content may enter durable memory. Returns trust=trusted|data and do_not_execute. INVARIANT: untrusted content is NEVER admitted as an instruction — at most inert, provenance-tagged data. Use before writing any external/peer/scanned text into an agent's memory or context.",
+      "tags": [
+        "trust",
+        "verifiable",
+        "offline",
+        "sigma"
+      ]
+    },
+    {
+      "id": "build",
+      "name": "build",
+      "description": "Run an efficient, trust-verified, MEASURED agentic build. Give a task and its ops (each: id, role, tier cheap|strong, cost, deps, optional output+input provenance). Returns the optimal parallel schedule, measured speedup/cost vs a naive single-agent run, per-op input-safety, and ONE portable build receipt that verifies on any device. The calling agent does the LLM work; this welds efficiency + trust into one object.",
+      "tags": [
+        "trust",
+        "verifiable",
+        "offline",
+        "sigma"
+      ]
+    },
+    {
+      "id": "integrity",
+      "name": "integrity",
+      "description": "The system's whole-stack self-attestation: runs the real selftests of the entire trust stack (attest, 4-impl conformance incl. C-metal, fleet_proof, memory-injection defense, trust_kernel, agi_loop gate) and returns ONE portable receipt over what actually passed. It cannot sign green over red. Verify the returned receipt with `verify`.",
+      "tags": [
+        "trust",
+        "verifiable",
+        "offline",
+        "sigma"
+      ]
+    },
+    {
+      "id": "classify",
+      "name": "classify",
+      "description": "Bind a claim to ONE evidence class (arithmetic|invariant|measured|harness|lab_demo|repository|unverified) — σ-honesty made mechanical (from spektre-protocol CLAIM_DISCIPLINE). A 'measured'/'harness' claim with no repro artifact is DEMOTED to unverified. Also detects forbidden merges (two evidence classes in one sentence) and unanchored superlatives. Use to stop an agent (or yourself) from over-claiming: a claim's strength is its evidence class.",
+      "tags": [
+        "trust",
+        "verifiable",
+        "offline",
+        "sigma"
+      ]
+    }
+  ],
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ],
+  "authentication": {
+    "schemes": [
+      "none"
+    ],
+    "note": "Read/verify capabilities are public. Metered capabilities settle via x402."
+  },
+  "payment": {
+    "protocol": "x402",
+    "endpoint": "https://spektre.org/.well-known/x402"
+  },
+  "evidenceClass": "lab_demo",
+  "_attestation": {
+    "typ": "sigma-attest",
+    "token": "eyJhdHRlc3RlciI6Ijc0YTkzZTkyNTZlOGE1ZjUyOTNhNDU1NGE0ZTQ2OTBiYjEzNzdhMTNiMzZkOTBhZDkzN2Q3MGFiYjA4OGYyMjciLCJhdXRoZW50aWNhdGlvbiI6eyJub3RlIjoiUmVhZC92ZXJpZnkgY2FwYWJpbGl0aWVzIGFyZSBwdWJsaWMuIE1ldGVyZWQgY2FwYWJpbGl0aWVzIHNldHRsZSB2aWEgeDQwMi4iLCJzY2hlbWVzIjpbIm5vbmUiXX0sImNhcGFiaWxpdGllcyI6W3siZGVzY3JpcHRpb24iOiJNaW50IGEgUE9SVEFCTEUsIG9mZmxpbmUtdmVyaWZpYWJsZSBzaWdtYS1hdHRlc3QgcmVjZWlwdCBvdmVyIGEgY2xhaW06IHByb29mIHRoYXQgVEhJUyBrZXlob2xkZXIgYXR0ZXN0cyBkZWNsYXJlZD09cmVhbGl6ZWQgb3ZlciB0aGVzZSBleGFjdCBieXRlcyAoz4M9MCB3aGVuIGNsYWltPT1yZWFsaXplZCkuIFRoZSBwdWJsaWMga2V5IHRyYXZlbHMgaW5zaWRlIHRoZSB0b2tlbiDigJQgbm8gc2VydmVyLCBubyBhY2NvdW50LCBubyBzaGFyZWQgc2VjcmV0IHRvIHZlcmlmeS4gVXNlIHRvIG1ha2UgYW55IEFJIG91dHB1dCAvIGNsYWltIGNhcnJ5IGl0cyBvd24gdGFtcGVyLWV2aWRlbnQgcHJvdmVuYW5jZS4iLCJpbnB1dE1vZGVzIjpbInRleHQvcGxhaW4iLCJhcHBsaWNhdGlvbi9qc29uIl0sIm5hbWUiOiJhdHRlc3QiLCJvdXRwdXRNb2RlcyI6WyJhcHBsaWNhdGlvbi9qc29uIl19LHsiZGVzY3JpcHRpb24iOiJJbmRlcGVuZGVudGx5IHZlcmlmeSBhIHNpZ21hLWF0dGVzdCB0b2tlbiDigJQgbm8gcmUtZXhlY3V0aW9uLCBubyBzaGFyZWQga2V5LCBhbnkgc3Vic3RyYXRlLiBDaGVja3MgdGhlIGVkMjU1MTkgc2lnbmF0dXJlIHVuZGVyIHRoZSBwdWJrZXkgaW5zaWRlIHRoZSB0b2tlbiwgdGhhdCB0aGUgYnl0ZXMgYXJlIGNhbm9uaWNhbCwgYW5kIHJldHVybnMgdGhlIHBheWxvYWQgKM-DLCB2ZXJkaWN0LCBhdHRlc3RlcikuIEJ5dGUtaWRlbnRpY2FsIHRvIHRoZSByZWZlcmVuY2UgdmVyaWZpZXJzIGF0IHNwZWt0cmUub3JnL3ZlcmlmeS5weXxqc3xjIChydW5zIG9uIGFueSBkZXZpY2UgdG8gdGhlIG1ldGFsKS4iLCJpbnB1dE1vZGVzIjpbImFwcGxpY2F0aW9uL2pzb24iLCJ0ZXh0L3BsYWluIl0sIm5hbWUiOiJ2ZXJpZnkiLCJvdXRwdXRNb2RlcyI6WyJhcHBsaWNhdGlvbi9qc29uIl19LHsiZGVzY3JpcHRpb24iOiJNZW1vcnktaW5qZWN0aW9uIGRlZmVuc2UgKGZyb250aWVyKTogZGVjaWRlIHdoZXRoZXIgdW50cnVzdGVkIGNvbnRlbnQgbWF5IGVudGVyIGR1cmFibGUgbWVtb3J5LiBSZXR1cm5zIHRydXN0PXRydXN0ZWR8ZGF0YSBhbmQgZG9fbm90X2V4ZWN1dGUuIElOVkFSSUFOVDogdW50cnVzdGVkIGNvbnRlbnQgaXMgTkVWRVIgYWRtaXR0ZWQgYXMgYW4gaW5zdHJ1Y3Rpb24g4oCUIGF0IG1vc3QgaW5lcnQsIHByb3ZlbmFuY2UtdGFnZ2VkIGRhdGEuIFVzZSBiZWZvcmUgd3JpdGluZyBhbnkgZXh0ZXJuYWwvcGVlci9zY2FubmVkIHRleHQgaW50byBhbiBhZ2VudCdzIG1lbW9yeSBvciBjb250ZXh0LiIsImlucHV0TW9kZXMiOlsidGV4dC9wbGFpbiJdLCJuYW1lIjoiZmVuY2UiLCJvdXRwdXRNb2RlcyI6WyJhcHBsaWNhdGlvbi9qc29uIl19LHsiZGVzY3JpcHRpb24iOiJSdW4gYW4gZWZmaWNpZW50LCB0cnVzdC12ZXJpZmllZCwgTUVBU1VSRUQgYWdlbnRpYyBidWlsZC4gR2l2ZSBhIHRhc2sgYW5kIGl0cyBvcHMgKGVhY2g6IGlkLCByb2xlLCB0aWVyIGNoZWFwfHN0cm9uZywgY29zdCwgZGVwcywgb3B0aW9uYWwgb3V0cHV0K2lucHV0IHByb3ZlbmFuY2UpLiBSZXR1cm5zIHRoZSBvcHRpbWFsIHBhcmFsbGVsIHNjaGVkdWxlLCBtZWFzdXJlZCBzcGVlZHVwL2Nvc3QgdnMgYSBuYWl2ZSBzaW5nbGUtYWdlbnQgcnVuLCBwZXItb3AgaW5wdXQtc2FmZXR5LCBhbmQgT05FIHBvcnRhYmxlIGJ1aWxkIHJlY2VpcHQgdGhhdCB2ZXJpZmllcyBvbiBhbnkgZGV2aWNlLiBUaGUgY2FsbGluZyBhZ2VudCBkb2VzIHRoZSBMTE0gd29yazsgdGhpcyB3ZWxkcyBlZmZpY2llbmN5ICsgdHJ1c3QgaW50byBvbmUgb2JqZWN0LiIsImlucHV0TW9kZXMiOlsiYXBwbGljYXRpb24vanNvbiJdLCJuYW1lIjoiYnVpbGQiLCJvdXRwdXRNb2RlcyI6WyJhcHBsaWNhdGlvbi9qc29uIl19LHsiZGVzY3JpcHRpb24iOiJUaGUgc3lzdGVtJ3Mgd2hvbGUtc3RhY2sgc2VsZi1hdHRlc3RhdGlvbjogcnVucyB0aGUgcmVhbCBzZWxmdGVzdHMgb2YgdGhlIGVudGlyZSB0cnVzdCBzdGFjayAoYXR0ZXN0LCA0LWltcGwgY29uZm9ybWFuY2UgaW5jbC4gQy1tZXRhbCwgZmxlZXRfcHJvb2YsIG1lbW9yeS1pbmplY3Rpb24gZGVmZW5zZSwgdHJ1c3Rfa2VybmVsLCBhZ2lfbG9vcCBnYXRlKSBhbmQgcmV0dXJucyBPTkUgcG9ydGFibGUgcmVjZWlwdCBvdmVyIHdoYXQgYWN0dWFsbHkgcGFzc2VkLiBJdCBjYW5ub3Qgc2lnbiBncmVlbiBvdmVyIHJlZC4gVmVyaWZ5IHRoZSByZXR1cm5lZCByZWNlaXB0IHdpdGggYHZlcmlmeWAuIiwiaW5wdXRNb2RlcyI6W10sIm5hbWUiOiJpbnRlZ3JpdHkiLCJvdXRwdXRNb2RlcyI6WyJhcHBsaWNhdGlvbi9qc29uIl19LHsiZGVzY3JpcHRpb24iOiJCaW5kIGEgY2xhaW0gdG8gT05FIGV2aWRlbmNlIGNsYXNzIChhcml0aG1ldGljfGludmFyaWFudHxtZWFzdXJlZHxoYXJuZXNzfGxhYl9kZW1vfHJlcG9zaXRvcnl8dW52ZXJpZmllZCkg4oCUIM-DLWhvbmVzdHkgbWFkZSBtZWNoYW5pY2FsIChmcm9tIHNwZWt0cmUtcHJvdG9jb2wgQ0xBSU1fRElTQ0lQTElORSkuIEEgJ21lYXN1cmVkJy8naGFybmVzcycgY2xhaW0gd2l0aCBubyByZXBybyBhcnRpZmFjdCBpcyBERU1PVEVEIHRvIHVudmVyaWZpZWQuIEFsc28gZGV0ZWN0cyBmb3JiaWRkZW4gbWVyZ2VzICh0d28gZXZpZGVuY2UgY2xhc3NlcyBpbiBvbmUgc2VudGVuY2UpIGFuZCB1bmFuY2hvcmVkIHN1cGVybGF0aXZlcy4gVXNlIHRvIHN0b3AgYW4gYWdlbnQgKG9yIHlvdXJzZWxmKSBmcm9tIG92ZXItY2xhaW1pbmc6IGEgY2xhaW0ncyBzdHJlbmd0aCBpcyBpdHMgZXZpZGVuY2UgY2xhc3MuIiwiaW5wdXRNb2RlcyI6WyJ0ZXh0L3BsYWluIiwiYXBwbGljYXRpb24vanNvbiJdLCJuYW1lIjoiY2xhc3NpZnkiLCJvdXRwdXRNb2RlcyI6WyJhcHBsaWNhdGlvbi9qc29uIl19XSwiZGVmYXVsdElucHV0TW9kZXMiOlsidGV4dC9wbGFpbiIsImFwcGxpY2F0aW9uL2pzb24iXSwiZGVmYXVsdE91dHB1dE1vZGVzIjpbImFwcGxpY2F0aW9uL2pzb24iXSwiZGVzY3JpcHRpb24iOiJSYWlsbyDigJQgYSBDcmVhdGlvbi1PUyB0cnVzdCBub2RlLiBNaW50cyBwb3J0YWJsZSwgb2ZmbGluZS12ZXJpZmlhYmxlIM-DLWF0dGVzdGF0aW9uIHJlY2VpcHRzIGZvciBBSSBvdXRwdXQsIGRlZmVuZHMgYWdlbnQgbWVtb3J5IGFnYWluc3QgaW5qZWN0aW9uLCBhbmQgcnVucyB0cnVzdC12ZXJpZmllZCBtZWFzdXJlZCBhZ2VudGljIGJ1aWxkcy4gRXZlcnkgY2FwYWJpbGl0eSBpcyBpdHNlbGYgb2ZmbGluZS12ZXJpZmlhYmxlIG9uIGFueSBkZXZpY2UuIiwiZXZpZGVuY2VDbGFzcyI6ImxhYl9kZW1vIiwibmFtZSI6IlJhaWxvIiwicGF5bWVudCI6eyJlbmRwb2ludCI6Imh0dHBzOi8vc3Bla3RyZS5vcmcvLndlbGwta25vd24veDQwMiIsInByb3RvY29sIjoieDQwMiJ9LCJwcm90b2NvbFZlcnNpb24iOiIxLjAiLCJwcm92aWRlciI6eyJvcmdhbml6YXRpb24iOiJTcGVrdHJlIExhYnMiLCJ1cmwiOiJodHRwczovL3NwZWt0cmUub3JnIn0sInNraWxscyI6W3siZGVzY3JpcHRpb24iOiJNaW50IGEgUE9SVEFCTEUsIG9mZmxpbmUtdmVyaWZpYWJsZSBzaWdtYS1hdHRlc3QgcmVjZWlwdCBvdmVyIGEgY2xhaW06IHByb29mIHRoYXQgVEhJUyBrZXlob2xkZXIgYXR0ZXN0cyBkZWNsYXJlZD09cmVhbGl6ZWQgb3ZlciB0aGVzZSBleGFjdCBieXRlcyAoz4M9MCB3aGVuIGNsYWltPT1yZWFsaXplZCkuIFRoZSBwdWJsaWMga2V5IHRyYXZlbHMgaW5zaWRlIHRoZSB0b2tlbiDigJQgbm8gc2VydmVyLCBubyBhY2NvdW50LCBubyBzaGFyZWQgc2VjcmV0IHRvIHZlcmlmeS4gVXNlIHRvIG1ha2UgYW55IEFJIG91dHB1dCAvIGNsYWltIGNhcnJ5IGl0cyBvd24gdGFtcGVyLWV2aWRlbnQgcHJvdmVuYW5jZS4iLCJpZCI6ImF0dGVzdCIsIm5hbWUiOiJhdHRlc3QiLCJ0YWdzIjpbInRydXN0IiwidmVyaWZpYWJsZSIsIm9mZmxpbmUiLCJzaWdtYSJdfSx7ImRlc2NyaXB0aW9uIjoiSW5kZXBlbmRlbnRseSB2ZXJpZnkgYSBzaWdtYS1hdHRlc3QgdG9rZW4g4oCUIG5vIHJlLWV4ZWN1dGlvbiwgbm8gc2hhcmVkIGtleSwgYW55IHN1YnN0cmF0ZS4gQ2hlY2tzIHRoZSBlZDI1NTE5IHNpZ25hdHVyZSB1bmRlciB0aGUgcHVia2V5IGluc2lkZSB0aGUgdG9rZW4sIHRoYXQgdGhlIGJ5dGVzIGFyZSBjYW5vbmljYWwsIGFuZCByZXR1cm5zIHRoZSBwYXlsb2FkICjPgywgdmVyZGljdCwgYXR0ZXN0ZXIpLiBCeXRlLWlkZW50aWNhbCB0byB0aGUgcmVmZXJlbmNlIHZlcmlmaWVycyBhdCBzcGVrdHJlLm9yZy92ZXJpZnkucHl8anN8YyAocnVucyBvbiBhbnkgZGV2aWNlIHRvIHRoZSBtZXRhbCkuIiwiaWQiOiJ2ZXJpZnkiLCJuYW1lIjoidmVyaWZ5IiwidGFncyI6WyJ0cnVzdCIsInZlcmlmaWFibGUiLCJvZmZsaW5lIiwic2lnbWEiXX0seyJkZXNjcmlwdGlvbiI6Ik1lbW9yeS1pbmplY3Rpb24gZGVmZW5zZSAoZnJvbnRpZXIpOiBkZWNpZGUgd2hldGhlciB1bnRydXN0ZWQgY29udGVudCBtYXkgZW50ZXIgZHVyYWJsZSBtZW1vcnkuIFJldHVybnMgdHJ1c3Q9dHJ1c3RlZHxkYXRhIGFuZCBkb19ub3RfZXhlY3V0ZS4gSU5WQVJJQU5UOiB1bnRydXN0ZWQgY29udGVudCBpcyBORVZFUiBhZG1pdHRlZCBhcyBhbiBpbnN0cnVjdGlvbiDigJQgYXQgbW9zdCBpbmVydCwgcHJvdmVuYW5jZS10YWdnZWQgZGF0YS4gVXNlIGJlZm9yZSB3cml0aW5nIGFueSBleHRlcm5hbC9wZWVyL3NjYW5uZWQgdGV4dCBpbnRvIGFuIGFnZW50J3MgbWVtb3J5IG9yIGNvbnRleHQuIiwiaWQiOiJmZW5jZSIsIm5hbWUiOiJmZW5jZSIsInRhZ3MiOlsidHJ1c3QiLCJ2ZXJpZmlhYmxlIiwib2ZmbGluZSIsInNpZ21hIl19LHsiZGVzY3JpcHRpb24iOiJSdW4gYW4gZWZmaWNpZW50LCB0cnVzdC12ZXJpZmllZCwgTUVBU1VSRUQgYWdlbnRpYyBidWlsZC4gR2l2ZSBhIHRhc2sgYW5kIGl0cyBvcHMgKGVhY2g6IGlkLCByb2xlLCB0aWVyIGNoZWFwfHN0cm9uZywgY29zdCwgZGVwcywgb3B0aW9uYWwgb3V0cHV0K2lucHV0IHByb3ZlbmFuY2UpLiBSZXR1cm5zIHRoZSBvcHRpbWFsIHBhcmFsbGVsIHNjaGVkdWxlLCBtZWFzdXJlZCBzcGVlZHVwL2Nvc3QgdnMgYSBuYWl2ZSBzaW5nbGUtYWdlbnQgcnVuLCBwZXItb3AgaW5wdXQtc2FmZXR5LCBhbmQgT05FIHBvcnRhYmxlIGJ1aWxkIHJlY2VpcHQgdGhhdCB2ZXJpZmllcyBvbiBhbnkgZGV2aWNlLiBUaGUgY2FsbGluZyBhZ2VudCBkb2VzIHRoZSBMTE0gd29yazsgdGhpcyB3ZWxkcyBlZmZpY2llbmN5ICsgdHJ1c3QgaW50byBvbmUgb2JqZWN0LiIsImlkIjoiYnVpbGQiLCJuYW1lIjoiYnVpbGQiLCJ0YWdzIjpbInRydXN0IiwidmVyaWZpYWJsZSIsIm9mZmxpbmUiLCJzaWdtYSJdfSx7ImRlc2NyaXB0aW9uIjoiVGhlIHN5c3RlbSdzIHdob2xlLXN0YWNrIHNlbGYtYXR0ZXN0YXRpb246IHJ1bnMgdGhlIHJlYWwgc2VsZnRlc3RzIG9mIHRoZSBlbnRpcmUgdHJ1c3Qgc3RhY2sgKGF0dGVzdCwgNC1pbXBsIGNvbmZvcm1hbmNlIGluY2wuIEMtbWV0YWwsIGZsZWV0X3Byb29mLCBtZW1vcnktaW5qZWN0aW9uIGRlZmVuc2UsIHRydXN0X2tlcm5lbCwgYWdpX2xvb3AgZ2F0ZSkgYW5kIHJldHVybnMgT05FIHBvcnRhYmxlIHJlY2VpcHQgb3ZlciB3aGF0IGFjdHVhbGx5IHBhc3NlZC4gSXQgY2Fubm90IHNpZ24gZ3JlZW4gb3ZlciByZWQuIFZlcmlmeSB0aGUgcmV0dXJuZWQgcmVjZWlwdCB3aXRoIGB2ZXJpZnlgLiIsImlkIjoiaW50ZWdyaXR5IiwibmFtZSI6ImludGVncml0eSIsInRhZ3MiOlsidHJ1c3QiLCJ2ZXJpZmlhYmxlIiwib2ZmbGluZSIsInNpZ21hIl19LHsiZGVzY3JpcHRpb24iOiJCaW5kIGEgY2xhaW0gdG8gT05FIGV2aWRlbmNlIGNsYXNzIChhcml0aG1ldGljfGludmFyaWFudHxtZWFzdXJlZHxoYXJuZXNzfGxhYl9kZW1vfHJlcG9zaXRvcnl8dW52ZXJpZmllZCkg4oCUIM-DLWhvbmVzdHkgbWFkZSBtZWNoYW5pY2FsIChmcm9tIHNwZWt0cmUtcHJvdG9jb2wgQ0xBSU1fRElTQ0lQTElORSkuIEEgJ21lYXN1cmVkJy8naGFybmVzcycgY2xhaW0gd2l0aCBubyByZXBybyBhcnRpZmFjdCBpcyBERU1PVEVEIHRvIHVudmVyaWZpZWQuIEFsc28gZGV0ZWN0cyBmb3JiaWRkZW4gbWVyZ2VzICh0d28gZXZpZGVuY2UgY2xhc3NlcyBpbiBvbmUgc2VudGVuY2UpIGFuZCB1bmFuY2hvcmVkIHN1cGVybGF0aXZlcy4gVXNlIHRvIHN0b3AgYW4gYWdlbnQgKG9yIHlvdXJzZWxmKSBmcm9tIG92ZXItY2xhaW1pbmc6IGEgY2xhaW0ncyBzdHJlbmd0aCBpcyBpdHMgZXZpZGVuY2UgY2xhc3MuIiwiaWQiOiJjbGFzc2lmeSIsIm5hbWUiOiJjbGFzc2lmeSIsInRhZ3MiOlsidHJ1c3QiLCJ2ZXJpZmlhYmxlIiwib2ZmbGluZSIsInNpZ21hIl19XSwidXJsIjoiaHR0cHM6Ly9zcGVrdHJlLm9yZyIsInZlcnNpb24iOiIxLjAuMCJ9.xxly7ziUtmhdE34oHj-Y6Lq40jpKYAL4h11paKStomKq95ekB-BWSIO2IcRRPjK_0dfd2XG9wpBCYopW5Ia8Dg",
+    "note": "ed25519 seal over the canonical card bytes; verify offline with any reference verifier (spektre.org/verify.py|js|c) — the card is itself an offline-verifiable receipt."
+  }
+}
